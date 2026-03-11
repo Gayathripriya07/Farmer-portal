@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer's Live Weather</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1e4b1e, #2d6a2d);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            border-radius: 30px;
+            padding: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #1e4b1e;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        .location-card {
+            background: #f0f7f0;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #2d6a2d;
+        }
+        .location-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .location-icon {
+            font-size: 30px;
+        }
+        .location-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1e4b1e;
+        }
+        .coord-text {
+            color: #666;
+            font-size: 14px;
+            margin: 5px 0;
+            word-break: break-all;
+        }
+        .weather-main {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .temperature {
+            font-size: 64px;
+            font-weight: bold;
+            color: #1e4b1e;
+            line-height: 1;
+        }
+        .weather-desc {
+            font-size: 20px;
+            color: #666;
+            margin: 10px 0;
+            text-transform: capitalize;
+        }
+        .weather-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .detail-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .detail-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .detail-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1e4b1e;
+        }
+        .forecast-title {
+            font-size: 20px;
+            color: #1e4b1e;
+            margin: 20px 0 10px;
+            font-weight: bold;
+        }
+        .forecast-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .forecast-day {
+            background: #f0f7f0;
+            padding: 10px 5px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .forecast-date {
+            font-weight: bold;
+            color: #1e4b1e;
+            margin-bottom: 5px;
+        }
+        .forecast-temp {
+            color: #d35400;
+            font-weight: bold;
+        }
+        .status {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        .error {
+            color: #c0392b;
+            text-align: center;
+            padding: 20px;
+        }
+        .refresh-btn {
+            background: #1e4b1e;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 18px;
+            width: 100%;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 15px;
+        }
+        .refresh-btn:hover {
+            background: #2d6a2d;
+        }
+        .attribution {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            margin-top: 15px;
+        }
+        .attribution a {
+            color: #1e4b1e;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌾 Live Weather for Farmers</h1>
+        
+        <!-- Location Status -->
+        <div id="locationStatus" class="location-card">
+            <div class="location-header">
+                <span class="location-icon">📍</span>
+                <span class="location-name" id="locationName">Getting location...</span>
+            </div>
+            <div class="coord-text" id="coordinates"></div>
+        </div>
+
+        <!-- Weather Display -->
+        <div id="weatherDisplay">
+            <div class="status">Fetching weather data...</div>
+        </div>
+
+        <!-- Refresh Button -->
+        <button class="refresh-btn" onclick="getLocationAndWeather()">
+            🔄 Refresh Weather
+        </button>
+        
+        <div class="attribution">
+            Weather data by <a href="https://open-meteo.com/" target="_blank">Open-Meteo.com</a> (No API key needed!)
+        </div>
+    </div>
+
+    <script>
+        // Main function to get location and weather
+        function getLocationAndWeather() {
+            const locationName = document.getElementById('locationName');
+            const coordinates = document.getElementById('coordinates');
+            const weatherDisplay = document.getElementById('weatherDisplay');
+            
+            // Show loading
+            locationName.textContent = 'Getting location...';
+            coordinates.textContent = '';
+            weatherDisplay.innerHTML = '<div class="status">📍 Requesting location access...</div>';
+            
+            // Check if browser supports geolocation
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    // Success - location found
+                    function(position) {
+                        const lat = position.coords.latitude.toFixed(4);
+                        const lon = position.coords.longitude.toFixed(4);
+                        
+                        // Update location info
+                        locationName.textContent = '📍 Location Access Granted';
+                        coordinates.textContent = `Lat: ${lat}°, Lon: ${lon}°`;
+                        
+                        // Fetch weather from Open-Meteo (NO API KEY NEEDED!)
+                        fetchWeather(lat, lon);
+                    },
+                    // Error - location denied
+                    function(error) {
+                        let errorMsg = '';
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMsg = '❌ Please allow location access to see local weather. Refresh the page and click "Allow".';
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                errorMsg = '❌ Location information unavailable. Try again.';
+                                break;
+                            case error.TIMEOUT:
+                                errorMsg = '❌ Location request timed out. Try again.';
+                                break;
+                            default:
+                                errorMsg = '❌ An unknown error occurred.';
+                        }
+                        
+                        locationName.textContent = '⚠️ Location Error';
+                        coordinates.textContent = '';
+                        weatherDisplay.innerHTML = `<div class="error">${errorMsg}</div>`;
+                    }
+                );
+            } else {
+                locationName.textContent = '❌ Browser Not Supported';
+                weatherDisplay.innerHTML = '<div class="error">Your browser does not support geolocation.</div>';
+            }
+        }
+
+        // Fetch weather from Open-Meteo (FREE - No API Key Needed!)
+        function fetchWeather(lat, lon) {
+            const weatherDisplay = document.getElementById('weatherDisplay');
+            weatherDisplay.innerHTML = '<div class="status">🌤️ Fetching weather data...</div>';
+            
+            // Open-Meteo API - completely free, no key required!
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=5`;
+            
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Weather data not available');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Get current weather
+                    const current = data.current;
+                    
+                    // Convert weather code to description and emoji
+                    const weatherInfo = getWeatherInfo(current.weather_code);
+                    
+                    // Get daily forecast
+                    const daily = data.daily;
+                    
+                    // Build HTML
+                    let html = `
+                        <div class="weather-main">
+                            <div class="temperature">${Math.round(current.temperature_2m)}°C</div>
+                            <div class="weather-desc">${weatherInfo.emoji} ${weatherInfo.description}</div>
+                        </div>
+                        
+                        <div class="weather-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Feels Like</div>
+                                <div class="detail-value">${Math.round(current.apparent_temperature)}°C</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Humidity</div>
+                                <div class="detail-value">${current.relative_humidity_2m}%</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Wind</div>
+                                <div class="detail-value">${Math.round(current.wind_speed_10m)} km/h</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Rain</div>
+                                <div class="detail-value">${current.precipitation || 0} mm</div>
+                            </div>
+                        </div>
+                        
+                        <div class="forecast-title">📅 5-Day Forecast</div>
+                        <div class="forecast-grid">
+                    `;
+                    
+                    // Add 5-day forecast
+                    for (let i = 0; i < 5; i++) {
+                        const date = new Date(daily.time[i]);
+                        const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
+                        const forecastWeather = getWeatherInfo(daily.weather_code[i]);
+                        
+                        html += `
+                            <div class="forecast-day">
+                                <div class="forecast-date">${dayName}</div>
+                                <div>${forecastWeather.emoji}</div>
+                                <div class="forecast-temp">${Math.round(daily.temperature_2m_max[i])}°</div>
+                                <div style="color:#666;font-size:12px;">${Math.round(daily.temperature_2m_min[i])}°</div>
+                            </div>
+                        `;
+                    }
+                    
+                    html += `</div>`;
+                    
+                    weatherDisplay.innerHTML = html;
+                })
+                .catch(error => {
+                    weatherDisplay.innerHTML = `<div class="error">❌ Error fetching weather. Please try again.</div>`;
+                    console.error(error);
+                });
+        }
+
+        // Convert weather codes to descriptions and emojis [citation:6]
+        function getWeatherInfo(code) {
+            const weatherMap = {
+                0: { emoji: '☀️', description: 'Clear sky' },
+                1: { emoji: '🌤️', description: 'Mainly clear' },
+                2: { emoji: '⛅', description: 'Partly cloudy' },
+                3: { emoji: '☁️', description: 'Overcast' },
+                45: { emoji: '🌫️', description: 'Fog' },
+                48: { emoji: '🌫️', description: 'Rime fog' },
+                51: { emoji: '🌧️', description: 'Light drizzle' },
+                53: { emoji: '🌧️', description: 'Moderate drizzle' },
+                55: { emoji: '🌧️', description: 'Dense drizzle' },
+                61: { emoji: '🌦️', description: 'Slight rain' },
+                63: { emoji: '🌦️', description: 'Moderate rain' },
+                65: { emoji: '🌧️', description: 'Heavy rain' },
+                71: { emoji: '🌨️', description: 'Slight snow' },
+                73: { emoji: '🌨️', description: 'Moderate snow' },
+                75: { emoji: '🌨️', description: 'Heavy snow' },
+                80: { emoji: '🌧️', description: 'Rain showers' },
+                81: { emoji: '🌧️', description: 'Moderate showers' },
+                82: { emoji: '🌧️', description: 'Violent showers' },
+                95: { emoji: '⛈️', description: 'Thunderstorm' },
+                96: { emoji: '⛈️', description: 'Thunderstorm with hail' },
+                99: { emoji: '⛈️', description: 'Heavy thunderstorm' }
+            };
+            return weatherMap[code] || { emoji: '❓', description: 'Unknown' };
+        }
+
+        // Auto-load weather when page opens
+        window.onload = function() {
+            getLocationAndWeather();
+        };
+    </script>
+</body>
+</html>
