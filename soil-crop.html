@@ -1,0 +1,557 @@
+﻿<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>மண் & பயிர் - Soil & Crop</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Tamil:ital@0;1&family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--green:#1a6b2f;--gold:#2e7d32;--dark:#f3fbf4;}
+body{font-family:'Poppins',sans-serif;background:#f3fbf4;color:#fff;min-height:100vh;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.topbar{background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(46,125,50,0.2);
+  padding:0.9rem 1.2rem;display:flex;align-items:center;gap:0.8rem;position:sticky;top:0;z-index:50;}
+.back-btn{background:rgba(46,125,50,0.15);border:1px solid rgba(46,125,50,0.3);color:var(--gold);
+  padding:0.4rem 0.8rem;border-radius:8px;cursor:pointer;font-size:0.9rem;text-decoration:none;}
+.topbar h1{color:var(--gold);font-family:'Tiro Tamil',serif;font-size:1.1rem;}
+.content{padding:1rem 1.2rem;padding-bottom:2rem;}
+
+/* Soil type grid */
+.section-title{color:var(--gold);font-size:0.95rem;font-family:'Tiro Tamil',serif;font-weight:700;
+  margin-bottom:0.8rem;display:flex;align-items:center;gap:0.5rem;}
+.soil-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.7rem;margin-bottom:1.5rem;}
+.soil-card{background:rgba(255,255,255,0.05);border:2px solid transparent;border-radius:14px;
+  padding:1rem;cursor:pointer;transition:all 0.3s;text-align:center;}
+.soil-card.selected{border-color:var(--gold);background:rgba(46,125,50,0.1);}
+.soil-card:hover{border-color:rgba(46,125,50,0.4);}
+.soil-icon{font-size:2rem;display:block;margin-bottom:0.4rem;}
+.soil-name{font-size:0.85rem;color:#ffffff;font-family:'Tiro Tamil',serif;font-weight:600;}
+.soil-en{font-size:0.7rem;color:#2f6d3a;}
+.soil-ph{display:inline-block;background:rgba(46,125,50,0.15);color:var(--gold);font-size:0.65rem;
+  padding:2px 7px;border-radius:50px;margin-top:0.3rem;}
+
+/* Crop selection */
+.crops-container{margin-bottom:1.5rem;}
+.crop-search{width:100%;padding:0.7rem 1rem;background:rgba(255,255,255,0.07);
+  border:1px solid rgba(46,125,50,0.25);border-radius:12px;color:#fff;font-size:0.85rem;outline:none;margin-bottom:0.8rem;}
+.crops-wrap{display:flex;flex-wrap:wrap;gap:0.5rem;max-height:200px;overflow-y:auto;}
+.crop-chip{padding:0.45rem 0.9rem;border-radius:50px;border:1px solid rgba(46,125,50,0.25);
+  color:#3f7d4a;font-size:0.78rem;cursor:pointer;background:rgba(255,255,255,0.04);
+  font-family:'Tiro Tamil',serif;transition:all 0.25s;}
+.crop-chip.selected{background:rgba(46,125,50,0.2);border-color:var(--gold);color:var(--gold);}
+.crop-chip:hover{border-color:rgba(46,125,50,0.5);}
+
+/* Land size input */
+.land-input-area{background:rgba(255,255,255,0.05);border:1px solid rgba(46,125,50,0.2);
+  border-radius:14px;padding:1.2rem;margin-bottom:1rem;}
+.land-input-area label{color:#2f6d3a;font-size:0.8rem;font-family:'Tiro Tamil',serif;margin-bottom:0.5rem;display:block;}
+.land-row{display:flex;gap:0.8rem;align-items:center;}
+.land-inp{flex:1;padding:0.7rem;background:rgba(255,255,255,0.07);border:1px solid rgba(46,125,50,0.25);
+  border-radius:10px;color:#fff;font-size:1rem;outline:none;text-align:center;font-weight:700;}
+.land-unit{color:#2f6d3a;font-size:0.85rem;}
+.calc-btn{padding:0.7rem 1.2rem;background:linear-gradient(135deg,#2e7d32,#66bb6a);
+  border:none;border-radius:10px;color:#f3fbf4;font-weight:700;cursor:pointer;font-family:'Tiro Tamil',serif;}
+
+/* Results */
+.result-card{background:rgba(255,255,255,0.04);border:1px solid rgba(46,125,50,0.2);
+  border-radius:14px;padding:1.2rem;margin-bottom:0.8rem;}
+.result-card h3{color:var(--gold);font-size:0.95rem;font-family:'Tiro Tamil',serif;margin-bottom:0.8rem;}
+.fert-table{width:100%;border-collapse:collapse;}
+.fert-table th{background:rgba(46,125,50,0.15);color:var(--gold);font-size:0.75rem;
+  padding:0.5rem;text-align:left;font-family:'Tiro Tamil',serif;}
+.fert-table td{padding:0.5rem;font-size:0.78rem;border-bottom:1px solid rgba(255,255,255,0.05);color:#3f7d4a;}
+.fert-table tr:last-child td{border:none;}
+.highlight-row td{color:#22c55e;}
+.tip-box{background:rgba(34,197,94,0.08);border-left:3px solid #22c55e;padding:0.7rem 1rem;
+  border-radius:0 8px 8px 0;margin-top:0.8rem;font-size:0.78rem;color:#2f6d3a;line-height:1.6;}
+
+/* Green-White Theme Override */
+:root {
+  --theme-bg: #f4fbf5;
+  --theme-surface: #ffffff;
+  --theme-primary: #2e7d32;
+  --theme-primary-soft: #66bb6a;
+  --theme-text: #1f3b2d;
+  --theme-muted: #4d6f55;
+  --theme-border: #b7d8bd;
+}
+
+body {
+  background: var(--theme-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+.header, .topbar, .govt-header, .nav-tabs, .form-card, .video-card, .scheme-card, .stat-card, .icon-card,
+.reg-card, .profile-popup, .sms-card, .modal-inner, .modal-sheet, .report-item, .result-card, .trader-card,
+.soil-card, .price-card, .filter-card, .card-wrap, .card {
+  background: var(--theme-surface) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, label, .label, .dept, .icon-label, .vinfo p, .vinfo h3, .video-info p, .video-info h3 {
+  color: var(--theme-text) !important;
+}
+
+input, select, textarea, .form-control {
+  background: #ffffff !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+
+.btn-primary, .apply-btn, .btn-next, .submit-btn, .pay-btn, .done-btn, .calc-btn, .add-crop-btn, .dl-btn, .btn-green {
+  background: linear-gradient(135deg, var(--theme-primary), var(--theme-primary-soft)) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.bnav-item span:last-child, .step-lbl, .form-group label, .back-btn {
+  color: var(--theme-muted) !important;
+}
+
+/* Contrast Fix + Polished Theme */
+:root {
+  --ui-bg: #f4fbf5;
+  --ui-surface: #ffffff;
+  --ui-green: #2e7d32;
+  --ui-green-dark: #1f5f2a;
+  --ui-green-soft: #66bb6a;
+  --ui-text: #1f3b2d;
+  --ui-border: #b7d8bd;
+}
+
+body {
+  background: linear-gradient(180deg, #f4fbf5 0%, #ecf8ee 100%) !important;
+  color: var(--ui-text) !important;
+}
+
+/* Green backgrounds -> White text */
+#splash, #register, .hero, .page-header, .topbar, .govt-header, .header,
+.profile-popup, .insurance-card, .chat-header {
+  background: linear-gradient(135deg, var(--ui-green-dark), var(--ui-green)) !important;
+  color: #ffffff !important;
+}
+#splash *, #register *, .hero *, .page-header *, .topbar *, .govt-header *, .header *,
+.profile-popup *, .insurance-card *, .chat-header * {
+  color: #ffffff !important;
+}
+
+/* White backgrounds -> Green text */
+.reg-card, .form-card, .video-card, .scheme-card, .stat-card, .icon-card, .report-item,
+.result-card, .trader-card, .soil-card, .price-card, .filter-card, .modal-inner, .modal-sheet,
+.sms-card, .card-wrap, .card, .content, .summary-box, .govt-box, .premium-box,
+.nav-tabs, .steps, .bottom-nav, .photo-box {
+  background: var(--ui-surface) !important;
+  color: var(--ui-text) !important;
+  border-color: var(--ui-border) !important;
+  box-shadow: 0 8px 24px rgba(46,125,50,0.08) !important;
+}
+.reg-card *, .form-card *, .video-card *, .scheme-card *, .stat-card *, .icon-card *, .report-item *,
+.result-card *, .trader-card *, .soil-card *, .price-card *, .filter-card *, .modal-inner *, .modal-sheet *,
+.sms-card *, .card-wrap *, .card *, .content *, .summary-box *, .govt-box *, .premium-box *,
+.nav-tabs *, .steps *, .bottom-nav *, .photo-box * {
+  color: var(--ui-text) !important;
+}
+
+/* Inputs */
+input, select, textarea, .form-control, .search-box {
+  background: #ffffff !important;
+  color: var(--ui-text) !important;
+  border: 1px solid var(--ui-border) !important;
+}
+input::placeholder, textarea::placeholder, .search-box::placeholder {
+  color: #5f7f66 !important;
+}
+
+/* Buttons */
+.btn-primary, .apply-btn, .btn-next, .submit-btn, .pay-btn, .done-btn, .calc-btn, .add-crop-btn,
+.dl-btn, .btn-green, .icon-badge, .lang-btn.active {
+  background: linear-gradient(135deg, var(--ui-green), var(--ui-green-soft)) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+.back-btn, .btn-back, .btn-outline, .btn-edit, .nav-tab {
+  background: #ffffff !important;
+  color: var(--ui-green) !important;
+  border: 1px solid var(--ui-border) !important;
+}
+
+/* Readability Scale Boost */
+html { font-size: 17px !important; }
+body { line-height: 1.7 !important; }
+
+h1 { font-size: 1.35rem !important; }
+h2 { font-size: 1.2rem !important; }
+h3 { font-size: 1.08rem !important; }
+p, label, input, select, textarea, button, a, span {
+  font-size: 1.02rem;
+}
+
+button, .btn, .btn-primary, .btn-next, .btn-back, .submit-btn, .apply-btn, .pay-btn, .done-btn,
+.back-btn, .nav-tab, .bnav-item, .icon-card {
+  min-height: 48px;
+}
+
+input, select, textarea, .form-control, .search-box {
+  min-height: 46px;
+  padding-top: 0.7rem !important;
+  padding-bottom: 0.7rem !important;
+}
+
+.scheme-card, .form-card, .video-card, .report-item, .price-card, .soil-card, .trader-card {
+  padding: 1rem !important;
+}
+
+/* Header Footer Dark Green Theme */
+:root {
+  --hf-green: #0f4d2b;
+  --body-text-green: #123d26;
+}
+
+body {
+  background: #ffffff !important;
+  color: var(--body-text-green) !important;
+}
+
+.header, .topbar, .govt-header, .page-header, .bottom-nav, footer {
+  background: var(--hf-green) !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,0.2) !important;
+}
+
+.header *, .topbar *, .govt-header *, .page-header *, .bottom-nav *, footer * {
+  color: #ffffff !important;
+}
+
+.bnav-item.active span:last-child,
+.nav-item.active,
+.nav-item.active * {
+  color: #ffffff !important;
+}
+
+.reg-card, .form-card, .video-card, .scheme-card, .stat-card, .icon-card, .report-item,
+.result-card, .trader-card, .soil-card, .price-card, .filter-card, .modal-inner, .modal-sheet,
+.sms-card, .card-wrap, .card, .content {
+  background: #ffffff !important;
+  color: var(--body-text-green) !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, label, span, a, li, td, th {
+  color: var(--body-text-green);
+}
+
+input, select, textarea, .form-control, .search-box {
+  background: #ffffff !important;
+  color: var(--body-text-green) !important;
+  border-color: #b7d8bd !important;
+}
+
+/* Text Visibility Fix */
+body,
+.content,
+.section,
+.form-content,
+.schemes-container,
+.stats-grid,
+.reg-card,
+.form-card,
+.video-card,
+.scheme-card,
+.stat-card,
+.icon-card,
+.report-item,
+.result-card,
+.trader-card,
+.soil-card,
+.price-card,
+.filter-card,
+.modal-inner,
+.modal-sheet,
+.sms-card,
+.sms-box,
+.application-page,
+.application-page * {
+  color: #123d26 !important;
+}
+
+.header *,
+.topbar *,
+.govt-header *,
+.page-header *,
+.bottom-nav *,
+footer * {
+  color: #ffffff !important;
+}
+
+/* Back button visibility fix */
+.topbar .back-btn {
+  background: rgba(255,255,255,0.16) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,0.75) !important;
+}
+.topbar .back-btn * {
+  color: #ffffff !important;
+}
+
+/* No Bottom Icons + Emergency Footer */
+.bottom-nav,
+.bnav-item,
+.nav-item,
+#bottomNav {
+  display: none !important;
+}
+
+body {
+  padding-bottom: 86px !important;
+}
+
+.emergency-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  background: #0f4d2b;
+  color: #ffffff;
+  border-top: 1px solid rgba(255,255,255,0.28);
+  padding: 0.55rem 0.8rem 0.7rem;
+  text-align: center;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.emergency-footer .line1 {
+  font-weight: 700;
+}
+
+.emergency-footer .line2 {
+  opacity: 0.95;
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="dashboard.html" class="back-btn">← திரும்பு</a>
+  <h1>🌱 மண் வகை & பயிர் ஆலோசனை</h1>
+</div>
+
+<div class="content">
+  <!-- Soil Types -->
+  <div class="section-title">🏔️ உங்கள் மண் வகை தேர்வு செய்யவும்</div>
+  <div class="soil-grid">
+    <div class="soil-card" onclick="selectSoil('red',this)">
+      <span class="soil-icon">🟤</span>
+      <div class="soil-name">செம்மண்</div>
+      <div class="soil-en">Red Soil</div>
+      <span class="soil-ph">pH 6.0–7.5</span>
+    </div>
+    <div class="soil-card" onclick="selectSoil('black',this)">
+      <span class="soil-icon">⬛</span>
+      <div class="soil-name">கரிசல் மண்</div>
+      <div class="soil-en">Black Cotton Soil</div>
+      <span class="soil-ph">pH 7.0–8.5</span>
+    </div>
+    <div class="soil-card" onclick="selectSoil('alluvial',this)">
+      <span class="soil-icon">🟡</span>
+      <div class="soil-name">வண்டல் மண்</div>
+      <div class="soil-en">Alluvial Soil</div>
+      <span class="soil-ph">pH 6.5–7.8</span>
+    </div>
+    <div class="soil-card" onclick="selectSoil('laterite',this)">
+      <span class="soil-icon">🔶</span>
+      <div class="soil-name">இலேட்டரைட் மண்</div>
+      <div class="soil-en">Laterite Soil</div>
+      <span class="soil-ph">pH 4.5–6.0</span>
+    </div>
+    <div class="soil-card" onclick="selectSoil('sandy',this)">
+      <span class="soil-icon">🏖️</span>
+      <div class="soil-name">மணல் மண்</div>
+      <div class="soil-en">Sandy Soil</div>
+      <span class="soil-ph">pH 5.5–7.0</span>
+    </div>
+    <div class="soil-card" onclick="selectSoil('clay',this)">
+      <span class="soil-icon">🌊</span>
+      <div class="soil-name">களிமண்</div>
+      <div class="soil-en">Clay Soil</div>
+      <span class="soil-ph">pH 6.0–8.0</span>
+    </div>
+  </div>
+
+  <!-- Suitable Crops (shown after soil selection) -->
+  <div id="cropSection" style="display:none;">
+    <div class="section-title">🌾 பொருத்தமான பயிர்கள் — ஒன்று தேர்வு செய்யவும்</div>
+    <div class="crops-container">
+      <input class="crop-search" placeholder="🔍 பயிர் தேடவும்..." oninput="filterCrops(this.value)">
+      <div class="crops-wrap" id="cropChips"></div>
+    </div>
+
+    <!-- Land size -->
+    <div class="land-input-area">
+      <label>📐 உங்கள் நில அளவு / Land Size</label>
+      <div class="land-row">
+        <input type="number" class="land-inp" id="landSize" value="2" min="0.5" step="0.5">
+        <span class="land-unit">ஏக்கர்</span>
+        <button class="calc-btn" onclick="calculateFertilizer()">கணக்கிடு →</button>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="fertResults" style="display:none;"></div>
+  </div>
+</div>
+
+<script>
+const soilData = {
+  red: {
+    name:'செம்மண் (Red Soil)',
+    crops:['நெல்','கம்பு','கோதுமை','வேர்க்கடலை','மிளகாய்','தக்காளி','கத்தரிக்காய்','வெண்டைக்காய்','சூரியகாந்தி','சோளம்','உளுந்து','பயறு','கொள்ளு','ஆமணக்கு','கசகசா'],
+    tips:'செம்மண்ணில் மணல் அதிகமாக இருக்கும். நீர் வடிகட்டல் சிறப்பாக இருக்கும். உரம் அதிகமாக தேவைப்படும்.'
+  },
+  black: {
+    name:'கரிசல் மண் (Black Cotton Soil)',
+    crops:['பருத்தி','கோதுமை','சோயாபீன்','கரும்பு','நெல்','சோளம்','பட்டாணி','கடுகு','ஆளி','சூரியகாந்தி','கம்பு','உளுந்து','அவரை','தொட்டால்சிணுங்கி','வெங்காயம்'],
+    tips:'கரிசல் மண்ணில் ஈரப்பதம் நீண்ட நேரம் தங்கும். நீர் தேங்காமல் பார்க்கவும். பருத்திக்கு மிகவும் ஏற்றது.'
+  },
+  alluvial: {
+    name:'வண்டல் மண் (Alluvial Soil)',
+    crops:['நெல்','கரும்பு','கோதுமை','வாழை','மாம்பழம்','எலுமிச்சை','தக்காளி','உருளைக்கிழங்கு','வெங்காயம்','பூண்டு','இஞ்சி','மஞ்சள்','முட்டைக்கோசு','காலிஃபிளவர்','கேரட்'],
+    tips:'வண்டல் மண் மிகவும் வளமான மண். நீர் பாசனம் சிறப்பாக அமைக்க வேண்டும். அதிக மகசூல் கொடுக்கும்.'
+  },
+  laterite: {
+    name:'இலேட்டரைட் மண் (Laterite Soil)',
+    crops:['தேயிலை','காபி','ரப்பர்','முந்திரி','கிராம்பு','ஏலக்காய்','மிளகு','தேங்காய்','வாழை','அன்னாசி','மரவள்ளிக்கிழங்கு','கேழ்வரகு','கம்பு','வேர்க்கடலை','ஆமணக்கு'],
+    tips:'அமிலத்தன்மை மண். சுண்ணாம்பு கலந்து pH சரிசெய்யவும். தோட்டப் பயிர்களுக்கு ஏற்றது.'
+  },
+  sandy: {
+    name:'மணல் மண் (Sandy Soil)',
+    crops:['தர்பூசணி','முலாம்பழம்','வேர்க்கடலை','கம்பு','சோளம்','ஆமணக்கு','கசகசா','எள்','சோயாபீன்','உளுந்து','பயறு','கொள்ளு','மிளகாய்','வெங்காயம்','இஞ்சி'],
+    tips:'மணல் மண்ணில் நீர் விரைவில் வடியும். நுண்ணீர்ப் பாசனம் சிறந்தது. கரிம உரம் அதிகம் சேர்க்கவும்.'
+  },
+  clay: {
+    name:'களிமண் (Clay Soil)',
+    crops:['நெல்','கரும்பு','தாமரை','தாரா','ஆமணக்கு','வாழை','கொய்யா','மாம்பழம்','கத்தரிக்காய்','சேனை','கருணை','கொள்ளு','வேர்க்கடலை','பட்டாணி','பயறு'],
+    tips:'களிமண்ணில் நீர் தேங்கும். வடிகால் அமைக்கவும். நெல் சாகுபடிக்கு மிகவும் ஏற்றது.'
+  }
+};
+
+const fertilizerData = {
+  'நெல்':{n:120,p:60,k:60,unit:'kg/ha',extra:'Zinc Sulfate 25kg/ha'},
+  'கம்பு':{n:80,p:40,k:40,unit:'kg/ha',extra:'Borax 5kg/ha'},
+  'கோதுமை':{n:120,p:60,k:40,unit:'kg/ha',extra:'FeSO4 25kg/ha'},
+  'வேர்க்கடலை':{n:25,p:50,k:75,unit:'kg/ha',extra:'Gypsum 400kg/ha'},
+  'பருத்தி':{n:120,p:60,k:60,unit:'kg/ha',extra:'Micronutrient mixture 25kg/ha'},
+  'கரும்பு':{n:275,p:62,k:112,unit:'kg/ha',extra:'Trash mulching'},
+  'தக்காளி':{n:150,p:100,k:120,unit:'kg/ha',extra:'Calcium Nitrate 25kg/ha'},
+  'வெங்காயம்':{n:100,p:50,k:50,unit:'kg/ha',extra:'Sulphur 30kg/ha'},
+  'சூரியகாந்தி':{n:90,p:60,k:60,unit:'kg/ha',extra:'Borax 10kg/ha'},
+  'சோளம்':{n:150,p:60,k:60,unit:'kg/ha',extra:'Zinc Sulfate 25kg/ha'},
+  'மஞ்சள்':{n:120,p:60,k:120,unit:'kg/ha',extra:'FYM 40t/ha'},
+  'இஞ்சி':{n:75,p:50,k:112,unit:'kg/ha',extra:'FYM 25t/ha'},
+  'மிளகாய்':{n:100,p:50,k:50,unit:'kg/ha',extra:'MgSO4 15kg/ha'},
+  'வாழை':{n:200,p:60,k:300,unit:'kg/ha',extra:'FYM 50kg/plant'},
+  'தேங்காய்':{n:500,p:320,k:1200,unit:'g/palm/yr',extra:'FYM 50kg/palm'},
+};
+
+let selectedSoil = null;
+let selectedCrop = null;
+
+function selectSoil(type, el) {
+  selectedSoil = type;
+  document.querySelectorAll('.soil-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('cropSection').style.display='block';
+  document.getElementById('fertResults').style.display='none';
+  selectedCrop=null;
+  renderCropChips('');
+  document.getElementById('cropSection').scrollIntoView({behavior:'smooth'});
+}
+
+function renderCropChips(filter) {
+  if(!selectedSoil) return;
+  const crops = soilData[selectedSoil].crops;
+  const filtered = filter ? crops.filter(c=>c.includes(filter)||c.toLowerCase().includes(filter)) : crops;
+  document.getElementById('cropChips').innerHTML = filtered.map(c=>
+    `<div class="crop-chip ${c===selectedCrop?'selected':''}" onclick="selectCrop('${c}',this)">${c}</div>`
+  ).join('');
+}
+
+function filterCrops(val) { renderCropChips(val); }
+
+function selectCrop(crop, el) {
+  selectedCrop = crop;
+  document.querySelectorAll('.crop-chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('fertResults').style.display='none';
+}
+
+function calculateFertilizer() {
+  if(!selectedSoil) { alert('மண் வகை தேர்வு செய்யவும்!'); return; }
+  if(!selectedCrop) { alert('பயிர் தேர்வு செய்யவும்!'); return; }
+  
+  const land = parseFloat(document.getElementById('landSize').value) || 1;
+  const landHa = land * 0.4047; // acres to hectares
+  const fert = fertilizerData[selectedCrop] || {n:100,p:50,k:50,unit:'kg/ha',extra:'FYM 10t/ha'};
+  
+  const nTotal = (fert.n * landHa).toFixed(1);
+  const pTotal = (fert.p * landHa).toFixed(1);
+  const kTotal = (fert.k * landHa).toFixed(1);
+  
+  // Fertilizer products
+  const ureaKg = (parseFloat(nTotal)/0.46).toFixed(1);
+  const sspKg = (parseFloat(pTotal)/0.16).toFixed(1);
+  const mopKg = (parseFloat(kTotal)/0.60).toFixed(1);
+  
+  const soil = soilData[selectedSoil];
+  
+  document.getElementById('fertResults').innerHTML = `
+    <div class="result-card">
+      <h3>🧪 ${selectedCrop} — உர பரிந்துரை (${land} ஏக்கர்)</h3>
+      <table class="fert-table">
+        <tr><th>ஊட்டச்சத்து</th><th>kg/ha</th><th>மொத்தம் (${land} ஏக்கர்)</th></tr>
+        <tr><td>🔵 நைட்ரஜன் (N)</td><td>${fert.n}</td><td class="highlight-row"><strong>${nTotal} kg</strong></td></tr>
+        <tr><td>🟡 பாஸ்பரஸ் (P)</td><td>${fert.p}</td><td><strong>${pTotal} kg</strong></td></tr>
+        <tr><td>🟠 பொட்டாசியம் (K)</td><td>${fert.k}</td><td><strong>${kTotal} kg</strong></td></tr>
+      </table>
+      <div class="tip-box">🌿 கூடுதல் பரிந்துரை: ${fert.extra}</div>
+    </div>
+    <div class="result-card">
+      <h3>🛒 வாங்க வேண்டிய உரம் (உர வகை வாரியாக)</h3>
+      <table class="fert-table">
+        <tr><th>உர பொருள்</th><th>அளவு</th><th>நோக்கம்</th></tr>
+        <tr class="highlight-row"><td>யூரியா (Urea 46%N)</td><td>${ureaKg} kg</td><td>நைட்ரஜன் உரம்</td></tr>
+        <tr><td>எஸ்.எஸ்.பி (ஒற்றை சூப்பர் பாஸ்பேட்)</td><td>${sspKg} kg</td><td>பாஸ்பரஸ் உரம்</td></tr>
+        <tr><td>எம்.ஓ.பி (பொட்டாஷ் உரம்)</td><td>${mopKg} kg</td><td>பொட்டாசியம் உரம்</td></tr>
+        <tr><td>டி.ஏ.பி (18-46-0)</td><td>${(landHa*50).toFixed(1)} kg</td><td>அடி உரம்</td></tr>
+      </table>
+    </div>
+    <div class="result-card">
+      <h3>📅 உரம் போடும் அட்டவணை</h3>
+      <table class="fert-table">
+        <tr><th>நேரம்</th><th>உரம்</th><th>அளவு</th></tr>
+        <tr><td>விதைக்கும் போது</td><td>DAP + MOP</td><td>50% அடி உரம்</td></tr>
+        <tr><td>30 நாள் கழித்து</td><td>யூரியா</td><td>50% மேல் உரம்</td></tr>
+        <tr><td>60 நாள் கழித்து</td><td>யூரியா + MOP</td><td>மீதி 50%</td></tr>
+      </table>
+      <div class="tip-box">💡 ${soil.tips}</div>
+    </div>`;
+  document.getElementById('fertResults').style.display='block';
+  document.getElementById('fertResults').scrollIntoView({behavior:'smooth'});
+}
+</script>
+<div class="emergency-footer">
+  <div class="line1">விவசாயி இணையம் - அவசர தொடர்பு</div>
+  <div class="line2">தமிழ்நாடு வேளாண்மை உதவி எண்: 1800-425-1401 | பேரிடர்: 1070 | ஆம்புலன்ஸ்: 108</div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

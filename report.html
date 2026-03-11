@@ -1,0 +1,658 @@
+﻿<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>புகார் பெட்டி - Report Box</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Tamil:ital@0;1&family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--green:#1a6b2f;--gold:#2e7d32;--dark:#f3fbf4;}
+body{font-family:'Poppins',sans-serif;background:#f3fbf4;color:#fff;min-height:100vh;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.topbar{background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(46,125,50,0.2);
+  padding:0.9rem 1.2rem;display:flex;align-items:center;gap:0.8rem;position:sticky;top:0;z-index:50;}
+.back-btn{background:rgba(46,125,50,0.15);border:1px solid rgba(46,125,50,0.3);color:var(--gold);
+  padding:0.4rem 0.8rem;border-radius:8px;font-size:0.9rem;text-decoration:none;}
+.topbar h1{color:var(--gold);font-family:'Tiro Tamil',serif;font-size:1.1rem;}
+.content{padding:1rem 1.2rem;padding-bottom:3rem;}
+
+.form-card{background:rgba(255,255,255,0.04);border:1px solid rgba(46,125,50,0.2);
+  border-radius:16px;padding:1.2rem;margin-bottom:1rem;}
+.form-card h3{color:var(--gold);font-family:'Tiro Tamil',serif;font-size:0.95rem;margin-bottom:1rem;}
+
+.form-group{margin-bottom:0.9rem;}
+.form-group label{display:block;color:#2f6d3a;font-size:0.78rem;margin-bottom:0.4rem;font-family:'Tiro Tamil',serif;}
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;padding:0.7rem 0.9rem;background:rgba(255,255,255,0.07);
+  border:1px solid rgba(46,125,50,0.25);border-radius:10px;color:#fff;font-size:0.85rem;outline:none;
+  font-family:'Poppins',sans-serif;}
+.form-group textarea{resize:vertical;min-height:90px;}
+.form-group select option{
+  background:#ffffff;
+  color:#123d26;
+}
+
+/* Problem category chips */
+.prob-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem;margin-bottom:1rem;}
+.prob-chip{padding:0.65rem 0.8rem;border-radius:10px;border:1px solid rgba(46,125,50,0.2);
+  color:#3f7d4a;font-size:0.78rem;cursor:pointer;background:rgba(255,255,255,0.03);
+  font-family:'Tiro Tamil',serif;text-align:center;transition:all 0.25s;display:flex;align-items:center;gap:0.4rem;}
+.prob-chip.selected{background:rgba(46,125,50,0.15);border-color:var(--gold);color:var(--gold);}
+.prob-chip span:first-child{font-size:1.1rem;}
+
+/* Severity */
+.severity-row{display:flex;gap:0.5rem;}
+.sev-btn{flex:1;padding:0.5rem;border-radius:8px;border:1px solid rgba(255,255,255,0.15);
+  cursor:pointer;font-size:0.75rem;font-family:'Tiro Tamil',serif;background:transparent;color:#2f6d3a;text-align:center;}
+.sev-btn.low.active{background:rgba(34,197,94,0.2);border-color:#22c55e;color:#22c55e;}
+.sev-btn.med.active{background:rgba(251,191,36,0.2);border-color:#fbbf24;color:#fbbf24;}
+.sev-btn.high.active{background:rgba(239,68,68,0.2);border-color:#ef4444;color:#ef4444;}
+
+.submit-btn{width:100%;padding:1rem;background:linear-gradient(135deg,#2e7d32,#66bb6a);
+  border:none;border-radius:12px;color:#f3fbf4;font-weight:700;font-size:1rem;
+  cursor:pointer;font-family:'Tiro Tamil',serif;margin-top:0.5rem;}
+
+/* Past reports */
+.report-item{background:rgba(255,255,255,0.03);border:1px solid rgba(46,125,50,0.1);
+  border-radius:12px;padding:0.9rem;margin-bottom:0.7rem;}
+.report-item .ri-header{display:flex;justify-content:space-between;align-items:flex-start;}
+.report-item h4{color:#ffffff;font-size:0.85rem;font-family:'Tiro Tamil',serif;}
+.status-badge{font-size:0.65rem;padding:2px 8px;border-radius:50px;}
+.status-pending{background:rgba(251,191,36,0.2);color:#fbbf24;border:1px solid rgba(251,191,36,0.3);}
+.status-viewed{background:rgba(59,130,246,0.18);color:#60a5fa;border:1px solid rgba(59,130,246,0.28);}
+.status-resolved{background:rgba(34,197,94,0.2);color:#22c55e;border:1px solid rgba(34,197,94,0.3);}
+.report-item p{color:#2f6d3a;font-size:0.75rem;margin-top:0.4rem;}
+.report-item .ri-date{color:#6b9a78;font-size:0.68rem;margin-top:0.3rem;}
+
+/* Success */
+.success-overlay{display:none;position:fixed;inset:0;z-index:5000;background:rgba(0,0,0,0.92);
+  align-items:center;justify-content:center;flex-direction:column;padding:2rem;text-align:center;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.success-overlay.show{display:flex !important;}
+.success-overlay h2{color:#22c55e !important;}
+.success-overlay > p{color:#ffffff !important;}
+.sms-preview{background:#ffffff;border:1px solid rgba(34,197,94,0.45);
+  border-radius:12px;padding:1rem;margin-top:1rem;text-align:left;max-width:360px;width:100%;}
+.sms-preview h4{color:#0f4d2b !important;font-size:0.8rem;margin-bottom:0.5rem;}
+.sms-preview p{color:#123d26 !important;font-size:0.82rem;line-height:1.6;white-space:pre-line;}
+
+/* Green-White Theme Override */
+:root {
+  --theme-bg: #f4fbf5;
+  --theme-surface: #ffffff;
+  --theme-primary: #2e7d32;
+  --theme-primary-soft: #66bb6a;
+  --theme-text: #1f3b2d;
+  --theme-muted: #4d6f55;
+  --theme-border: #b7d8bd;
+}
+
+body {
+  background: var(--theme-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+.header, .topbar, .govt-header, .nav-tabs, .form-card, .video-card, .scheme-card, .stat-card, .icon-card,
+.reg-card, .profile-popup, .sms-card, .modal-inner, .modal-sheet, .report-item, .result-card, .trader-card,
+.soil-card, .price-card, .filter-card, .card-wrap, .card {
+  background: var(--theme-surface) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, label, .label, .dept, .icon-label, .vinfo p, .vinfo h3, .video-info p, .video-info h3 {
+  color: var(--theme-text) !important;
+}
+
+input, select, textarea, .form-control {
+  background: #ffffff !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+
+.btn-primary, .apply-btn, .btn-next, .submit-btn, .pay-btn, .done-btn, .calc-btn, .add-crop-btn, .dl-btn, .btn-green {
+  background: linear-gradient(135deg, var(--theme-primary), var(--theme-primary-soft)) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.bnav-item span:last-child, .step-lbl, .form-group label, .back-btn {
+  color: var(--theme-muted) !important;
+}
+
+/* Contrast Fix + Polished Theme */
+:root {
+  --ui-bg: #f4fbf5;
+  --ui-surface: #ffffff;
+  --ui-green: #2e7d32;
+  --ui-green-dark: #1f5f2a;
+  --ui-green-soft: #66bb6a;
+  --ui-text: #1f3b2d;
+  --ui-border: #b7d8bd;
+}
+
+body {
+  background: linear-gradient(180deg, #f4fbf5 0%, #ecf8ee 100%) !important;
+  color: var(--ui-text) !important;
+}
+
+/* Green backgrounds -> White text */
+#splash, #register, .hero, .page-header, .topbar, .govt-header, .header,
+.profile-popup, .insurance-card, .chat-header {
+  background: linear-gradient(135deg, var(--ui-green-dark), var(--ui-green)) !important;
+  color: #ffffff !important;
+}
+#splash *, #register *, .hero *, .page-header *, .topbar *, .govt-header *, .header *,
+.profile-popup *, .insurance-card *, .chat-header * {
+  color: #ffffff !important;
+}
+
+/* White backgrounds -> Green text */
+.reg-card, .form-card, .video-card, .scheme-card, .stat-card, .icon-card, .report-item,
+.result-card, .trader-card, .soil-card, .price-card, .filter-card, .modal-inner, .modal-sheet,
+.sms-card, .card-wrap, .card, .content, .summary-box, .govt-box, .premium-box,
+.nav-tabs, .steps, .bottom-nav, .photo-box {
+  background: var(--ui-surface) !important;
+  color: var(--ui-text) !important;
+  border-color: var(--ui-border) !important;
+  box-shadow: 0 8px 24px rgba(46,125,50,0.08) !important;
+}
+.reg-card *, .form-card *, .video-card *, .scheme-card *, .stat-card *, .icon-card *, .report-item *,
+.result-card *, .trader-card *, .soil-card *, .price-card *, .filter-card *, .modal-inner *, .modal-sheet *,
+.sms-card *, .card-wrap *, .card *, .content *, .summary-box *, .govt-box *, .premium-box *,
+.nav-tabs *, .steps *, .bottom-nav *, .photo-box * {
+  color: var(--ui-text) !important;
+}
+
+/* Inputs */
+input, select, textarea, .form-control, .search-box {
+  background: #ffffff !important;
+  color: var(--ui-text) !important;
+  border: 1px solid var(--ui-border) !important;
+}
+input::placeholder, textarea::placeholder, .search-box::placeholder {
+  color: #5f7f66 !important;
+}
+
+/* Buttons */
+.btn-primary, .apply-btn, .btn-next, .submit-btn, .pay-btn, .done-btn, .calc-btn, .add-crop-btn,
+.dl-btn, .btn-green, .icon-badge, .lang-btn.active {
+  background: linear-gradient(135deg, var(--ui-green), var(--ui-green-soft)) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+.back-btn, .btn-back, .btn-outline, .btn-edit, .nav-tab {
+  background: #ffffff !important;
+  color: var(--ui-green) !important;
+  border: 1px solid var(--ui-border) !important;
+}
+
+/* Readability Scale Boost */
+html { font-size: 17px !important; }
+body { line-height: 1.7 !important; }
+
+h1 { font-size: 1.35rem !important; }
+h2 { font-size: 1.2rem !important; }
+h3 { font-size: 1.08rem !important; }
+p, label, input, select, textarea, button, a, span {
+  font-size: 1.02rem;
+}
+
+button, .btn, .btn-primary, .btn-next, .btn-back, .submit-btn, .apply-btn, .pay-btn, .done-btn,
+.back-btn, .nav-tab, .bnav-item, .icon-card {
+  min-height: 48px;
+}
+
+input, select, textarea, .form-control, .search-box {
+  min-height: 46px;
+  padding-top: 0.7rem !important;
+  padding-bottom: 0.7rem !important;
+}
+
+.scheme-card, .form-card, .video-card, .report-item, .price-card, .soil-card, .trader-card {
+  padding: 1rem !important;
+}
+
+/* Header Footer Dark Green Theme */
+:root {
+  --hf-green: #0f4d2b;
+  --body-text-green: #123d26;
+}
+
+body {
+  background: #ffffff !important;
+  color: var(--body-text-green) !important;
+}
+
+.header, .topbar, .govt-header, .page-header, .bottom-nav, footer {
+  background: var(--hf-green) !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,0.2) !important;
+}
+
+.header *, .topbar *, .govt-header *, .page-header *, .bottom-nav *, footer * {
+  color: #ffffff !important;
+}
+
+.bnav-item.active span:last-child,
+.nav-item.active,
+.nav-item.active * {
+  color: #ffffff !important;
+}
+
+.reg-card, .form-card, .video-card, .scheme-card, .stat-card, .icon-card, .report-item,
+.result-card, .trader-card, .soil-card, .price-card, .filter-card, .modal-inner, .modal-sheet,
+.sms-card, .card-wrap, .card, .content {
+  background: #ffffff !important;
+  color: var(--body-text-green) !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, label, span, a, li, td, th {
+  color: var(--body-text-green);
+}
+
+input, select, textarea, .form-control, .search-box {
+  background: #ffffff !important;
+  color: var(--body-text-green) !important;
+  border-color: #b7d8bd !important;
+}
+
+/* Text Visibility Fix */
+body,
+.content,
+.section,
+.form-content,
+.schemes-container,
+.stats-grid,
+.reg-card,
+.form-card,
+.video-card,
+.scheme-card,
+.stat-card,
+.icon-card,
+.report-item,
+.result-card,
+.trader-card,
+.soil-card,
+.price-card,
+.filter-card,
+.modal-inner,
+.modal-sheet,
+.sms-card,
+.sms-box,
+.application-page,
+.application-page * {
+  color: #123d26 !important;
+}
+
+.header *,
+.topbar *,
+.govt-header *,
+.page-header *,
+.bottom-nav *,
+footer * {
+  color: #ffffff !important;
+}
+
+/* Back button visibility fix */
+.topbar .back-btn {
+  background: rgba(255,255,255,0.16) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,0.75) !important;
+}
+.topbar .back-btn * {
+  color: #ffffff !important;
+}
+
+/* No Bottom Icons + Emergency Footer */
+.bottom-nav,
+.bnav-item,
+.nav-item,
+#bottomNav {
+  display: none !important;
+}
+
+body {
+  padding-bottom: 86px !important;
+}
+
+.emergency-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  background: #0f4d2b;
+  color: #ffffff;
+  border-top: 1px solid rgba(255,255,255,0.28);
+  padding: 0.55rem 0.8rem 0.7rem;
+  text-align: center;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.emergency-footer .line1 {
+  font-weight: 700;
+}
+
+.emergency-footer .line2 {
+  opacity: 0.95;
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="dashboard.html" class="back-btn">← திரும்பு</a>
+  <h1>📋 புகார் / பிரச்சனை பதிவு</h1>
+</div>
+
+<div class="content">
+  <!-- Farmer Details -->
+  <div class="form-card">
+    <h3>👤 விவசாயி விவரங்கள்</h3>
+    <div class="form-group">
+      <label>பெயர் / Name *</label>
+      <input type="text" id="r-name" placeholder="உங்கள் பெயர்">
+    </div>
+    <div class="form-group">
+      <label>மொபைல் எண் / Mobile *</label>
+      <input type="tel" id="r-phone" placeholder="9876543210" maxlength="10">
+    </div>
+    <div class="form-group">
+      <label>மாவட்டம் / District *</label>
+      <select id="r-district">
+        <option value="">தேர்வு செய்யவும்</option>
+        <option>Chengalpattu - செங்கல்பட்டு</option>
+<option>Chennai - சென்னை</option>
+<option>Coimbatore - கோயம்புத்தூர்</option>
+<option>Cuddalore - கடலூர்</option>
+<option>Dharmapuri - தர்மபுரி</option>
+<option>Dindigul - திண்டுக்கல்</option>
+<option>Erode - ஈரோடு</option>
+<option>Kallakurichi - கள்ளக்குறிச்சி</option>
+<option>Kanchipuram - காஞ்சிபுரம்</option>
+<option>Kanniyakumari - கன்னியாகுமரி</option>
+<option>Karur - கரூர்</option>
+<option>Krishnagiri - கிருஷ்ணகிரி</option>
+<option>Madurai - மதுரை</option>
+<option>Mayiladuthurai - மயிலாடுதுறை</option>
+<option>Nagapattinam - நாகப்பட்டினம்</option>
+<option>Namakkal - நாமக்கல்</option>
+<option>Nilgiris - நீலகிரி</option>
+<option>Perambalur - பெரம்பலூர்</option>
+<option>Pudukkottai - புதுக்கோட்டை</option>
+<option>Ramanathapuram - இராமநாதபுரம்</option>
+<option>Ranipet - ராணிப்பேட்டை</option>
+<option>Salem - சேலம்</option>
+<option>Sivaganga - சிவகங்கை</option>
+<option>Tenkasi - தென்காசி</option>
+<option>Thanjavur - தஞ்சாவூர்</option>
+<option>Theni - தேனி</option>
+<option>Thoothukudi - தூத்துக்குடி</option>
+<option>Tiruchirappalli - திருச்சிராப்பள்ளி</option>
+<option>Tirunelveli - திருநெல்வேலி</option>
+<option>Tirupathur - திருப்பத்தூர்</option>
+<option>Tiruppur - திருப்பூர்</option>
+<option>Tiruvallur - திருவள்ளூர்</option>
+<option>Tiruvannamalai - திருவண்ணாமலை</option>
+<option>Tiruvarur - திருவாரூர்</option>
+<option>Vellore - வேலூர்</option>
+<option>Viluppuram - விழுப்புரம்</option>
+<option>Virudhunagar - விருதுநகர்</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>கிராமம் / Village</label>
+      <input type="text" id="r-village" placeholder="உங்கள் கிராம பெயர்">
+    </div>
+  </div>
+
+  <!-- Problem Type -->
+  <div class="form-card">
+    <h3>⚠️ பிரச்சனை வகை தேர்வு செய்யவும்</h3>
+    <div class="prob-grid" id="probGrid">
+      <div class="prob-chip" onclick="selectProb('நோய் தாக்குதல்',this)"><span>🦠</span>நோய் தாக்குதல்</div>
+      <div class="prob-chip" onclick="selectProb('பூச்சி தாக்குதல்',this)"><span>🐛</span>பூச்சி தாக்குதல்</div>
+      <div class="prob-chip" onclick="selectProb('வானிலை சேதம்',this)"><span>🌧️</span>வானிலை சேதம்</div>
+      <div class="prob-chip" onclick="selectProb('நீர் பிரச்சனை',this)"><span>💧</span>நீர் பிரச்சனை</div>
+      <div class="prob-chip" onclick="selectProb('உரம் தட்டுப்பாடு',this)"><span>🧪</span>உரம் தட்டுப்பாடு</div>
+      <div class="prob-chip" onclick="selectProb('விலை பிரச்சனை',this)"><span>📉</span>விலை பிரச்சனை</div>
+      <div class="prob-chip" onclick="selectProb('கடன் பிரச்சனை',this)"><span>🏦</span>கடன் பிரச்சனை</div>
+      <div class="prob-chip" onclick="selectProb('இதர பிரச்சனை',this)"><span>📝</span>இதர பிரச்சனை</div>
+    </div>
+
+    <!-- Severity -->
+    <label style="color:#2f6d3a;font-size:0.78rem;font-family:'Tiro Tamil',serif;display:block;margin-bottom:0.5rem;">
+      தீவிரம் / Severity Level
+    </label>
+    <div class="severity-row">
+      <button class="sev-btn low" onclick="setSev('low',this)">🟢 குறைவு<br>Low</button>
+      <button class="sev-btn med" onclick="setSev('medium',this)">🟡 நடுத்தரம்<br>Medium</button>
+      <button class="sev-btn high" onclick="setSev('high',this)">🔴 அதிகம்<br>High</button>
+    </div>
+  </div>
+
+  <!-- Problem Details -->
+  <div class="form-card">
+    <h3>📝 விரிவான விவரம்</h3>
+    <div class="form-group">
+      <label>பயிர் வகை / Crop Type</label>
+      <input type="text" id="r-crop" placeholder="நெல், கம்பு, தக்காளி...">
+    </div>
+    <div class="form-group">
+      <label>பாதிக்கப்பட்ட நிலம் (ஏக்கர்) / Affected Area</label>
+      <input type="number" id="r-area" placeholder="2.5" step="0.5">
+    </div>
+    <div class="form-group">
+      <label>பிரச்சனை விவரம் / Problem Description *</label>
+      <textarea id="r-desc" placeholder="உங்கள் பிரச்சனையை விரிவாக எழுதவும்..."></textarea>
+    </div>
+  </div>
+
+  <button class="submit-btn" onclick="submitReport()">📤 புகார் சமர்ப்பிக்கவும் / Submit Report</button>
+
+  <!-- Past Reports -->
+  <div style="margin-top:1.5rem;">
+    <div style="color:var(--gold);font-size:0.9rem;font-family:'Tiro Tamil',serif;font-weight:700;margin-bottom:0.8rem;">
+      📋 உங்கள் முந்தைய புகார்கள்
+    </div>
+    <div id="pastReports"></div>
+  </div>
+</div>
+
+<!-- Success -->
+<div class="success-overlay" id="successOverlay">
+  <div style="font-size:3.5rem;">📨</div>
+  <h2 style="color:#22c55e;font-size:1.4rem;font-family:'Tiro Tamil',serif;margin-top:0.8rem;">புகார் பதிவாயிற்று!</h2>
+  <p style="color:#2f6d3a;font-size:0.85rem;margin-top:0.4rem;">Report submitted successfully</p>
+  <div class="sms-preview">
+    <h4>📱 SMS அனுப்பப்பட்டது (விவசாயி & அலுவலர்):</h4>
+    <p id="sms-txt"></p>
+    <p style="margin-top:0.6rem;font-size:0.75rem;color:#2f6d3a;">(Demo SMS — உண்மையான SMS அனுப்பப்படவில்லை)</p>
+  </div>
+  <div class="portal-link" style="margin-top:0.8rem;">
+    🕒 நிலை: <span id="reportStatusTxt">⏳ நிலுவை (Pending)</span>
+  </div>
+  <button onclick="closeSuccess()" style="margin-top:1.2rem;padding:0.8rem 2rem;background:var(--gold);color:#f3fbf4;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-family:'Tiro Tamil',serif;">
+    Dashboard →
+  </button>
+</div>
+
+<script>
+function getCurrentFarmerProfile() {
+  const phone = (localStorage.getItem('currentFarmerPhone') || '').replace(/\D/g, '');
+  const farmers = JSON.parse(localStorage.getItem('farmersByPhone') || '{}');
+  if (phone && farmers[phone]) return farmers[phone];
+  return {};
+}
+
+function getFarmerScopedKey(baseKey) {
+  const profile = getCurrentFarmerProfile();
+  const phone = String(profile.phone || localStorage.getItem('currentFarmerPhone') || '').replace(/\D/g, '');
+  return `${baseKey}_${phone || 'guest'}`;
+}
+
+const profile = getCurrentFarmerProfile();
+if (!profile.phone) {
+  window.location.href = 'index.html';
+}
+const lang = profile.lang || 'ta';
+if(profile.name) document.getElementById('r-name').value = profile.name;
+if(profile.phone) document.getElementById('r-phone').value = profile.phone;
+if(profile.district) {
+  const s = document.getElementById('r-district');
+  const d = profile.district.split('/')[0].trim();
+  for(let o of s.options) { if(o.value===d||d.includes(o.value)) {o.selected=true;break;} }
+}
+
+let selectedProb = '';
+let selectedSev = '';
+let reportMockTimer = null;
+let lastReportRef = '';
+
+function escapeHTML(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function selectProb(prob, el) {
+  selectedProb = prob;
+  document.querySelectorAll('.prob-chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function setSev(sev, el) {
+  selectedSev = sev;
+  document.querySelectorAll('.sev-btn').forEach(b=>{b.classList.remove('active');});
+  el.classList.add('active');
+}
+
+function computeReportMockStatus(report) {
+  const base = Number(report?.reportMockAt || Date.now());
+  const age = Date.now() - base;
+  if (age >= 13000) return 'resolved';
+  if (age >= 7000) return 'viewed';
+  return 'pending';
+}
+
+function statusLabel(status) {
+  if (status === 'resolved') return '✅ தீர்வு செய்யப்பட்டது (Solved)';
+  if (status === 'viewed') return '👀 பார்க்கப்பட்டது (Viewed)';
+  return '⏳ நிலுவை (Pending)';
+}
+
+function refreshReportMockStatus(refId) {
+  const key = getFarmerScopedKey('farmerReports');
+  const reports = JSON.parse(localStorage.getItem(key) || '[]');
+  const idx = reports.findIndex(r => r && r.refId === refId);
+  if (idx === -1) return;
+  const cur = reports[idx];
+  const next = computeReportMockStatus(cur);
+  if (cur.status !== next) {
+    reports[idx] = { ...cur, status: next };
+    localStorage.setItem(key, JSON.stringify(reports));
+    loadPastReports();
+  }
+  const el = document.getElementById('reportStatusTxt');
+  if (el) el.textContent = statusLabel(next);
+  if (next === 'resolved' && reportMockTimer) {
+    clearInterval(reportMockTimer);
+    reportMockTimer = null;
+  }
+}
+
+function startReportMock(refId) {
+  lastReportRef = refId;
+  if (reportMockTimer) clearInterval(reportMockTimer);
+  reportMockTimer = setInterval(() => refreshReportMockStatus(refId), 1000);
+  refreshReportMockStatus(refId);
+}
+
+function submitReport() {
+  const name = document.getElementById('r-name').value.trim();
+  const phone = document.getElementById('r-phone').value.trim();
+  const district = document.getElementById('r-district').value;
+  const desc = document.getElementById('r-desc').value.trim();
+  
+  if(!name||!phone||!district||!desc||!selectedProb) {
+    alert(lang==='ta'?'அனைத்து தகவல்களும் அவசியம்!':'All fields required!'); return;
+  }
+  
+  const refId = 'RPT'+Date.now().toString().slice(-8);
+  const crop = document.getElementById('r-crop').value || 'பொது';
+  const area = document.getElementById('r-area').value || '-';
+  const village = document.getElementById('r-village').value || district;
+  const sev = selectedSev === 'high' ? '🔴 அதிகம்' : selectedSev === 'medium' ? '🟡 நடுத்தரம்' : '🟢 குறைவு';
+  
+  const report = {refId, name, phone, district, village, prob:selectedProb, sev:selectedSev, crop, area, desc, date:new Date().toLocaleDateString('ta-IN'), status:'pending', reportMock:true, reportMockAt:Date.now()};
+  
+  const reports = JSON.parse(localStorage.getItem(getFarmerScopedKey('farmerReports')) || '[]');
+  reports.unshift(report);
+  localStorage.setItem(getFarmerScopedKey('farmerReports'), JSON.stringify(reports));
+  
+  const smsTA = `வணக்கம் ${name}! உங்கள் புகார் பதிவாயிற்று. வகை: ${selectedProb}. குறிப்பு எண்: ${refId}. விரைவில் ஒரு விவசாய அலுவலர் தொடர்பு கொள்வார். - TN Agriculture Dept`;
+  const smsEN = `Dear ${name}, Your complaint (${selectedProb}) registered. Ref: ${refId}. An agriculture officer will contact you soon. - TN Agriculture Dept`;
+  
+  document.getElementById('sms-txt').textContent = lang === 'ta' ? smsTA : smsEN;
+  document.getElementById('successOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  const st = document.getElementById('reportStatusTxt');
+  if (st) st.textContent = statusLabel('pending');
+  startReportMock(refId);
+}
+
+function closeSuccess() {
+  document.getElementById('successOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+  if (reportMockTimer) clearInterval(reportMockTimer);
+  reportMockTimer = null;
+  window.location.href = 'dashboard.html';
+}
+
+function loadPastReports() {
+  const reports = JSON.parse(localStorage.getItem(getFarmerScopedKey('farmerReports')) || '[]');
+  const container = document.getElementById('pastReports');
+  if(reports.length === 0) {
+    container.innerHTML = '<p style="color:#6b9a78;font-size:0.8rem;text-align:center;padding:1rem;">இன்னும் புகார் பதிவு செய்யவில்லை</p>';
+    return;
+  }
+  container.innerHTML = reports.map(r=>{
+    const st = r.status || 'pending';
+    const cls = st === 'resolved' ? 'status-resolved' : st === 'viewed' ? 'status-viewed' : 'status-pending';
+    const lbl = st === 'resolved' ? '✅ தீர்க்கப்பட்டது' : st === 'viewed' ? '👀 பார்க்கப்பட்டது' : '⏳ நிலுவை';
+    return `
+    <div class="report-item">
+      <div class="ri-header">
+        <h4>${escapeHTML(r.prob)}</h4>
+        <span class="status-badge ${cls}">
+          ${lbl}
+        </span>
+      </div>
+      <p>${escapeHTML(r.desc.slice(0,80))}${r.desc.length>80?'...':''}</p>
+      <p>🌾 பயிர்: ${escapeHTML(r.crop)} | 📍 ${escapeHTML(r.district)}</p>
+      <div class="ri-date">🔖 ${escapeHTML(r.refId)} | 📅 ${escapeHTML(r.date)}</div>
+    </div>`;}).join('');
+}
+
+loadPastReports();
+</script>
+<div class="emergency-footer">
+  <div class="line1">விவசாயி இணையம் - அவசர தொடர்பு</div>
+  <div class="line2">தமிழ்நாடு வேளாண்மை உதவி எண்: 1800-425-1401 | பேரிடர்: 1070 | ஆம்புலன்ஸ்: 108</div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

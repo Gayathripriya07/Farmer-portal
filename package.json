@@ -1,0 +1,16 @@
+{
+  "name": "farmer-portal",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Farmer Portal static site + Authority SMS server",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node authority-sms-server.js",
+    "start:portal": "node static-server.js",
+    "start:all": "node -e \"const {spawn}=require('child_process');const env=(k,v)=>Object.assign({},process.env,{[k]:String(v)});spawn('node',['authority-sms-server.js'],{stdio:'inherit',env:env('PORT',8787)});spawn('node',['static-server.js'],{stdio:'inherit',env:env('PORT',5500)});\""
+  }
+}
+

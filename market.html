@@ -1,0 +1,617 @@
+﻿<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>சந்தை விலை</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Tamil:ital@0;1&family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--green:#1a6b2f;--gold:#2e7d32;--dark:#f3fbf4;}
+body{font-family:'Poppins',sans-serif;background:#f3fbf4;color:#fff;min-height:100vh;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+
+.topbar{
+  background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(46,125,50,0.2);
+  padding:0.9rem 1.2rem;display:flex;align-items:center;gap:0.8rem;
+  position:sticky;top:0;z-index:50;
+}
+.back-btn{background:rgba(46,125,50,0.15);border:1px solid rgba(46,125,50,0.3);
+  color:var(--gold);padding:0.4rem 0.8rem;border-radius:8px;cursor:pointer;font-size:0.9rem;text-decoration:none;}
+.topbar h1{color:var(--gold);font-family:'Tiro Tamil',serif;font-size:1.1rem;}
+.live-badge{margin-left:auto;background:#dc2626;color:#fff;font-size:0.65rem;font-weight:700;
+  padding:3px 8px;border-radius:50px;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.6;}}
+
+.content{padding:1rem 1.2rem;}
+
+/* Filters */
+.filter-card{
+  background:rgba(255,255,255,0.05);border:1px solid rgba(46,125,50,0.2);
+  border-radius:16px;padding:1.2rem;margin-bottom:1rem;
+}
+.filter-row{display:flex;gap:0.8rem;margin-bottom:0.8rem;}
+.filter-row:last-child{margin-bottom:0;}
+.filter-group{flex:1;}
+.filter-group label{display:block;color:#2f6d3a;font-size:0.75rem;margin-bottom:0.4rem;font-family:'Tiro Tamil',serif;}
+.filter-group select,.filter-group input{
+  width:100%;padding:0.65rem 0.8rem;
+  background:rgba(255,255,255,0.07);border:1px solid rgba(46,125,50,0.25);
+  border-radius:10px;color:#fff;font-size:0.85rem;outline:none;
+}
+.filter-group select option{
+  background:#ffffff;
+  color:#123d26;
+}
+.search-btn{
+  width:100%;padding:0.75rem;background:linear-gradient(135deg,#2e7d32,#66bb6a);
+  border:none;border-radius:10px;color:#f3fbf4;font-weight:700;font-size:0.9rem;
+  cursor:pointer;font-family:'Tiro Tamil',serif;
+}
+
+/* Price cards */
+.section-label{color:var(--gold);font-size:0.9rem;font-family:'Tiro Tamil',serif;
+  font-weight:700;margin-bottom:0.8rem;display:flex;align-items:center;gap:0.5rem;}
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:1.2rem;}
+.price-card{
+  background:rgba(255,255,255,0.05);border:1px solid rgba(46,125,50,0.15);
+  border-radius:14px;padding:1rem;
+}
+.price-card .crop-name{font-size:0.85rem;color:#3f7d4a;font-family:'Tiro Tamil',serif;font-weight:600;}
+.price-card .crop-en{font-size:0.7rem;color:#6b9a78;}
+.price-card .price-val{font-size:1.4rem;font-weight:700;color:var(--gold);margin:0.4rem 0 0.2rem;}
+.price-card .price-unit{font-size:0.65rem;color:#2f6d3a;}
+.price-card .price-change{font-size:0.72rem;margin-top:0.3rem;}
+.up{color:#22c55e;}.down{color:#ef4444;}
+.price-card .mandi{font-size:0.65rem;color:#6b9a78;margin-top:0.2rem;}
+
+/* Trader section */
+.trader-card{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(46,125,50,0.15);
+  border-radius:14px;padding:1rem;margin-bottom:0.8rem;
+  display:flex;align-items:center;gap:1rem;
+}
+.trader-avatar{
+  width:52px;height:52px;border-radius:50%;background:rgba(46,125,50,0.2);
+  border:2px solid rgba(46,125,50,0.4);display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;flex-shrink:0;
+}
+.trader-info{flex:1;}
+.trader-info h4{color:#ffffff;font-size:0.9rem;font-weight:600;}
+.trader-info p{color:#2f6d3a;font-size:0.75rem;margin-top:0.2rem;}
+.trader-info .crops-tag{
+  display:flex;flex-wrap:wrap;gap:0.3rem;margin-top:0.4rem;
+}
+.crops-tag span{background:rgba(46,125,50,0.15);color:var(--gold);font-size:0.65rem;padding:2px 7px;border-radius:50px;}
+.call-btn{
+  background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);
+  color:#22c55e;padding:0.5rem 0.8rem;border-radius:8px;font-size:0.75rem;font-weight:600;cursor:pointer;
+  text-decoration:none;display:block;text-align:center;flex-shrink:0;
+}
+
+.loading{text-align:center;padding:2rem;color:#2f6d3a;font-family:'Tiro Tamil',serif;}
+.spinner{font-size:2rem;animation:spin 1s linear infinite;display:block;margin:0 auto 0.5rem;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* Market info */
+.api-status{
+  background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);
+  border-radius:10px;padding:0.6rem 1rem;margin-bottom:1rem;
+  font-size:0.75rem;color:#0f4d2b;display:flex;align-items:center;gap:0.5rem;
+}
+
+.price-val.touchable{
+  cursor:pointer;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+/* Green-White Theme Override */
+:root {
+  --theme-bg: #f4fbf5;
+  --theme-surface: #ffffff;
+  --theme-primary: #2e7d32;
+  --theme-primary-soft: #66bb6a;
+  --theme-text: #1f3b2d;
+  --theme-muted: #4d6f55;
+  --theme-border: #b7d8bd;
+}
+
+body {
+  background: var(--theme-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+.header, .topbar, .govt-header, .nav-tabs, .form-card, .video-card, .scheme-card, .stat-card, .icon-card,
+.reg-card, .profile-popup, .sms-card, .modal-inner, .modal-sheet, .report-item, .result-card, .trader-card,
+.soil-card, .price-card, .filter-card, .card-wrap, .card {
+  background: var(--theme-surface) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, label, .label, .dept, .icon-label, .vinfo p, .vinfo h3, .video-info p, .video-info h3 {
+  color: var(--theme-text) !important;
+}
+
+input, select, textarea, .form-control {
+  background: #ffffff !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+
+.btn-primary, .apply-btn, .btn-next, .submit-btn, .pay-btn, .done-btn, .calc-btn, .add-crop-btn, .dl-btn, .btn-green {
+  background: linear-gradient(135deg, var(--theme-primary), var(--theme-primary-soft)) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.bnav-item span:last-child, .step-lbl, .form-group label, .back-btn {
+  color: var(--theme-muted) !important;
+}
+
+/* Contrast Fix + Polished Theme */
+:root {
+  --ui-bg: #f4fbf5;
+  --ui-surface: #ffffff;
+  --ui-green: #2e7d32;
+  --ui-green-dark: #1f5f2a;
+  --ui-green-soft: #66bb6a;
+  --ui-text: #1f3b2d;
+  --ui-border: #b7d8bd;
+}
+
+body {
+  background: linear-gradient(180deg, #f4fbf5 0%, #ecf8ee 100%) !important;
+  color: var(--ui-text) !important;
+}
+
+/* Green backgrounds -> White text */
+#splash, #register, .hero, .page-header, .topbar, .govt-header, .header,
+.profile-popup, .insurance-card, .chat-header {
+  background: linear-gradient(135deg, var(--ui-green-dark), var(--ui-green)) !important;
+  color: #ffffff !important;
+}
+#splash *, #register *, .hero *, .page-header *, .topbar *, .govt-header *, .header *,
+.profile-popup *, .insurance-card *, .chat-header * {
+  color: #ffffff !important;
+}
+
+/* White backgrounds -> Green text */
+.reg-card, .form-card, .video-card, .scheme-card, .stat-card, .icon-card, .report-item,
+.result-card, .trader-card, .soil-card, .price-card, .filter-card, .modal-inner, .modal-sheet,
+.sms-card, .card-wrap, .card, .content, .summary-box, .govt-box, .premium-box,
+.nav-tabs, .steps, .bottom-nav, .photo-box {
+  background: var(--ui-surface) !important;
+  color: var(--ui-text) !important;
+  border-color: var(--ui-border) !important;
+  box-shadow: 0 8px 24px rgba(46,125,50,0.08) !important;
+}
+.reg-card *, .form-card *, .video-card *, .scheme-card *, .stat-card *, .icon-card *, .report-item *,
+.result-card *, .trader-card *, .soil-card *, .price-card *, .filter-card *, .modal-inner *, .modal-sheet *,
+.sms-card *, .card-wrap *, .card *, .content *, .summary-box *, .govt-box *, .premium-box *,
+.nav-tabs *, .steps *, .bottom-nav *, .photo-box * {
+  color: var(--ui-text) !important;
+}
+
+/* Inputs */
+input, select, textarea, .form-control, .search-box {
+  background: #ffffff !important;
+  color: var(--ui-text) !important;
+  border: 1px solid var(--ui-border) !important;
+}
+input::placeholder, textarea::placeholder, .search-box::placeholder {
+  color: #5f7f66 !important;
+}
+
+/* Buttons */
+.btn-primary, .apply-btn, .btn-next, .submit-btn, .pay-btn, .done-btn, .calc-btn, .add-crop-btn,
+.dl-btn, .btn-green, .icon-badge, .lang-btn.active {
+  background: linear-gradient(135deg, var(--ui-green), var(--ui-green-soft)) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+.back-btn, .btn-back, .btn-outline, .btn-edit, .nav-tab {
+  background: #ffffff !important;
+  color: var(--ui-green) !important;
+  border: 1px solid var(--ui-border) !important;
+}
+
+/* Readability Scale Boost */
+html { font-size: 17px !important; }
+body { line-height: 1.7 !important; }
+
+h1 { font-size: 1.35rem !important; }
+h2 { font-size: 1.2rem !important; }
+h3 { font-size: 1.08rem !important; }
+p, label, input, select, textarea, button, a, span {
+  font-size: 1.02rem;
+}
+
+button, .btn, .btn-primary, .btn-next, .btn-back, .submit-btn, .apply-btn, .pay-btn, .done-btn,
+.back-btn, .nav-tab, .bnav-item, .icon-card {
+  min-height: 48px;
+}
+
+input, select, textarea, .form-control, .search-box {
+  min-height: 46px;
+  padding-top: 0.7rem !important;
+  padding-bottom: 0.7rem !important;
+}
+
+.scheme-card, .form-card, .video-card, .report-item, .price-card, .soil-card, .trader-card {
+  padding: 1rem !important;
+}
+
+/* Header Footer Dark Green Theme */
+:root {
+  --hf-green: #0f4d2b;
+  --body-text-green: #123d26;
+}
+
+body {
+  background: #ffffff !important;
+  color: var(--body-text-green) !important;
+}
+
+.header, .topbar, .govt-header, .page-header, .bottom-nav, footer {
+  background: var(--hf-green) !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,0.2) !important;
+}
+
+.header *, .topbar *, .govt-header *, .page-header *, .bottom-nav *, footer * {
+  color: #ffffff !important;
+}
+
+.bnav-item.active span:last-child,
+.nav-item.active,
+.nav-item.active * {
+  color: #ffffff !important;
+}
+
+.reg-card, .form-card, .video-card, .scheme-card, .stat-card, .icon-card, .report-item,
+.result-card, .trader-card, .soil-card, .price-card, .filter-card, .modal-inner, .modal-sheet,
+.sms-card, .card-wrap, .card, .content {
+  background: #ffffff !important;
+  color: var(--body-text-green) !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, label, span, a, li, td, th {
+  color: var(--body-text-green);
+}
+
+input, select, textarea, .form-control, .search-box {
+  background: #ffffff !important;
+  color: var(--body-text-green) !important;
+  border-color: #b7d8bd !important;
+}
+
+/* Text Visibility Fix */
+body,
+.content,
+.section,
+.form-content,
+.schemes-container,
+.stats-grid,
+.reg-card,
+.form-card,
+.video-card,
+.scheme-card,
+.stat-card,
+.icon-card,
+.report-item,
+.result-card,
+.trader-card,
+.soil-card,
+.price-card,
+.filter-card,
+.modal-inner,
+.modal-sheet,
+.sms-card,
+.sms-box,
+.application-page,
+.application-page * {
+  color: #123d26 !important;
+}
+
+.header *,
+.topbar *,
+.govt-header *,
+.page-header *,
+.bottom-nav *,
+footer * {
+  color: #ffffff !important;
+}
+
+/* Back button visibility fix */
+.topbar .back-btn {
+  background: rgba(255,255,255,0.16) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,0.75) !important;
+}
+.topbar .back-btn * {
+  color: #ffffff !important;
+}
+
+/* No Bottom Icons + Emergency Footer */
+.bottom-nav,
+.bnav-item,
+.nav-item,
+#bottomNav {
+  display: none !important;
+}
+
+body {
+  padding-bottom: 86px !important;
+}
+
+.emergency-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  background: #0f4d2b;
+  color: #ffffff;
+  border-top: 1px solid rgba(255,255,255,0.28);
+  padding: 0.55rem 0.8rem 0.7rem;
+  text-align: center;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.emergency-footer .line1 {
+  font-weight: 700;
+}
+
+.emergency-footer .line2 {
+  opacity: 0.95;
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="dashboard.html" class="back-btn">← திரும்பு</a>
+  <h1>📊 சந்தை விலை</h1>
+  <span class="live-badge" id="liveBadge">🔴 நேரலை</span>
+</div>
+
+<div class="content">
+  <!-- Market Status -->
+  <div class="api-status" id="apiStatus">
+    ✅ தமிழ்நாடு சந்தைத் தகவல் புதுப்பிக்கப்பட்டது
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-card">
+    <div class="filter-row">
+      <div class="filter-group">
+        <label>பயிர் தேர்வு</label>
+        <select id="cropSelect">
+          <option value="">அனைத்து பயிர்களும்</option>
+          <option value="நெல்">நெல்</option>
+          <option value="கோதுமை">கோதுமை</option>
+          <option value="மக்காச்சோளம்">மக்காச்சோளம்</option>
+          <option value="கரும்பு">கரும்பு</option>
+          <option value="வேர்க்கடலை">வேர்க்கடலை</option>
+          <option value="பருத்தி">பருத்தி</option>
+          <option value="தக்காளி">தக்காளி</option>
+          <option value="வெங்காயம்">வெங்காயம்</option>
+          <option value="வாழை">வாழை</option>
+          <option value="தேங்காய்">தேங்காய்</option>
+          <option value="மஞ்சள்">மஞ்சள்</option>
+          <option value="மிளகாய்">மிளகாய்</option>
+          <option value="சோளம்">சோளம்</option>
+          <option value="கம்பு">கம்பு</option>
+          <option value="கேழ்வரகு">கேழ்வரகு</option>
+          <option value="உருளைக்கிழங்கு">உருளைக்கிழங்கு</option>
+          <option value="முட்டைக்கோசு">முட்டைக்கோசு</option>
+          <option value="கத்திரிக்காய்">கத்திரிக்காய்</option>
+          <option value="பாசிப்பருப்பு">பாசிப்பருப்பு</option>
+          <option value="உளுந்து">உளுந்து</option>
+          <option value="துவரம் பருப்பு">துவரம் பருப்பு</option>
+          <option value="மல்லிகை">மல்லிகை</option>
+          <option value="ரோஜா">ரோஜா</option>
+          <option value="சாமந்தி">சாமந்தி</option>
+          <option value="கனகாம்பரம்">கனகாம்பரம்</option>
+          <option value="செம்பருத்தி">செம்பருத்தி</option>
+        </select>
+      </div>
+    </div>
+    <button class="search-btn" onclick="fetchPrices()">🔍 தேடு</button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" id="loading" style="display:none;">
+    <span class="spinner">⏳</span>
+    <p>விலை தகவல் பெறப்படுகிறது...</p>
+  </div>
+
+  <!-- Price Grid -->
+  <div class="section-label" id="priceLabel">📈 இன்றைய சந்தை விலை (₹/குவிண்டால்)</div>
+  <div class="price-grid" id="priceGrid"></div>
+
+  <!-- Traders -->
+  <div class="section-label">🤝 வியாபாரி விவரங்கள் — உங்கள் பயிரை விற்கவும்</div>
+  <div id="tradersList"></div>
+
+  <div style="height:30px;"></div>
+</div>
+
+<script>
+function getCurrentFarmerProfile() {
+  const phone = (localStorage.getItem('currentFarmerPhone') || '').replace(/\D/g, '');
+  const farmers = JSON.parse(localStorage.getItem('farmersByPhone') || '{}');
+  if (phone && farmers[phone]) return farmers[phone];
+  return {};
+}
+
+const profile = getCurrentFarmerProfile();
+if (!profile.phone) {
+  window.location.href = 'index.html';
+}
+
+const apiStatusEl = document.getElementById('apiStatus');
+const liveBadgeEl = document.getElementById('liveBadge');
+apiStatusEl.textContent = '✅ தமிழ்நாடு முழு மாவட்டங்களின் சந்தைத் தகவல்';
+liveBadgeEl.textContent = '🔴 நேரலை';
+
+const marketData = [
+  {crop:'நெல்',min:2040,max:2330,modal:2210,change:'+1.2',up:true,mandi:'தஞ்சாவூர்'},
+  {crop:'நெல்',min:1980,max:2260,modal:2140,change:'+0.8',up:true,mandi:'திருவாரூர்'},
+  {crop:'கோதுமை',min:2280,max:2530,modal:2400,change:'+0.6',up:true,mandi:'கோயம்புத்தூர்'},
+  {crop:'மக்காச்சோளம்',min:1780,max:2120,modal:1960,change:'-0.4',up:false,mandi:'ஈரோடு'},
+  {crop:'கரும்பு',min:3050,max:3560,modal:3340,change:'+0.2',up:true,mandi:'திருச்சி'},
+  {crop:'வேர்க்கடலை',min:5180,max:5860,modal:5520,change:'+1.9',up:true,mandi:'திருப்பூர்'},
+  {crop:'பருத்தி',min:6620,max:7390,modal:7010,change:'+0.4',up:true,mandi:'மதுரை'},
+  {crop:'தக்காளி',min:1220,max:2460,modal:1840,change:'-2.1',up:false,mandi:'திண்டுக்கல்'},
+  {crop:'வெங்காயம்',min:1510,max:2360,modal:1980,change:'+3.6',up:true,mandi:'சேலம்'},
+  {crop:'தேங்காய்',min:2920,max:3610,modal:3290,change:'+0.9',up:true,mandi:'நாமக்கல்'},
+  {crop:'மஞ்சள்',min:12100,max:15300,modal:13700,change:'-1.0',up:false,mandi:'ஈரோடு'},
+  {crop:'மிளகாய்',min:8120,max:12600,modal:10350,change:'+4.8',up:true,mandi:'ராமநாதபுரம்'},
+  {crop:'சோளம்',min:2140,max:2540,modal:2320,change:'+1.4',up:true,mandi:'கரூர்'},
+  {crop:'கம்பு',min:1520,max:1840,modal:1680,change:'+1.1',up:true,mandi:'விழுப்புரம்'},
+  {crop:'கேழ்வரகு',min:3210,max:3860,modal:3540,change:'+0.5',up:true,mandi:'கிருஷ்ணகிரி'},
+  {crop:'வாழை',min:1820,max:2640,modal:2190,change:'-1.4',up:false,mandi:'தேனி'},
+  {crop:'உருளைக்கிழங்கு',min:1260,max:1880,modal:1580,change:'-0.9',up:false,mandi:'நீலகிரி'},
+  {crop:'முட்டைக்கோசு',min:1120,max:1710,modal:1390,change:'+0.7',up:true,mandi:'கன்னியாகுமரி'},
+  {crop:'கத்திரிக்காய்',min:1410,max:2120,modal:1760,change:'+0.3',up:true,mandi:'செங்கல்பட்டு'},
+  {crop:'பாசிப்பருப்பு',min:8010,max:9360,modal:8690,change:'+0.9',up:true,mandi:'திருநெல்வேலி'},
+  {crop:'உளுந்து',min:7560,max:9040,modal:8360,change:'+0.6',up:true,mandi:'திருவண்ணாமலை'},
+  {crop:'துவரம் பருப்பு',min:7180,max:8660,modal:7930,change:'+0.8',up:true,mandi:'புதுக்கோட்டை'},
+  {crop:'நெல்',min:2010,max:2290,modal:2160,change:'+0.5',up:true,mandi:'கடலூர்'},
+  {crop:'வெங்காயம்',min:1620,max:2450,modal:2060,change:'+1.9',up:true,mandi:'திருவள்ளூர்'},
+  {crop:'தக்காளி',min:1180,max:2310,modal:1720,change:'-1.2',up:false,mandi:'பெரம்பலூர்'},
+  {crop:'கரும்பு',min:3120,max:3620,modal:3390,change:'+0.4',up:true,mandi:'விருதுநகர்'},
+  {crop:'பருத்தி',min:6480,max:7280,modal:6880,change:'+0.7',up:true,mandi:'தூத்துக்குடி'},
+  {crop:'மக்காச்சோளம்',min:1850,max:2160,modal:2010,change:'+0.6',up:true,mandi:'கள்ளக்குறிச்சி'},
+  {crop:'கோதுமை',min:2250,max:2480,modal:2370,change:'+0.5',up:true,mandi:'வேலூர்'},
+  {crop:'தேங்காய்',min:2860,max:3520,modal:3210,change:'+0.4',up:true,mandi:'மயிலாடுதுறை'}
+  ,{crop:'மல்லிகை',min:9800,max:14200,modal:11800,change:'+2.4',up:true,mandi:'மதுரை'}
+  ,{crop:'மல்லிகை',min:9200,max:13600,modal:11200,change:'+1.8',up:true,mandi:'திண்டுக்கல்'}
+  ,{crop:'ரோஜா',min:6400,max:9800,modal:8100,change:'+1.1',up:true,mandi:'ஹோசூர்'}
+  ,{crop:'சாமந்தி',min:4200,max:7600,modal:5900,change:'-0.6',up:false,mandi:'சேலம்'}
+  ,{crop:'கனகாம்பரம்',min:7600,max:12400,modal:10100,change:'+2.0',up:true,mandi:'திருப்பூர்'}
+  ,{crop:'செம்பருத்தி',min:3000,max:5600,modal:4300,change:'+0.7',up:true,mandi:'சென்னை'}
+];
+
+const traders = [
+  {name:'ராஜேந்திரன் வியாபாரம்',dist:'ஈரோடு',phone:'9876501234',crops:['நெல்','மக்காச்சோளம்','கம்பு']},
+  {name:'முருகன் அக்ரி ட்ரேடர்ஸ்',dist:'திருச்சி',phone:'9876502345',crops:['பருத்தி','வேர்க்கடலை','மஞ்சள்']},
+  {name:'வேலுசாமி & சன்ஸ்',dist:'மதுரை',phone:'9876503456',crops:['தக்காளி','வெங்காயம்','மிளகாய்']},
+  {name:'செல்வம் தானிய கடை',dist:'தஞ்சாவூர்',phone:'9876504567',crops:['நெல்','கோதுமை','சோளம்']},
+  {name:'அண்ணாமலை வியாபாரம்',dist:'நாமக்கல்',phone:'9876505678',crops:['தேங்காய்','கரும்பு','வாழை']},
+  {name:'தமிழரசன் வர்த்தகம்',dist:'திருநெல்வேலி',phone:'9876506789',crops:['பாசிப்பருப்பு','உளுந்து','துவரம் பருப்பு']},
+  {name:'பாண்டியன் காய்கறி மையம்',dist:'திண்டுக்கல்',phone:'9876507890',crops:['தக்காளி','கத்திரிக்காய்','முட்டைக்கோசு']},
+  {name:'மாரியப்பன் கமிஷன் முகவர்',dist:'விழுப்புரம்',phone:'9876508901',crops:['கம்பு','சோளம்','நெல்']},
+  {name:'கோகுல் அக்ரி சேல்ஸ்',dist:'திருவள்ளூர்',phone:'9876509012',crops:['வெங்காயம்','உருளைக்கிழங்கு','கோதுமை']},
+  {name:'காவிரி கமோடிடீஸ்',dist:'மயிலாடுதுறை',phone:'9876510123',crops:['தேங்காய்','நெல்','மஞ்சள்']},
+  {name:'சிவகாமி வர்த்தக நிலையம்',dist:'சிவகங்கை',phone:'9876511234',crops:['நெல்','வேர்க்கடலை','துவரம் பருப்பு']},
+  {name:'கங்கை அம்மன் கமிஷன்',dist:'சேலம்',phone:'9876512345',crops:['வெங்காயம்','மக்காச்சோளம்','கம்பு']},
+  {name:'வள்ளலார் மார்க்கெட் லிங்க்',dist:'கடலூர்',phone:'9876513456',crops:['நெல்','கரும்பு','கத்திரிக்காய்']},
+  {name:'முத்து & கோ',dist:'வேலூர்',phone:'9876514567',crops:['கோதுமை','முட்டைக்கோசு','உருளைக்கிழங்கு']},
+  {name:'சந்திரன் ஏஜென்சி',dist:'தூத்துக்குடி',phone:'9876515678',crops:['பருத்தி','மிளகாய்','சோளம்']},
+  {name:'மோகன் பண்ணை வர்த்தகம்',dist:'திருவண்ணாமலை',phone:'9876516789',crops:['உளுந்து','கம்பு','மக்காச்சோளம்']},
+  {name:'பொன்னி அக்கிரோ ட்ரேடர்ஸ்',dist:'திருப்பூர்',phone:'9876517890',crops:['வேர்க்கடலை','பருத்தி','மஞ்சள்']},
+  {name:'சரவணா வியாபார சங்கம்',dist:'ராமநாதபுரம்',phone:'9876518901',crops:['மிளகாய்','கம்பு','சோளம்']},
+  {name:'கிருஷ்ணா மார்க்கெட் ஹப்',dist:'கிருஷ்ணகிரி',phone:'9876519012',crops:['கேழ்வரகு','மக்காச்சோளம்','தக்காளி']},
+  {name:'அருள் பிரகாஷ் கமிஷன்',dist:'திருவாரூர்',phone:'9876520123',crops:['நெல்','கரும்பு','வெங்காயம்']},
+  {name:'மீனாட்சி சேல்ஸ் பாயிண்ட்',dist:'திருச்சி',phone:'9876521234',crops:['கோதுமை','துவரம் பருப்பு','பாசிப்பருப்பு']},
+  {name:'கோபால் காய்கறி இணைப்பு',dist:'கோயம்புத்தூர்',phone:'9876522345',crops:['தக்காளி','முட்டைக்கோசு','உருளைக்கிழங்கு']},
+  {name:'பெரியசாமி டீலர்ஸ்',dist:'பெரம்பலூர்',phone:'9876523456',crops:['நெல்','சோளம்','உளுந்து']},
+  {name:'அமுதா அக்கிரோ மார்ட்',dist:'அரியலூர்',phone:'9876524567',crops:['கம்பு','துவரம் பருப்பு','வெங்காயம்']},
+  {name:'சேகர் மார்க்கெட் டிரேடு',dist:'கரூர்',phone:'9876525678',crops:['சோளம்','கோதுமை','மக்காச்சோளம்']},
+  {name:'நந்தினி பண்ணை விற்பனை',dist:'கன்னியாகுமரி',phone:'9876526789',crops:['தேங்காய்','வாழை','முட்டைக்கோசு']},
+  {name:'செந்தில் கமோடிடீஸ்',dist:'திருப்பத்தூர்',phone:'9876527890',crops:['கேழ்வரகு','பாசிப்பருப்பு','உளுந்து']},
+  {name:'உமா மகேஸ்வரி டிரேடர்ஸ்',dist:'ராணிப்பேட்டை',phone:'9876528901',crops:['கோதுமை','உருளைக்கிழங்கு','வெங்காயம்']},
+  {name:'பசுமை வேளாண் மையம்',dist:'நாகப்பட்டினம்',phone:'9876529012',crops:['நெல்','மஞ்சள்','கரும்பு']},
+  {name:'மலர் அக்கிரோ சொல்யூஷன்ஸ்',dist:'கள்ளக்குறிச்சி',phone:'9876530123',crops:['மக்காச்சோளம்','கம்பு','சோளம்']},
+  {name:'முரளி விவசாய இணைப்பு',dist:'செங்கல்பட்டு',phone:'9876531234',crops:['கத்திரிக்காய்','தக்காளி','முட்டைக்கோசு']},
+  {name:'அகிலன் சேல்ஸ் லைன்',dist:'புதுக்கோட்டை',phone:'9876532345',crops:['துவரம் பருப்பு','உளுந்து','நெல்']},
+  {name:'இளங்கோ வர்த்தக நிறுவனம்',dist:'விருதுநகர்',phone:'9876533456',crops:['கரும்பு','மிளகாய்','பருத்தி']},
+  {name:'தாமரை மார்க்கெட் நேட்',dist:'தேனி',phone:'9876534567',crops:['வாழை','தக்காளி','உருளைக்கிழங்கு']},
+  {name:'கோவை உழவர் விற்பனை',dist:'கோயம்புத்தூர்',phone:'9876535678',crops:['கோதுமை','மக்காச்சோளம்','வேர்க்கடலை']},
+  {name:'தென்னம்பு டிரேடிங் குரூப்',dist:'மயிலாடுதுறை',phone:'9876536789',crops:['தேங்காய்','நெல்','கம்பு']},
+  {name:'பாரதி அக்கிரோ வர்த்தகம்',dist:'தர்மபுரி',phone:'9876537890',crops:['கேழ்வரகு','சோளம்','வெங்காயம்']},
+  {name:'உழவர் உதவி நெட்வொர்க்',dist:'நீலகிரி',phone:'9876538901',crops:['உருளைக்கிழங்கு','முட்டைக்கோசு','கோதுமை']},
+  {name:'மல்லிகை பூ மார்க்கெட் லிங்க்',dist:'மதுரை',phone:'9876539012',crops:['மல்லிகை','ரோஜா','சாமந்தி']},
+  {name:'பூவிழா டிரேடர்ஸ்',dist:'திண்டுக்கல்',phone:'9876540123',crops:['மல்லிகை','கனகாம்பரம்','செம்பருத்தி']},
+  {name:'மலர்மாலை கமிஷன் ஏஜென்சி',dist:'சென்னை',phone:'9876541234',crops:['ரோஜா','செம்பருத்தி','சாமந்தி']},
+  {name:'அருள்மிகு பூ சந்தை இணைப்பு',dist:'திருப்பூர்',phone:'9876542345',crops:['கனகாம்பரம்','மல்லிகை','ரோஜா']},
+  {name:'வசந்தம் பிளவர்ஸ் சேல்ஸ்',dist:'சேலம்',phone:'9876543456',crops:['சாமந்தி','ரோஜா','செம்பருத்தி']}
+];
+
+async function fetchPrices() {
+  document.getElementById('loading').style.display='block';
+  document.getElementById('priceGrid').innerHTML='';
+
+  const crop = document.getElementById('cropSelect').value;
+  setTimeout(() => {
+    document.getElementById('loading').style.display='none';
+    const filtered = crop ? marketData.filter(d => d.crop === crop) : marketData;
+    renderMarketData(filtered);
+    renderTraders(crop || '');
+  }, 500);
+}
+
+function renderMarketData(data) {
+  const grid = document.getElementById('priceGrid');
+  grid.innerHTML = data.map(d => `
+    <div class="price-card">
+      <div class="crop-name">${d.crop}</div>
+      <div class="crop-en">மாவட்டம்: ${d.mandi}</div>
+      <div class="price-val touchable" onclick="renderTraders('${d.crop}')">₹${d.modal}</div>
+      <div class="price-unit">குவிண்டால் (100 கிலோ) | குறைந்தபட்சம்: ₹${d.min} | அதிகபட்சம்: ₹${d.max}</div>
+      <div class="price-change ${d.up ? 'up' : 'down'}">${d.up ? '▲' : '▼'} ${d.change}% இன்று</div>
+      <div class="mandi">📍 ${d.mandi} சந்தை | தொகையைத் தொடு → வியாபாரி தொடர்பு</div>
+    </div>`).join('');
+}
+
+function renderTraders(cropName) {
+  const list = document.getElementById('tradersList');
+  const filtered = cropName ? traders.filter(t => t.crops.includes(cropName)) : traders;
+  const finalList = filtered.length ? filtered : traders;
+
+  list.innerHTML = finalList.map(t => `
+    <div class="trader-card">
+      <div class="trader-avatar">🤝</div>
+      <div class="trader-info">
+        <h4>${t.name}</h4>
+        <p>📍 ${t.dist}</p>
+        <div class="crops-tag">${t.crops.map(c => `<span>${c}</span>`).join('')}</div>
+      </div>
+      <a href="tel:${t.phone}" class="call-btn">📞<br>${t.phone}</a>
+    </div>`).join('');
+
+  if (cropName) {
+    document.getElementById('tradersList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+fetchPrices();
+setInterval(fetchPrices, 300000);
+setInterval(() => {
+  const now = new Date();
+  document.getElementById('priceLabel').textContent =
+    `📈 இன்றைய சந்தை விலை (₹/குவிண்டால்) — ${now.toLocaleTimeString('ta-IN')}`;
+}, 60000);
+</script>
+<div class="emergency-footer">
+  <div class="line1">விவசாயி இணையம் - அவசர தொடர்பு</div>
+  <div class="line2">தமிழ்நாடு வேளாண்மை உதவி எண்: 1800-425-1401 | பேரிடர்: 1070 | ஆம்புலன்ஸ்: 108</div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

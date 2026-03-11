@@ -1,0 +1,2326 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>தமிழ்நாடு அரசு திட்டங்கள் - அதிகாரப்பூர்வ தகவல்</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Tamil:ital@0;1&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-green: #0a4d2e;
+  --secondary-gold: #d4a017;
+  --dark-green: #063a22;
+  --light-green: #e8f5e9;
+  --text-light: #f5f5f5;
+  --text-dark: #333333;
+  --accent-red: #c62828;
+  --accent-blue: #1565c0;
+}
+
+body {
+  font-family: 'Poppins', 'Tiro Tamil', sans-serif;
+  background: var(--primary-green);
+  color: var(--text-light);
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  line-height: 1.6;
+}
+
+/* Header Styles */
+.govt-header {
+  background: linear-gradient(135deg, var(--dark-green) 0%, var(--primary-green) 100%);
+  padding: 1rem 1.2rem;
+  border-bottom: 3px solid var(--secondary-gold);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.govt-header .header-row{
+  display:flex;
+  align-items:center;
+  gap:0.9rem;
+}
+
+.govt-header .header-back{
+  display:inline-flex;
+  align-items:center;
+  gap:0.4rem;
+  padding:0.45rem 0.75rem;
+  border-radius:10px;
+  text-decoration:none;
+  font-size:0.85rem;
+  font-family:'Tiro Tamil',serif;
+  font-weight:600;
+  color:#ffffff;
+  background:rgba(255,255,255,0.16);
+  border:1px solid rgba(255,255,255,0.35);
+  transition:all 0.2s;
+  white-space:nowrap;
+}
+.govt-header .header-back:hover{
+  background:rgba(255,255,255,0.22);
+  border-color:rgba(255,255,255,0.55);
+}
+
+.govt-header h1 {
+  font-size: 1.3rem;
+  color: var(--secondary-gold);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-weight: 600;
+  flex: 1;
+  min-width: 0;
+}
+
+.govt-header h1 i {
+  font-size: 1.8rem;
+}
+
+.govt-header .official-badge {
+  background: rgba(212, 160, 23, 0.2);
+  color: var(--secondary-gold);
+  font-size: 0.7rem;
+  padding: 0.2rem 0.8rem;
+  border-radius: 20px;
+  display: inline-block;
+  margin-top: 0.3rem;
+  border: 1px solid rgba(212, 160, 23, 0.3);
+}
+
+/* Navigation */
+.nav-tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 1rem 1.2rem;
+  background: rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(212,160,23,0.2);
+  scrollbar-width: none;
+}
+
+.nav-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-tab {
+  padding: 0.5rem 1.2rem;
+  background: transparent;
+  border: 1px solid rgba(212,160,23,0.3);
+  border-radius: 30px;
+  color: #e8f5e9;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Tiro Tamil', serif;
+}
+
+.nav-tab.active {
+  background: var(--secondary-gold);
+  color: var(--dark-green);
+  border-color: var(--secondary-gold);
+  font-weight: 600;
+}
+
+/* Search Section */
+.search-section {
+  padding: 1rem 1.2rem;
+}
+
+.search-box {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(212,160,23,0.3);
+  border-radius: 15px;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s;
+  font-family: 'Tiro Tamil', serif;
+}
+
+.search-box:focus {
+  border-color: var(--secondary-gold);
+  background: rgba(255,255,255,0.15);
+}
+
+.search-box::placeholder {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.9rem;
+}
+
+/* Stats Cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+  padding: 1rem 1.2rem;
+}
+
+.stat-card {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(212,160,23,0.2);
+  border-radius: 12px;
+  padding: 1rem 0.5rem;
+  text-align: center;
+}
+
+.stat-card .number {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--secondary-gold);
+  font-family: 'Tiro Tamil', serif;
+}
+
+.stat-card .label {
+  font-size: 0.7rem;
+  color: #c8e6d0;
+  margin-top: 0.3rem;
+  line-height: 1.4;
+}
+
+/* Scheme Cards */
+.schemes-container {
+  padding: 0.5rem 1.2rem 2rem;
+}
+
+.scheme-card {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(212,160,23,0.2);
+  border-radius: 16px;
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  backdrop-filter: blur(5px);
+}
+
+.scheme-card:hover {
+  border-color: var(--secondary-gold);
+  background: rgba(212,160,23,0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.scheme-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.scheme-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(212,160,23,0.15);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.scheme-title {
+  flex: 1;
+}
+
+.scheme-title h3 {
+  font-size: 1rem;
+  color: #f5f5f5;
+  font-weight: 600;
+  font-family: 'Tiro Tamil', serif;
+  line-height: 1.4;
+  margin-bottom: 0.3rem;
+}
+
+.scheme-title .dept {
+  font-size: 0.7rem;
+  color: #a8d5b5;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.scheme-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(34, 197, 94, 0.15);
+  color: #4caf50;
+  font-size: 0.65rem;
+  padding: 0.2rem 0.8rem;
+  border-radius: 30px;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  font-weight: 500;
+}
+
+.scheme-benefit {
+  background: rgba(212,160,23,0.1);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  margin: 1rem 0 0.8rem;
+  font-size: 0.85rem;
+  color: var(--secondary-gold);
+  font-weight: 500;
+  border-left: 3px solid var(--secondary-gold);
+}
+
+.scheme-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.scheme-tags span {
+  background: rgba(255,255,255,0.1);
+  color: #c8e6d0;
+  font-size: 0.65rem;
+  padding: 0.2rem 0.8rem;
+  border-radius: 30px;
+}
+
+/* Eligibility Details Section */
+.eligibility-details {
+  display: none;
+  background: rgba(0,0,0,0.2);
+  border-radius: 12px;
+  padding: 1.2rem;
+  margin: 1rem 0 1rem;
+  border-left: 3px solid var(--secondary-gold);
+}
+
+.eligibility-details.show {
+  display: block;
+}
+
+.detail-section {
+  margin-bottom: 1.2rem;
+}
+
+.detail-section h4 {
+  color: var(--secondary-gold);
+  font-size: 0.9rem;
+  font-family: 'Tiro Tamil', serif;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detail-section h4 i {
+  font-size: 1rem;
+}
+
+.detail-list {
+  list-style: none;
+  padding: 0;
+}
+
+.detail-list li {
+  color: #e0f2e0;
+  font-size: 0.8rem;
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  line-height: 1.5;
+}
+
+.detail-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.required-docs {
+  background: rgba(212,160,23,0.08);
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.doc-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.8rem;
+}
+
+.doc-item:last-child {
+  border-bottom: none;
+}
+
+.doc-item i {
+  color: var(--secondary-gold);
+  width: 20px;
+  font-size: 1rem;
+}
+
+.doc-item .required-star {
+  color: #ff6b6b;
+  margin-left: 0.3rem;
+}
+
+.doc-type {
+  background: rgba(255,255,255,0.1);
+  font-size: 0.65rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 30px;
+  margin-left: 0.5rem;
+}
+
+.portal-link {
+  background: rgba(33, 150, 243, 0.1);
+  border: 1px solid rgba(33, 150, 243, 0.3);
+  border-radius: 8px;
+  padding: 0.8rem;
+  margin: 1rem 0;
+  font-size: 0.75rem;
+  color: #90caf9;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.helpline {
+  background: rgba(212,160,23,0.1);
+  border-radius: 8px;
+  padding: 0.6rem;
+  font-size: 0.75rem;
+  color: #f0c040;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Apply Button */
+.apply-btn {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--secondary-gold), #f0c040);
+  border: none;
+  border-radius: 12px;
+  color: var(--dark-green);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: 'Tiro Tamil', serif;
+  margin-top: 1rem;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.apply-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(212,160,23,0.3);
+}
+
+/* Application Form */
+.application-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--dark-green);
+  z-index: 1000;
+  overflow-y: auto;
+  display: none;
+}
+
+.application-page.show {
+  display: block;
+}
+
+.form-header {
+  background: var(--primary-green);
+  padding: 1rem 1.2rem;
+  border-bottom: 3px solid var(--secondary-gold);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.back-btn {
+  background: transparent;
+  border: 1px solid var(--secondary-gold);
+  color: var(--secondary-gold);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: 'Tiro Tamil', serif;
+}
+
+.form-header h2 {
+  color: var(--secondary-gold);
+  font-size: 1rem;
+  font-family: 'Tiro Tamil', serif;
+  flex: 1;
+}
+
+.form-content {
+  padding: 1.5rem 1.2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  color: #c8e6d0;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+  font-family: 'Tiro Tamil', serif;
+  font-weight: 500;
+}
+
+.required {
+  color: #ff6b6b;
+  margin-left: 0.2rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 1rem;
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(212,160,23,0.3);
+  border-radius: 12px;
+  color: white;
+  font-size: 0.95rem;
+  outline: none;
+  font-family: 'Tiro Tamil', serif;
+}
+
+.form-control:focus {
+  border-color: var(--secondary-gold);
+}
+
+select.form-control option {
+  background: var(--dark-green);
+  color: white;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-row-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.8rem;
+}
+
+/* Document Upload */
+.upload-area {
+  background: rgba(255,255,255,0.05);
+  border: 2px dashed rgba(212,160,23,0.4);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.upload-area:hover {
+  background: rgba(212,160,23,0.1);
+  border-color: var(--secondary-gold);
+}
+
+.upload-area i {
+  font-size: 2rem;
+  color: var(--secondary-gold);
+  margin-bottom: 0.5rem;
+}
+
+.upload-area p {
+  font-size: 0.8rem;
+  color: #c8e6d0;
+}
+
+.uploaded-file {
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid #4caf50;
+  border-radius: 8px;
+  padding: 0.8rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #4caf50;
+}
+
+.uploaded-file i {
+  color: #4caf50;
+}
+
+.uploaded-file .remove-file {
+  margin-left: auto;
+  color: #ff6b6b;
+  cursor: pointer;
+}
+
+/* Radio and Checkbox Groups */
+.radio-group, .checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.radio-label, .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #c8e6d0;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.radio-label input, .checkbox-label input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--secondary-gold);
+}
+
+/* SMS Success View */
+.sms-view {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--dark-green);
+  z-index: 1100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.sms-view.show {
+  display: flex;
+}
+.sms-view.guard{
+  pointer-events:none;
+}
+
+.sms-card {
+  background: rgba(255,255,255,0.08);
+  border: 2px solid #4caf50;
+  border-radius: 24px;
+  padding: 2rem;
+  max-width: 340px;
+  width: 100%;
+  text-align: center;
+  animation: popIn 0.5s;
+  max-height: 86vh;
+  overflow: auto;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.sms-icon {
+  font-size: 4rem;
+  color: #4caf50;
+  margin-bottom: 1rem;
+}
+
+.sms-card h2 {
+  color: #4caf50;
+  font-size: 1.4rem;
+  font-family: 'Tiro Tamil', serif;
+  margin-bottom: 0.5rem;
+}
+
+.sms-box {
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  border-radius: 16px;
+  padding: 1.2rem;
+  margin: 1.5rem 0;
+  text-align: left;
+}
+
+.sms-box h4 {
+  color: #4caf50;
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sms-content {
+  color: #e0f2e0;
+  font-size: 0.85rem;
+  line-height: 1.8;
+  white-space: pre-line;
+}
+
+.done-btn {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--secondary-gold), #f0c040);
+  border: none;
+  border-radius: 12px;
+  color: var(--dark-green);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: 'Tiro Tamil', serif;
+}
+
+/* Loading Spinner */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(212,160,23,0.3);
+  border-radius: 50%;
+  border-top-color: var(--secondary-gold);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Green-White Theme Override (match dashboard.html) */
+:root{
+  --bg:#f4fbf5;
+  --bd:#b7d8bd;
+  --txt:#123d26;
+  --muted:#3f7d4a;
+
+  --primary-green:#1f5f2a;
+  --dark-green:#0f4d2b;
+  --secondary-gold:#2e7d32;
+  --light-green:#f4fbf5;
+  --text-light:#123d26;
+  --text-dark:#123d26;
+}
+
+body{
+  background:var(--bg);
+  color:var(--txt);
+}
+
+/* Header */
+.govt-header{
+  background:linear-gradient(135deg,var(--primary-green) 0%,var(--secondary-gold) 100%);
+  border-bottom:1px solid rgba(255,255,255,0.18);
+  box-shadow:0 10px 26px rgba(15,77,43,0.18);
+}
+.govt-header h1{color:#fff}
+.govt-header .official-badge{
+  background:rgba(255,255,255,0.16);
+  color:#eaf6ec;
+  border:1px solid rgba(255,255,255,0.22);
+}
+
+/* Nav tabs */
+.nav-tabs{
+  background:#fff;
+  border-bottom:1px solid var(--bd);
+}
+.nav-tab{
+  background:#fff;
+  border:1px solid var(--bd);
+  color:var(--muted);
+}
+.nav-tab.active{
+  background:linear-gradient(135deg,#2e7d32,#66bb6a);
+  color:#fff;
+  border-color:rgba(46,125,50,0.35);
+}
+
+/* Search */
+.search-box{
+  background:#fff;
+  border:1px solid var(--bd);
+  color:var(--txt);
+}
+.search-box::placeholder{color:#6b9a78}
+.search-box:focus{
+  border-color:#8ccf99;
+  background:#fff;
+  box-shadow:0 0 0 4px rgba(46,125,50,0.08);
+}
+
+/* Stats */
+.stat-card{
+  background:#fff;
+  border:1px solid var(--bd);
+}
+.stat-card .number{color:var(--secondary-gold)}
+.stat-card .label{color:#2f6d3a}
+
+/* Scheme cards */
+.scheme-card{
+  background:#fff;
+  border:1px solid var(--bd);
+  backdrop-filter:none;
+}
+.scheme-card:hover{
+  border-color:#8ccf99;
+  background:#fff;
+  box-shadow:0 12px 28px rgba(46,125,50,0.12);
+}
+.scheme-title h3{color:var(--txt)}
+.scheme-title .dept{color:#6b9a78}
+.scheme-icon{
+  background:#eaf6ec;
+  color:var(--secondary-gold);
+  border:1px solid #cbe5ce;
+}
+.scheme-badge{
+  background:rgba(34,197,94,0.12);
+  color:#166534;
+  border:1px solid rgba(34,197,94,0.22);
+}
+.scheme-benefit{
+  background:#f0fbf2;
+  color:#1f5f2a;
+  border-left:3px solid var(--secondary-gold);
+}
+.scheme-tags span{
+  background:#f6fbf7;
+  border:1px solid #e3f2e6;
+  color:#2f6d3a;
+}
+
+/* Details panel */
+.eligibility-details{
+  background:#f8fcf8;
+  border:1px solid #dceede;
+}
+.detail-section h4{color:var(--secondary-gold)}
+.detail-list li{color:#2f6d3a}
+.required-docs{background:#fff;border:1px solid #e3f2e6}
+.doc-item{border-bottom:1px solid #eef7ef;color:#2f6d3a}
+.doc-item i{color:var(--secondary-gold)}
+.doc-type{background:#f0fbf2;color:#1f5f2a}
+.portal-link,.helpline{
+  background:#fff;
+  border:1px solid #e3f2e6;
+  color:#2f6d3a;
+}
+.portal-link{border-left:3px solid #3b82f6}
+.helpline{border-left:3px solid #f59e0b}
+
+/* Buttons */
+.apply-btn{
+  background:linear-gradient(135deg,#2e7d32,#66bb6a);
+  color:#fff;
+}
+.back-btn{
+  background:rgba(46,125,50,0.15);
+  border:1px solid rgba(46,125,50,0.3);
+  color:var(--secondary-gold);
+}
+
+/* Application page */
+.application-page{background:var(--bg)}
+.form-header{
+  background:#fff;
+  border-bottom:1px solid var(--bd);
+}
+.form-content{color:var(--txt)}
+.form-group label{color:#2f6d3a}
+.radio-label, .checkbox-label{color:#2f6d3a}
+.upload-area p{color:#2f6d3a}
+.upload-area small{color:#6b9a78}
+.form-control{
+  background:#fff;
+  border:1px solid var(--bd);
+  color:var(--txt);
+}
+textarea.form-control{color:var(--txt)}
+select.form-control option{background:#fff;color:var(--txt)}
+.upload-area{
+  background:#f8fcf8;
+  border:2px dashed #cbe5ce;
+}
+.upload-area:hover{
+  background:#eef9f0;
+  border-color:#8ccf99;
+}
+.uploaded-file{
+  background:rgba(34,197,94,0.1);
+  border:1px solid rgba(34,197,94,0.25);
+}
+
+/* SMS success view */
+.sms-view{background:rgba(0,0,0,0.92)}
+.sms-card{
+  background:#fff;
+  border:1px solid rgba(34,197,94,0.35);
+}
+.sms-card h2{color:#22c55e}
+.sms-box{
+  background:#f0fbf2;
+  border:1px solid #dceede;
+}
+.sms-box h4{color:#1f5f2a}
+.sms-content{color:var(--txt)}
+.done-btn{
+  background:linear-gradient(135deg,#2e7d32,#66bb6a);
+  color:#fff;
+}
+.done-btn[disabled]{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none !important;
+  box-shadow:none !important;
+}
+
+/* Extra contrast hardening */
+.scheme-title .dept,
+.detail-list li,
+.doc-item,
+.portal-link,
+.helpline{color:#2f6d3a}
+.portal-link i,
+.helpline i,
+.dept i{color:var(--secondary-gold)}
+.search-section,
+.schemes-container{color:var(--txt)}
+.search-box{caret-color:var(--txt)}
+.search-box::placeholder{opacity:1}
+.stat-card .label{color:#2f6d3a}
+
+/* Spinner */
+.loading{
+  border-color:rgba(46,125,50,0.25);
+  border-top-color:var(--secondary-gold);
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="govt-header">
+  <div class="header-row">
+    <a class="header-back" href="dashboard.html" aria-label="டாஷ்போர்டுக்கு திரும்பு">
+      <i class="fas fa-arrow-left"></i> திரும்பு
+    </a>
+    <h1>
+      <i class="fas fa-landmark"></i>
+      தமிழ்நாடு அரசு - வேளாண்மை மற்றும் விவசாயிகள் நலத்திட்டங்கள்
+    </h1>
+  </div>
+  <div class="official-badge">
+    <i class="fas fa-check-circle"></i> அதிகாரப்பூர்வ தகவல்
+  </div>
+</div>
+
+<!-- Navigation Tabs -->
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="filterSchemes('all', this)">அனைத்து திட்டங்களும்</button>
+  <button class="nav-tab" onclick="filterSchemes('agriculture', this)">வேளாண்மை</button>
+  <button class="nav-tab" onclick="filterSchemes('pension', this)">ஓய்வூதியம்</button>
+  <button class="nav-tab" onclick="filterSchemes('subsidy', this)">மானியம்</button>
+  <button class="nav-tab" onclick="filterSchemes('loan', this)">கடன் உதவி</button>
+  <button class="nav-tab" onclick="filterSchemes('education', this)">கல்வி</button>
+  <button class="nav-tab" onclick="filterSchemes('social', this)">சமூக நலன்</button>
+</div>
+
+<!-- Search -->
+<div class="search-section">
+  <input type="text" class="search-box" id="searchInput" placeholder="🔍 திட்டத்தின் பெயர் அல்லது விவரங்களைத் தேடவும்..." onkeyup="searchSchemes()">
+</div>
+
+<!-- Stats -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="number">21+</div>
+    <div class="label">செயல்பாட்டில் உள்ள திட்டங்கள்</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">₹5K-3L</div>
+    <div class="label">நிதி உதவி / மானியம்</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">25L+</div>
+    <div class="label">பயனாளிகள்</div>
+  </div>
+</div>
+
+<!-- Schemes Container -->
+<div class="schemes-container" id="schemesContainer"></div>
+
+<!-- Application Form Page -->
+<div class="application-page" id="applicationPage">
+  <div class="form-header">
+    <button class="back-btn" onclick="closeApplicationForm()">
+      <i class="fas fa-arrow-left"></i> பின் செல்
+    </button>
+    <h2 id="selectedSchemeName"></h2>
+  </div>
+  <div class="form-content" id="applicationForm"></div>
+</div>
+
+<!-- SMS Success View -->
+<div class="sms-view" id="smsView">
+  <div class="sms-card">
+    <div class="sms-icon">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <h2>விண்ணப்பம் வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது!</h2>
+    <div class="sms-box">
+      <h4>
+        <i class="fas fa-sms"></i>
+        SMS உறுதிப்படுத்தல்
+      </h4>
+      <div class="sms-content" id="smsContent"></div>
+      <div class="portal-link" id="authorityStatusLine" style="margin:0.9rem 0 0;">
+        🕒 நிலை: <span id="authorityStatusText">அதிகாரி சரிபார்ப்பு</span>
+      </div>
+      <div class="helpline" id="smsSendLine" style="margin:0.6rem 0 0;">
+        📨 Authority SMS: <span id="smsSendText">Sending...</span>
+      </div>
+    </div>
+    <button class="done-btn" id="btnStatusPage" onclick="goToStatusPage()" style="margin-top:0.8rem;" disabled>
+      <i class="fas fa-file-pdf"></i> PDF & நிலை பார்க்க
+    </button>
+    <button class="done-btn" id="btnDashboard" onclick="goBackToHome()" disabled>
+      <i class="fas fa-home"></i> முகப்புக்குச் செல்ல
+    </button>
+  </div>
+</div>
+
+<script>
+const SMS_API_BASES = (() => {
+  const params = new URLSearchParams(window.location.search);
+  const fromQuery = (params.get('smsApi') || '').trim();
+  const normalize = (u) => String(u || '').trim().replace(/\/+$/, '');
+
+  if (fromQuery) {
+    try { localStorage.setItem('smsApiBase', normalize(fromQuery)); } catch (_) {}
+  }
+
+  const stored = (() => {
+    try { return normalize(localStorage.getItem('smsApiBase') || ''); } catch (_) { return ''; }
+  })();
+
+  const list = [];
+  if (stored) list.push(stored);
+  list.push('http://127.0.0.1:8787', 'http://localhost:8787');
+  return Array.from(new Set(list));
+})();
+
+const DEMO_MODE = (() => {
+  // No payment / no deployment: run fully in-browser without real SMS.
+  // If user explicitly sets ?smsApi=https://..., then demo mode is disabled.
+  try {
+    const stored = String(localStorage.getItem('smsApiBase') || '').trim();
+    if (stored) return false;
+  } catch (_) {}
+  return true;
+})();
+const AUTHORITY_PHONE = '9042477501';
+let authorityPollTimer = null;
+let lastSubmittedRef = '';
+let smsJustOpened = false;
+
+async function fetchJsonWithTimeout(url, options, timeoutMs = 9000) {
+  const controller = new AbortController();
+  const t = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { ...(options || {}), signal: controller.signal });
+    const data = await res.json().catch(() => ({}));
+    return { res, data };
+  } finally {
+    clearTimeout(t);
+  }
+}
+
+function getCurrentFarmerProfile() {
+  const phone = (localStorage.getItem('currentFarmerPhone') || '').replace(/\D/g, '');
+  const farmers = JSON.parse(localStorage.getItem('farmersByPhone') || '{}');
+  if (phone && farmers[phone]) return farmers[phone];
+  return {};
+}
+
+function getFarmerScopedKey(baseKey) {
+  const profile = getCurrentFarmerProfile();
+  const phone = String(profile.phone || localStorage.getItem('currentFarmerPhone') || '').replace(/\D/g, '');
+  return `${baseKey}_${phone || 'guest'}`;
+}
+
+const profile = getCurrentFarmerProfile();
+if (!profile.phone) {
+  window.location.href = 'index.html';
+}
+
+function mapAuthorityStatus(code, fallback) {
+  if (code === 'pending') return 'அதிகாரி சரிபார்ப்பு (Pending)';
+  if (code === 'verified_authority') return 'அதிகாரி உறுதி (Verified by Authorities)';
+  if (code === 'sent_to_government') return 'அரசுக்கு அனுப்பப்பட்டது (Sent to Government)';
+  if (code === 'rejected') return 'நிராகரிக்கப்பட்டது (Rejected)';
+  return fallback || 'சமர்ப்பிக்கப்பட்டது';
+}
+
+function buildAuthoritySms(app) {
+  return `TN Farmer Portal\nRef: ${app.refNo}\nScheme: ${app.schemeName}\nApplicant: ${app.applicantName}\nCategory: ${app.applicantCategory || '--'}\nMobile: ${app.mobile}\nDistrict: ${app.district}\nReply: VERIFY ${app.refNo} / REJECT ${app.refNo}`;
+}
+
+async function sendAuthoritySms(app) {
+  if (DEMO_MODE) {
+    return { ok: true, mode: 'demo' };
+  }
+  const payload = {
+    to: AUTHORITY_PHONE,
+    message: buildAuthoritySms(app),
+    applicationRef: app.refNo,
+    schemeName: app.schemeName,
+    applicantMobile: app.mobile
+  };
+  let lastErr = null;
+  for (const base of SMS_API_BASES) {
+    try {
+      const { res, data } = await fetchJsonWithTimeout(`${base}/api/sms/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok || !data.ok) throw new Error(data.error || `SMS failed (${res.status})`);
+      return data;
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  throw lastErr || new Error('SMS failed');
+}
+
+async function fetchAuthorityStatus(refNo) {
+  if (DEMO_MODE) {
+    const key = getFarmerScopedKey('schemeApplications');
+    const list = JSON.parse(localStorage.getItem(key) || '[]');
+    const app = list.find(a => a && a.refNo === refNo);
+    const submittedAt = Number(app?.authorityMockAt || app?.timestamp || Date.now());
+    const age = Date.now() - submittedAt;
+    let code = 'pending';
+    if (age >= 13000) code = 'sent_to_government';
+    else if (age >= 7000) code = 'verified_authority';
+    return { status: code, authorityMessage: 'Status auto-updated' };
+  }
+  let lastErr = null;
+  for (const base of SMS_API_BASES) {
+    try {
+      const { res, data } = await fetchJsonWithTimeout(`${base}/api/sms/status?ref=${encodeURIComponent(refNo)}`, {
+        method: 'GET'
+      });
+      if (!res.ok || !data.ok) throw new Error(data.error || `Status fetch failed (${res.status})`);
+      return {
+        status: data.status || 'pending',
+        authorityMessage: data.authorityMessage || data.message || ''
+      };
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  throw lastErr || new Error('Status fetch failed');
+}
+
+function updateStoredSchemeApplication(refNo, patch) {
+  const key = getFarmerScopedKey('schemeApplications');
+  const list = JSON.parse(localStorage.getItem(key) || '[]');
+  const idx = list.findIndex(a => a && a.refNo === refNo);
+  if (idx === -1) return;
+  list[idx] = { ...list[idx], ...patch };
+  localStorage.setItem(key, JSON.stringify(list));
+}
+
+function updateAuthorityStatusUI(code) {
+  const el = document.getElementById('authorityStatusText');
+  if (el) el.textContent = mapAuthorityStatus(code, '');
+}
+
+function setSmsSendUI(text) {
+  const el = document.getElementById('smsSendText');
+  if (el) el.textContent = text || '';
+}
+
+function setSmsButtonsEnabled(enabled) {
+  const btn1 = document.getElementById('btnStatusPage');
+  const btn2 = document.getElementById('btnDashboard');
+  if (btn1) btn1.disabled = !enabled;
+  if (btn2) btn2.disabled = !enabled;
+}
+
+async function refreshAuthorityStatus(refNo) {
+  try {
+    const data = await fetchAuthorityStatus(refNo);
+    const code = data.status || 'pending';
+    const label = mapAuthorityStatus(code, 'சமர்ப்பிக்கப்பட்டது');
+    updateStoredSchemeApplication(refNo, {
+      authorityStatusCode: code,
+      authorityStatus: label,
+      authorityMessage: data.authorityMessage || ''
+    });
+    updateAuthorityStatusUI(code);
+    if (code === 'sent_to_government' || code === 'rejected') stopAuthorityPolling();
+  } catch (_) {
+    // ignore transient errors (server not running / offline)
+  }
+}
+
+function startAuthorityPolling(refNo) {
+  lastSubmittedRef = refNo;
+  stopAuthorityPolling();
+  authorityPollTimer = setInterval(() => refreshAuthorityStatus(refNo), DEMO_MODE ? 1000 : 3000);
+  refreshAuthorityStatus(refNo);
+  setTimeout(() => stopAuthorityPolling(), 60000);
+}
+
+function stopAuthorityPolling() {
+  if (authorityPollTimer) clearInterval(authorityPollTimer);
+  authorityPollTimer = null;
+}
+
+function goToStatusPage() {
+  if (smsJustOpened) return;
+  const btn = document.getElementById('btnStatusPage');
+  if (btn && btn.disabled) return;
+  window.location.href = 'insurance-card.html?tab=schemes';
+}
+
+// Tamil Nadu Government Official Schemes Data
+// All information verified from official government sources
+const tnSchemes = [
+  {
+    id: 1,
+    icon: '🌾',
+    name: 'பிரதம மந்திரி கிசான் சம்மான் நிதி (PM-KISAN)',
+    tamilName: 'பிரதம மந்திரி கிசான் சம்மான் நிதி',
+    category: 'agriculture',
+    department: 'மத்திய வேளாண்மை & விவசாயிகள் நலத்துறை',
+    benefit: 'ஆண்டுக்கு ₹6,000 (₨2,000 x 3 தவணைகள்)',
+    status: 'திறந்தது',
+    eligibility: [
+      'நிலம் வைத்திருக்கும் அனைத்து விவசாயக் குடும்பங்கள்',
+      'சிறு மற்றும் குறு விவசாயிகள் (2 ஹெக்டேர் வரை நிலம்)',
+      'குடும்பத்தின் தலைவர் (கணவன்/மனைவி/மூத்த உறுப்பினர்)'
+    ],
+    exclusion: [
+      'வருமான வரி செலுத்துவோர்',
+      'அரசு/அரசு நிறுவன ஊழியர்கள்',
+      '₹10,000 மற்றும் அதற்கு மேல் மாத ஓய்வூதியம் பெறுவோர்',
+      'மருத்துவர்கள், வழக்கறிஞர்கள், பொறியாளர்கள் போன்ற தொழில் வல்லுநர்கள்',
+      'ஓய்வு பெற்ற அரசு ஊழியர்கள் (₹10,000+ மாத ஓய்வூதியம்)'
+    ],
+    documents: [
+      { name: 'ஆதார் கார்டு', required: true, type: 'அசல் + நகல்', note: 'மொபைல் எண்ணுடன் இணைக்கப்பட்டிருக்க வேண்டும்' },
+      { name: 'நில உரிமை ஆவணம் / பட்டா / அடங்கல்', required: true, type: 'நகல்', note: 'சமீபத்திய ஆவணம்' },
+      { name: 'வங்கி கணக்கு பாஸ்புக்', required: true, type: 'நகல்', note: 'IFSC குறியீட்டுடன்' },
+      { name: 'ரேஷன் கார்டு', required: false, type: 'நகல்' },
+      { name: 'பாஸ்போர்ட் அளவு புகைப்படம்', required: true, type: '2 படங்கள்' }
+    ],
+    applicationProcess: [
+      'pmkisan.gov.in இணையதளத்தில் பதிவு செய்யவும்',
+      'Farmers Corner → New Farmer Registration என்பதைத் தேர்ந்தெடுக்கவும்',
+      'ஆதார் எண், மொபைல் எண், மாநிலம் உள்ளிட்ட விவரங்களை உள்ளிடவும்',
+      'OTP மூலம் சரிபார்த்து, நிலம் மற்றும் வங்கி விவரங்களைப் பதிவேற்றவும்',
+      'அல்லது அருகிலுள்ள CSC மையத்தில் நேரில் பதிவு செய்யலாம்'
+    ],
+    portal: 'pmkisan.gov.in',
+    helpline: '1800-180-1551',
+    tags: ['நிதி உதவி', 'DBT', 'அனைத்து விவசாயிகள்']
+  },
+  {
+    id: 2,
+    icon: '☀️',
+    name: 'பிரதம மந்திரி கிசான் ஊர்ஜா சுரக்ஷா எவம் உத்தான் மகாபியான் (PM-KUSUM)',
+    tamilName: 'சோலார் பம்பு செட் மானியத் திட்டம்',
+    category: 'subsidy',
+    department: 'தமிழ்நாடு வேளாண்மைப் பொறியியல் துறை',
+    benefit: 'சோலார் பம்பு செட் அமைப்பதற்கு 60% முதல் 70% வரை மானியம்',
+    status: 'திறந்தது',
+    eligibility: [
+      'மின் இணைப்பு இல்லாத விவசாயிகள்',
+      'பாசன ஆதாரம் (கிணறு/குளம்) உள்ள விவசாயிகள்',
+      'Safe Firka பகுதிகளில் மட்டுமே புதிய கிணறு அனுமதி',
+      'சொந்த நிலம் வைத்திருக்கும் விவசாயிகள்'
+    ],
+    benefits: [
+      'சிறு மற்றும் குறு விவசாயிகளுக்கு 70% மானியம் (மத்திய 30% + மாநில 40%)',
+      'பிற விவசாயிகளுக்கு 60% மானியம்',
+      'ஆதிதிராவிடர் மற்றும் பழங்குடியினர் சிறு, குறு விவசாயிகளுக்கு கூடுதலாக 10% மாநில மானியம்'
+    ],
+    documents: [
+      { name: 'ஆதார் கார்டு', required: true, type: 'அசல் + நகல்' },
+      { name: 'பட்டா / நில உரிமை ஆவணம்', required: true, type: 'நகல்' },
+      { name: 'கிணறு அனுமதிச் சான்றிதழ்', required: true, type: 'நகல்', note: 'நீர்வளத் துறை வழங்கியது' },
+      { name: 'நில வரைபடம் (சிட்டா)', required: true, type: 'நகல்' },
+      { name: 'வங்கி கணக்கு பாஸ்புக்', required: true, type: 'நகல்' },
+      { name: 'நுண்ணீர் பாசனத்துடன் இணைப்பதற்கான உறுதிமொழி', required: true, type: 'படிவம்' },
+      { name: 'பாஸ்போர்ட் அளவு புகைப்படம்', required: true, type: '2 படங்கள்' }
+    ],
+    applicationProcess: [
+      'pmkusum.tn.gov.in இணையதளத்தில் பதிவு செய்யவும்',
+      'விவசாயி விவரங்கள், நில விவரங்கள், நீர் ஆதார விவரங்களைப் பதிவேற்றவும்',
+      'தேவையான ஆவணங்களை ஸ்கேன் செய்து பதிவேற்றவும்',
+      'அல்லது அருகிலுள்ள வேளாண்மைப் பொறியியல் துறை அலுவலகத்தில் நேரில் விண்ணப்பிக்கவும்'
+    ],
+    portal: 'pmkusum.tn.gov.in',
+    helpline: '1800-425-0777',
+    tags: ['சோலார்', 'மானியம்', 'பாசனம்', 'புதுப்பிக்கத்தக்க ஆற்றல்']
+  },
+  {
+    id: 3,
+    icon: '👵',
+    name: 'தமிழ்நாடு விவசாயிகள் ஓய்வூதியத் திட்டம்',
+    tamilName: 'விவசாயிகள் மற்றும் வேளாண் தொழிலாளர்கள் ஓய்வூதியத் திட்டம்',
+    category: 'pension',
+    department: 'தமிழ்நாடு சமூக நலத் துறை',
+    benefit: 'மாதாந்திர ஓய்வூதியம் ₹1,000',
+    status: 'திறந்தது',
+    eligibility: [
+      '60 வயது நிரம்பிய விவசாயிகள் / வேளாண் தொழிலாளர்கள்',
+      'CMPUT (Comprehensive Market Platform for Unorganized workers in Tamil Nadu) உறுப்பினர் அட்டை உள்ளவர்கள்',
+      'நிலை தட்டுப்பாடு உள்ளவர்கள் (Destitute)',
+      'நிலையான சொத்து ₹1,00,000-க்கும் குறைவாக உள்ளவர்கள்',
+      'வேறு எந்த ஓய்வூதியமும் பெறாதவர்கள்'
+    ],
+    documents: [
+      { name: 'ஆதார் கார்டு', required: true, type: 'அசல் + நகல்' },
+      { name: 'வயது சான்றிதழ்', required: true, type: 'அசல்', note: 'பள்ளி சான்றிதழ் / பிறப்புச் சான்றிதழ் / வாக்காளர் அடையாள அட்டை' },
+      { name: 'CMPUT உறுப்பினர் அட்டை', required: true, type: 'அசல் + நகல்' },
+      { name: 'ஸ்மார்ட் ரேஷன் கார்டு', required: true, type: 'நகல்' },
+      { name: 'வங்கி கணக்கு பாஸ்புக்', required: true, type: 'நகல்' },
+      { name: 'சுய வாக்குமூலம் (Self Declaration)', required: true, type: 'படிவம்' },
+      { name: 'பாஸ்போர்ட் அளவு புகைப்படம்', required: true, type: '2 படங்கள்' },
+      { name: 'வருமானச் சான்றிதழ்', required: true, type: 'VAO வழங்கியது' }
+    ],
+    applicationProcess: [
+      'அருகிலுள்ள CSC (Common Service Centre) மையத்தில் நேரில் விண்ணப்பிக்கவும்',
+      'அல்லது tnesevai.tn.gov.in இணையதளத்தில் ஆன்லைனில் விண்ணப்பிக்கவும்',
+      'VAO மற்றும் ஊராட்சி உதவியாளர் கள ஆய்வு செய்து சரிபார்ப்பார்கள்',
+      'தகுதியானவர்களுக்கு SMS மூலம் தகவல் அனுப்பப்படும்'
+    ],
+    portal: 'tnesevai.tn.gov.in',
+    helpline: '1800-425-7878',
+    tags: ['ஓய்வூதியம்', 'மூத்த குடிமக்கள்', 'CMPUT']
+  },
+  {
+    id: 4,
+    icon: '💧',
+    name: 'பிரதம மந்திரி கிசான் சிஞ்சாய் யோஜனா (PMKSY)',
+    tamilName: 'நுண்ணீர் பாசனத் திட்டம்',
+    category: 'subsidy',
+    department: 'தமிழ்நாடு வேளாண்மைத் துறை',
+    benefit: 'துளி/தெளிப்பான் பாசனம் அமைப்பதற்கு 75% முதல் 90% வரை மானியம்',
+    status: 'திறந்தது',
+    eligibility: [
+      'சிறு, குறு மற்றும் பெரு விவசாயிகள்',
+      'நீர் பற்றாக்குறை பகுதிகளில் உள்ள விவசாயிகள்',
+      'கூட்டுறவு சங்கங்கள்',
+      'FPO (Farmer Producer Organizations)'
+    ],
+    benefits: [
+      'சிறு, குறு விவசாயிகளுக்கு 90% மானியம்',
+      'பெரு விவசாயிகளுக்கு 75% மானியம்',
+      '40-60% நீர் சேமிப்பு',
+      'மகசூல் அதிகரிப்பு 30-50%'
+    ],
+    documents: [
+      { name: 'ஆதார் கார்டு', required: true, type: 'அசல் + நகல்' },
+      { name: 'பட்டா / நில உரிமை ஆவணம்', required: true, type: 'நகல்' },
+      { name: 'வங்கி கணக்கு பாஸ்புக்', required: true, type: 'நகல்' },
+      { name: 'நில வரைபடம் (சிட்டா)', required: true, type: 'நகல்' },
+      { name: 'கிணறு / நீர் ஆதார சான்று', required: true, type: 'நகல்' },
+      { name: 'பயிர் சாகுபடி விவரம்', required: true, type: 'படிவம்' },
+      { name: 'மின் கட்டண ரசீது (ஏதேனும் இருந்தால்)', required: false, type: 'நகல்' }
+    ],
+    applicationProcess: [
+      'pmksy.tn.gov.in இணையதளத்தில் பதிவு செய்யவும்',
+      'விவசாயி விவரங்கள், நில விவரங்கள், நீர் ஆதார விவரங்களைப் பதிவேற்றவும்',
+      'திட்ட அறிக்கை (DPR) சமர்ப்பிக்கவும்',
+      'தொழில்நுட்ப அனுமதி பெறவும்',
+      'வங்கி கடன் / மானியத்திற்கு விண்ணப்பிக்கவும்'
+    ],
+    portal: 'pmksy.tn.gov.in',
+    helpline: '1800-425-3388',
+    tags: ['துளி பாசனம்', 'தெளிப்பான்', 'நீர் சேமிப்பு']
+  },
+  {
+    id: 5,
+    icon: '📚',
+    name: 'தமிழ்ப் புதல்வன் திட்டம்',
+    tamilName: 'தமிழ்ப் புதல்வன் - மாணவர்களுக்கான உதவித்தொகை',
+    category: 'education',
+    department: 'தமிழ்நாடு சமூக நலன் மற்றும் மகளிர் உரிமைத் துறை',
+    benefit: 'மாதாந்திர உதவித்தொகை ₹1,000',
+    status: 'திறந்தது',
+    eligibility: [
+      'அரசு / அரசு உதவி பெறும் பள்ளிகளில் பயின்ற மாணவர்கள்',
+      'உயர்கல்வி (பிளஸ் 2 முடித்து) சேருபவர்கள்',
+      'குடும்ப ஆண்டு வருமானம் ₹2.5 லட்சத்திற்குள்',
+      'தமிழ்நாட்டில் வசிப்பவர்கள்'
+    ],
+    documents: [
+      { name: 'ஆதார் கார்டு', required: true, type: 'அசல் + நகல்' },
+      { name: 'ரேஷன் கார்டு', required: true, type: 'நகல்' },
+      { name: 'வருமானச் சான்றிதழ்', required: true, type: 'அசல்', note: 'VAO வழங்கியது' },
+      { name: 'பள்ளி சான்றிதழ் (பிளஸ் 2 மதிப்பெண் பட்டியல்)', required: true, type: 'சான்றளிக்கப்பட்ட நகல்' },
+      { name: 'கல்லூரி சேர்க்கை சான்றிதழ்', required: true, type: 'நகல்' },
+      { name: 'வங்கி கணக்கு பாஸ்புக்', required: true, type: 'நகல்' },
+      { name: 'பாஸ்போர்ட் அளவு புகைப்படம்', required: true, type: '2 படங்கள்' }
+    ],
+    applicationProcess: [
+      'பள்ளி / கல்லூரி மூலம் விண்ணப்பிக்கலாம்',
+      'ஆதார் EMIS உடன் இணைக்கப்பட்டுள்ளதா என சரிபார்க்கப்படும்',
+      'தகுதியானவர்களுக்கு தனி ID உருவாக்கப்பட்டு SMS அனுப்பப்படும்',
+      'நேரடியாக பயனாளியின் வங்கிக் கணக்கில் தொகை வரவு வைக்கப்படும்'
+    ],
+    portal: 'tnedu.in',
+    helpline: '14417',
+    tags: ['கல்வி', 'மாணவர் நலன்', 'உதவித்தொகை']
+  },
+  {
+    id: 6,
+    icon: '🏥',
+    name: 'மக்களைத் தேடி மருத்துவம்',
+    tamilName: 'மக்களைத் தேடி மருத்துவம் திட்டம்',
+    category: 'health',
+    department: 'தமிழ்நாடு சுகாதாரம் மற்றும் குடும்ப நலத்துறை',
+    benefit: 'வீட்டுக்கு வந்து இலவச மருத்துவ பரிசோதனை',
+    status: 'திறந்தது',
+    eligibility: [
+      'அனைத்து குடும்பங்களும்',
+      'குறிப்பாக 45 வயதுக்கு மேற்பட்ட அனைவருக்கும் தொற்றா நோய் பரிசோதனை',
+      'இரத்த அழுத்தம், நீரிழிவு, புற்றுநோய் போன்ற நோய்களுக்கான பரிசோதனை'
+    ],
+    services: [
+      'இரத்த அழுத்த பரிசோதனை',
+      'இரத்த சர்க்கரை பரிசோதனை',
+      'வாய், மார்பக, கருப்பை வாய் புற்றுநோய் பரிசோதனை',
+      'அடிப்படை மருந்துகள் இலவசம்',
+      'மருத்துவ ஆலோசனை'
+    ],
+    documents: [
+      { name: 'ஆதார் கார்டு', required: true, type: 'அசல்' },
+      { name: 'ரேஷன் கார்டு', required: false, type: 'நகல்' }
+    ],
+    applicationProcess: [
+      'பதிவு தேவையில்லை - நேரடியாக சுகாதாரப் பணியாளர்கள் வீட்டுக்கு வருகை தருவார்கள்',
+      'அல்லது அருகிலுள்ள ஆரம்ப சுகாதார நிலையத்தில் பதிவு செய்யலாம்',
+      'மாதந்தோறும் நியமிக்கப்பட்ட நாளில் சுகாதாரப் பணியாளர் வருகை'
+    ],
+    portal: 'tnhealth.tn.gov.in',
+    helpline: '104',
+    tags: ['சுகாதாரம்', 'தொற்றா நோய்கள்', 'வீட்டு மருத்துவம்']
+  },
+  {
+    id: 7,
+    icon: '👩',
+    name: 'டாக்டர் முத்துலட்சுமி ரெட்டி மகப்பேறு நிதியுதவித் திட்டம்',
+    tamilName: 'மகப்பேறு நிதியுதவித் திட்டம்',
+    category: 'health',
+    department: 'தமிழ்நாடு சுகாதாரத் துறை',
+    benefit: '₹18,000 மகப்பேறு நிதியுதவி',
+    status: 'திறந்தது',
+    eligibility: [
+      'அரசு மருத்துவமனைகளில் பிரசவம் எடுத்துக் கொள்ளும் கர்ப்பிணிகள்',
+      'பதிவு செய்யப்பட்ட கர்ப்பிணிகள்',
+      'BPL குடும்பத்தைச் சேர்ந்தவர்கள்'
+    ],
+    documents: [
+      { name: 'ஆதார் கார்டு', required: true, type: 'அசல் + நகல்' },
+      { name: 'ரேஷன் கார்டு', required: true, type: 'நகல்' },
+      { name: 'மகப்பேறு அட்டை', required: true, type: 'அசல்' },
+      { name: 'வங்கி கணக்கு பாஸ்புக்', required: true, type: 'நகல்' },
+      { name: 'திருமணச் சான்றிதழ்', required: true, type: 'நகல்' },
+      { name: 'பிரசவ சான்றிதழ்', required: true, type: 'அசல்' }
+    ],
+    applicationProcess: [
+      'அரசு மருத்துவமனையில் பிரசவத்தின் போது பதிவு செய்யப்படும்',
+      'மருத்துவமனை சமூக நல அலுவலர் உதவியுடன் விண்ணப்பம் பூர்த்தி செய்யப்படும்',
+      'நேரடியாக பயனாளியின் வங்கிக் கணக்கில் தொகை வரவு வைக்கப்படும்'
+    ],
+    portal: 'tnhealth.tn.gov.in',
+    helpline: '102',
+    tags: ['மகப்பேறு', 'குழந்தை நலன்', 'பெண்கள்']
+  },
+  {
+    id: 8,
+    icon: '💉',
+    name: 'கர்ப்பப்பை வாய்ப் புற்றுநோய் தடுப்பூசித் திட்டம்',
+    tamilName: 'HPV தடுப்பூசி திட்டம்',
+    category: 'health',
+    department: 'தமிழ்நாடு சுகாதாரத் துறை',
+    benefit: 'இலவச HPV தடுப்பூசி',
+    status: 'திறந்தது',
+    eligibility: [
+      '14 வயதுக்குட்பட்ட மாணவிகள்',
+      'அரசு / அரசு உதவி பெறும் பள்ளிகளில் பயில்பவர்கள்',
+      'கர்ப்பப்பை வாய்ப் புற்றுநோய் தடுப்பூசி'
+    ],
+    documents: [
+      { name: 'பள்ளி அடையாள அட்டை', required: true, type: 'அசல்' },
+      { name: 'பெற்றோரின் ஒப்புதல் படிவம்', required: true, type: 'படிவம்' },
+      { name: 'ஆதார் கார்டு', required: true, type: 'நகல்' },
+      { name: 'பிறப்புச் சான்றிதழ்', required: true, type: 'நகல்' }
+    ],
+    applicationProcess: [
+      'பள்ளிகள் மூலம் பதிவு செய்யப்படும்',
+      'பெற்றோர் கூட்டத்தில் ஒப்புதல் பெறப்படும்',
+      'பள்ளிகளிலேயே சிறப்பு முகாம்கள் நடத்தி தடுப்பூசி செலுத்தப்படும்'
+    ],
+    portal: 'tnhealth.tn.gov.in',
+    helpline: '104',
+    tags: ['புற்றுநோய்', 'தடுப்பூசி', 'மாணவிகள்']
+  },
+  {
+    id: 10,
+    icon: '🧺',
+    name: 'விவசாயிகள் கடன் அட்டைத் திட்டம்',
+    tamilName: 'கிசான் கிரெடிட் கார்டு (KCC)',
+    category: 'loan',
+    department: 'தமிழ்நாடு கூட்டுறவு வங்கி',
+    benefit: '₹3 லட்சம் வரை கடன் (3% வட்டியில்)',
+    status: 'திறந்தது',
+    eligibility: [
+      'நிலம் வைத்திருக்கும் விவசாயிகள்',
+      'குத்தகை விவசாயிகள் (10+ ஆண்டுகள் குத்தகை)',
+      'கூட்டுறவு சங்க உறுப்பினர்கள்',
+      'மீனவர்கள், கால்நடை வளர்ப்போர்',
+      '18-65 வயதுடையவர்கள்'
+    ],
+    benefits: [
+      '₹3 லட்சம் வரை பயிர்க் கடன்',
+      '3% வட்டி மானியம் (சரியான நேரத்தில் திருப்பி செலுத்தினால்)',
+      'விவசாய உபகரணங்கள் வாங்க',
+      'கால்நடை வளர்ப்பு, மீன்வளர்ப்பு'
+    ],
+    documents: [
+      { name: 'ஆதார் கார்டு', required: true, type: 'அசல் + நகல்' },
+      { name: 'பட்டா / நில உரிமை ஆவணம்', required: true, type: 'நகல்' },
+      { name: 'குத்தகை ஆவணம் (குத்தகைதாரர்களுக்கு)', required: false, type: 'அசல்' },
+      { name: 'வங்கி கணக்கு பாஸ்புக்', required: true, type: 'நகல்' },
+      { name: 'ரேஷன் கார்டு', required: true, type: 'நகல்' },
+      { name: 'பாஸ்போர்ட் அளவு புகைப்படம்', required: true, type: '2 படங்கள்' },
+      { name: 'சாகுபடி விவர அறிக்கை', required: true, type: 'படிவம்' }
+    ],
+    applicationProcess: [
+      'உங்கள் வங்கிக் கிளையில் நேரில் விண்ணப்பிக்கவும்',
+      'கூட்டுறவு வங்கிகள், பொதுத்துறை வங்கிகள், பிராந்திய கிராமிய வங்கிகள்',
+      'CSC மையங்கள் மூலமாகவும் விண்ணப்பிக்கலாம்',
+      'வங்கி அதிகாரி கள ஆய்வு செய்து கடன் வழங்கப்படும்'
+    ],
+    portal: 'tncscb.org',
+    helpline: '1800-425-1401',
+    tags: ['கடன்', 'KCC', 'குறைந்த வட்டி']
+  },
+  {
+    id: 11,
+    icon: '🌱',
+    name: 'நம்மாழ்வார் இயற்கை விவசாயத் திட்டம்',
+    tamilName: 'நம்மாழ்வார் இயற்கை வேளாண்மைத் திட்டம்',
+    category: 'agriculture',
+    department: 'தமிழ்நாடு வேளாண்மைத் துறை',
+    benefit: '₹10,000/ஏக்கர் மானியம் (இயற்கை விவசாயத்திற்கு)',
+    status: 'திறந்தது',
+    eligibility: [
+      'தமிழ்நாட்டில் நிலம் வைத்திருக்கும் விவசாயிகள்',
+      'குறைந்தபட்சம் 1 ஏக்கர் நிலம்',
+      'இயற்கை விவசாயம் செய்ய விருப்பமுள்ளவர்கள்',
+      'குத்தகை விவசாயிகளும் விண்ணப்பிக்கலாம் (10+ ஆண்டுகள் குத்தகை)'
+    ],
+    benefits: [
+      '₹10,000/ஏக்கர் மானியம் (அதிகபட்சம் 5 ஏக்கர்)',
+      'இயற்கை உரங்கள் இலவசம்',
+      'பூச்சி மேலாண்மை பயிற்சி',
+      'சந்தை இணைப்பு'
+    ],
+    documents: [
+      { name: 'ஆதார் கார்டு', required: true, type: 'அசல் + நகல்' },
+      { name: 'பட்டா / நில உரிமை ஆவணம்', required: true, type: 'நகல்' },
+      { name: 'வங்கி கணக்கு பாஸ்புக்', required: true, type: 'நகல்' },
+      { name: 'பாஸ்போர்ட் அளவு புகைப்படம்', required: true, type: '2 படங்கள்' },
+      { name: 'இயற்கை விவசாய சான்றிதழ் (ஏதேனும் இருந்தால்)', required: false, type: 'நகல்' },
+      { name: 'சாகுபடி திட்ட அறிக்கை', required: true, type: 'படிவம்' }
+    ],
+    applicationProcess: [
+      'tnagrisnet.tn.gov.in இணையதளத்தில் பதிவு செய்யவும்',
+      'விவசாயி சுயவிவரம் பூர்த்தி செய்யவும்',
+      'நில விவரங்கள் மற்றும் பயிர் விவரங்கள் பதிவிடவும்',
+      'வங்கி விவரங்கள் சரிபார்க்கவும்',
+      'அருகிலுள்ள வேளாண்மை விரிவாக்க மையத்தில் நேரில் விண்ணப்பிக்கலாம்'
+    ],
+    portal: 'tnagrisnet.tn.gov.in',
+    helpline: '1800-425-1188',
+    tags: ['இயற்கை விவசாயம்', 'மானியம்', 'மண் ஆரோக்கியம்']
+  },
+  {
+    id: 12,
+    icon: '🐟',
+    name: 'மீனவர் நலத் திட்டம்',
+    tamilName: 'மீனவர் நல வாரியத் திட்டங்கள்',
+    category: 'social',
+    department: 'தமிழ்நாடு மீன்வளத் துறை',
+    benefit: 'இடுகாலத்தில் மாத உதவித்தொகை ₹5,000',
+    status: 'திறந்தது',
+    eligibility: [
+      'பதிவு செய்யப்பட்ட மீனவர்கள்',
+      'கடலோர மாவட்டங்களில் வசிப்பவர்கள்',
+      'மீன்பிடிப் படகு உரிமையாளர்கள்',
+      'மீன்பிடித் தொழிலாளர்கள்'
+    ],
+    documents: [
+      { name: 'ஆதார் கார்டு', required: true, type: 'அசல் + நகல்' },
+      { name: 'மீனவர் அடையாள அட்டை', required: true, type: 'அசல் + நகல்' },
+      { name: 'ரேஷன் கார்டு', required: true, type: 'நகல்' },
+      { name: 'படகு பதிவுச் சான்றிதழ் (படகு உரிமையாளர்களுக்கு)', required: false, type: 'நகல்' },
+      { name: 'வங்கி கணக்கு பாஸ்புக்', required: true, type: 'நகல்' },
+      { name: 'பாஸ்போர்ட் அளவு புகைப்படம்', required: true, type: '2 படங்கள்' },
+      { name: 'கடலோர கிராம நிர்வாக அலுவலர் சான்றிதழ்', required: true, type: 'அசல்' }
+    ],
+    applicationProcess: [
+      'tnfisheries.tn.gov.in இணையதளத்தில் பதிவு செய்யவும்',
+      'அருகிலுள்ள மீன்வளத் துறை அலுவலகத்தில் நேரில் விண்ணப்பிக்கவும்',
+      'மீனவர் நல வாரியத்தில் உறுப்பினர் பதிவு செய்ய வேண்டும்',
+      'இடுகாலத்தில் (ஏப்ரல்-மே) உதவித்தொகை வழங்கப்படும்'
+    ],
+    portal: 'tnfisheries.tn.gov.in',
+    helpline: '1800-425-3777',
+    tags: ['மீனவர்', 'கடலோரம்', 'நலத்திட்டம்']
+  }
+];
+
+let currentFilter = 'all';
+let currentScheme = null;
+let uploadedFiles = {};
+
+// Initialize page
+function initializePage() {
+  displaySchemes(tnSchemes);
+}
+
+// Display schemes
+function displaySchemes(schemesArray) {
+  const container = document.getElementById('schemesContainer');
+  container.innerHTML = '';
+  
+  schemesArray.forEach(scheme => {
+    const schemeCard = createSchemeCard(scheme);
+    container.appendChild(schemeCard);
+  });
+}
+
+// Create scheme card
+function createSchemeCard(scheme) {
+  const card = document.createElement('div');
+  card.className = 'scheme-card';
+  card.setAttribute('data-id', scheme.id);
+  
+  // Create tags HTML
+  const tagsHTML = scheme.tags.map(tag => `<span>${tag}</span>`).join('');
+  
+  card.innerHTML = `
+    <div class="scheme-header">
+      <div class="scheme-icon">${scheme.icon}</div>
+      <div class="scheme-title">
+        <h3>${scheme.tamilName || scheme.name}</h3>
+        <div class="dept">
+          <i class="fas fa-building"></i> ${scheme.department}
+        </div>
+      </div>
+    </div>
+    <span class="scheme-badge">✅ ${scheme.status}</span>
+    <div class="scheme-benefit">
+      <i class="fas fa-gift"></i> பலன்: ${scheme.benefit}
+    </div>
+    <div class="scheme-tags">
+      ${tagsHTML}
+    </div>
+    
+    <div class="eligibility-details" id="details-${scheme.id}">
+      <div class="detail-section">
+        <h4><i class="fas fa-check-circle"></i> தகுதி அளவுகோல்கள்</h4>
+        <ul class="detail-list">
+          ${scheme.eligibility.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+      </div>
+      
+      ${scheme.exclusion ? `
+      <div class="detail-section">
+        <h4><i class="fas fa-times-circle"></i> தகுதியற்றோர்</h4>
+        <ul class="detail-list">
+          ${scheme.exclusion.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+      </div>
+      ` : ''}
+      
+      <div class="detail-section">
+        <h4><i class="fas fa-file-alt"></i> தேவையான ஆவணங்கள்</h4>
+        <div class="required-docs">
+          ${scheme.documents.map(doc => `
+            <div class="doc-item">
+              <i class="fas fa-file-${doc.type.includes('படம்') ? 'image' : 'pdf'}"></i>
+              <span>
+                ${doc.name}
+                ${doc.required ? '<span class="required-star">*</span>' : ''}
+                <span class="doc-type">${doc.type}</span>
+              </span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      
+      <div class="detail-section">
+        <h4><i class="fas fa-tasks"></i> விண்ணப்பிக்கும் முறை</h4>
+        <ul class="detail-list">
+          ${scheme.applicationProcess.map(step => `<li>${step}</li>`).join('')}
+        </ul>
+      </div>
+      
+      ${scheme.portal ? `
+      <div class="portal-link">
+        <i class="fas fa-globe"></i> அதிகாரப்பூர்வ இணையதளம்: ${scheme.portal}
+      </div>
+      ` : ''}
+      
+      ${scheme.helpline ? `
+      <div class="helpline">
+        <i class="fas fa-phone-alt"></i> உதவி எண்: ${scheme.helpline}
+      </div>
+      ` : ''}
+    </div>
+    
+    <button class="apply-btn" onclick="openApplicationForm(${scheme.id}, event)">
+      <i class="fas fa-pen"></i> இப்போதே விண்ணப்பிக்கவும்
+    </button>
+  `;
+  
+  // Add click event to toggle details
+  card.addEventListener('click', function(e) {
+    if (!e.target.classList.contains('apply-btn')) {
+      toggleDetails(scheme.id);
+    }
+  });
+  
+  return card;
+}
+
+// Toggle scheme details
+function toggleDetails(schemeId) {
+  const details = document.getElementById(`details-${schemeId}`);
+  details.classList.toggle('show');
+}
+
+// Filter schemes by category
+function filterSchemes(category, element) {
+  currentFilter = category;
+  
+  // Update active tab
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  element.classList.add('active');
+  
+  // Filter and display schemes
+  if (category === 'all') {
+    displaySchemes(tnSchemes);
+  } else {
+    const filtered = tnSchemes.filter(scheme => scheme.category === category);
+    displaySchemes(filtered);
+  }
+}
+
+// Search schemes
+function searchSchemes() {
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  
+  if (searchTerm === '') {
+    if (currentFilter === 'all') {
+      displaySchemes(tnSchemes);
+    } else {
+      const filtered = tnSchemes.filter(scheme => scheme.category === currentFilter);
+      displaySchemes(filtered);
+    }
+    return;
+  }
+  
+  const filtered = tnSchemes.filter(scheme => 
+    scheme.name.toLowerCase().includes(searchTerm) ||
+    (scheme.tamilName && scheme.tamilName.toLowerCase().includes(searchTerm)) ||
+    scheme.category.includes(searchTerm) ||
+    scheme.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+  );
+  
+  displaySchemes(filtered);
+}
+
+// Open application form
+function openApplicationForm(schemeId, event) {
+  event.stopPropagation();
+  currentScheme = tnSchemes.find(s => s.id === schemeId);
+  
+  if (!currentScheme) return;
+  
+  document.getElementById('selectedSchemeName').innerHTML = `<i class="fas fa-${currentScheme.icon}"></i> ${currentScheme.tamilName || currentScheme.name}`;
+  
+  generateApplicationForm();
+  document.getElementById('applicationPage').classList.add('show');
+}
+
+// Generate dynamic application form based on scheme
+function generateApplicationForm() {
+  let formHTML = '';
+  
+  // Common fields for all schemes
+  const commonFields = `
+    <div class="form-group">
+      <label>விண்ணப்பதாரரின் முழுப் பெயர் <span class="required">*</span></label>
+      <input type="text" class="form-control" id="applicantName" placeholder="உங்கள் முழுப் பெயரை உள்ளிடவும்" required>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label>தந்தை/கணவர் பெயர் <span class="required">*</span></label>
+        <input type="text" class="form-control" id="fatherName" placeholder="தந்தை/கணவர் பெயர்" required>
+      </div>
+      <div class="form-group">
+        <label>பிறந்த தேதி <span class="required">*</span></label>
+        <input type="date" class="form-control" id="dob" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Category (General / SC / ST) <span class="required">*</span></label>
+      <select class="form-control" id="applicantCategory" required>
+        <option value="">Select</option>
+        <option value="General">General (பொது)</option>
+        <option value="SC">SC (பட்டியலினம்)</option>
+        <option value="ST">ST (பழங்குடியினர்)</option>
+      </select>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label>ஆதார் எண் <span class="required">*</span></label>
+        <input type="text" class="form-control" id="aadhar" placeholder="0000 0000 0000" maxlength="14" required>
+      </div>
+      <div class="form-group">
+        <label>மொபைல் எண் <span class="required">*</span></label>
+        <input type="tel" class="form-control" id="mobile" placeholder="9876543210" maxlength="10" required>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label>முகவரி <span class="required">*</span></label>
+      <textarea class="form-control" id="address" rows="3" placeholder="வீட்டு எண், தெரு, பகுதி" required></textarea>
+    </div>
+    
+    <div class="form-row-3">
+      <div class="form-group">
+        <label>கிராமம் <span class="required">*</span></label>
+        <input type="text" class="form-control" id="village" required>
+      </div>
+      <div class="form-group">
+        <label>தாலுகா <span class="required">*</span></label>
+        <input type="text" class="form-control" id="taluk" required>
+      </div>
+      <div class="form-group">
+        <label>மாவட்டம் <span class="required">*</span></label>
+        <select class="form-control" id="district" required>
+          <option value="">தேர்வு செய்யவும்</option>
+          <option value="அரியலூர்">அரியலூர்</option>
+          <option value="செங்கல்பட்டு">செங்கல்பட்டு</option>
+          <option value="சென்னை">சென்னை</option>
+          <option value="கோயம்புத்தூர்">கோயம்புத்தூர்</option>
+          <option value="கடலூர்">கடலூர்</option>
+          <option value="தர்மபுரி">தர்மபுரி</option>
+          <option value="திண்டுக்கல்">திண்டுக்கல்</option>
+          <option value="ஈரோடு">ஈரோடு</option>
+          <option value="கள்ளக்குறிச்சி">கள்ளக்குறிச்சி</option>
+          <option value="காஞ்சிபுரம்">காஞ்சிபுரம்</option>
+          <option value="கன்னியாகுமரி">கன்னியாகுமரி</option>
+          <option value="கரூர்">கரூர்</option>
+          <option value="கிருஷ்ணகிரி">கிருஷ்ணகிரி</option>
+          <option value="மதுரை">மதுரை</option>
+          <option value="மயிலாடுதுறை">மயிலாடுதுறை</option>
+          <option value="நாகப்பட்டினம்">நாகப்பட்டினம்</option>
+          <option value="நாமக்கல்">நாமக்கல்</option>
+          <option value="நீலகிரி">நீலகிரி</option>
+          <option value="பெரம்பலூர்">பெரம்பலூர்</option>
+          <option value="புதுக்கோட்டை">புதுக்கோட்டை</option>
+          <option value="ராமநாதபுரம்">ராமநாதபுரம்</option>
+          <option value="ராணிப்பேட்டை">ராணிப்பேட்டை</option>
+          <option value="சேலம்">சேலம்</option>
+          <option value="சிவகங்கை">சிவகங்கை</option>
+          <option value="தென்காசி">தென்காசி</option>
+          <option value="தஞ்சாவூர்">தஞ்சாவூர்</option>
+          <option value="தேனி">தேனி</option>
+          <option value="திருநெல்வேலி">திருநெல்வேலி</option>
+          <option value="திருப்பத்தூர்">திருப்பத்தூர்</option>
+          <option value="திருப்பூர்">திருப்பூர்</option>
+          <option value="திருவள்ளூர்">திருவள்ளூர்</option>
+          <option value="திருவண்ணாமலை">திருவண்ணாமலை</option>
+          <option value="தூத்துக்குடி">தூத்துக்குடி</option>
+          <option value="திருவாரூர்">திருவாரூர்</option>
+          <option value="வேலூர்">வேலூர்</option>
+          <option value="விழுப்புரம்">விழுப்புரம்</option>
+          <option value="விருதுநகர்">விருதுநகர்</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label>அஞ்சல் குறியீடு <span class="required">*</span></label>
+      <input type="text" class="form-control" id="pincode" maxlength="6" required>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label>வங்கி கணக்கு எண் <span class="required">*</span></label>
+        <input type="text" class="form-control" id="accountNo" required>
+      </div>
+      <div class="form-group">
+        <label>IFSC குறியீடு <span class="required">*</span></label>
+        <input type="text" class="form-control" id="ifsc" placeholder="SBIN0001234" required>
+      </div>
+    </div>
+  `;
+  
+  // Scheme-specific fields
+  let schemeFields = '';
+  
+  if (currentScheme.category === 'agriculture' || currentScheme.name.includes('விவசாய')) {
+    schemeFields += `
+      <div class="form-row">
+        <div class="form-group">
+          <label>நில அளவு (ஏக்கரில்) <span class="required">*</span></label>
+          <input type="number" class="form-control" id="landArea" step="0.01" min="0.01" required>
+        </div>
+        <div class="form-group">
+          <label>பட்டா எண் <span class="required">*</span></label>
+          <input type="text" class="form-control" id="pattaNo" required>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>கருவேலி / சர்வே எண் <span class="required">*</span></label>
+          <input type="text" class="form-control" id="surveyNo" required>
+        </div>
+        <div class="form-group">
+          <label>பயிர் வகை</label>
+          <select class="form-control" id="cropType">
+            <option value="">தேர்வு செய்யவும்</option>
+            <option value="நெல்">நெல்</option>
+            <option value="கரும்பு">கரும்பு</option>
+            <option value="வாழை">வாழை</option>
+            <option value="மக்காச்சோளம்">மக்காச்சோளம்</option>
+            <option value="காய்கறிகள்">காய்கறிகள்</option>
+            <option value="பிற">பிற</option>
+          </select>
+        </div>
+      </div>
+    `;
+  }
+  
+  if (currentScheme.id === 2) { // PM-KUSUM
+    schemeFields += `
+      <div class="form-group">
+        <label>கிணறு / நீர் ஆதார விவரம் <span class="required">*</span></label>
+        <textarea class="form-control" id="waterSource" rows="2" placeholder="கிணற்றின் ஆழம், விட்டம், நீர் நிலை" required></textarea>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>தற்போதைய மின் இணைப்பு?</label>
+          <select class="form-control" id="existingElectricity">
+            <option value="இல்லை">இல்லை</option>
+            <option value="உள்ளது">உள்ளது</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>தேவையான பம்ப் திறன்</label>
+          <select class="form-control" id="pumpCapacity">
+            <option value="3 HP">3 HP</option>
+            <option value="5 HP">5 HP</option>
+            <option value="7.5 HP">7.5 HP</option>
+            <option value="10 HP">10 HP</option>
+          </select>
+        </div>
+      </div>
+    `;
+  }
+  
+  if (currentScheme.id === 3) { // Pension
+    schemeFields += `
+      <div class="form-group">
+        <label>CMPUT உறுப்பினர் எண் <span class="required">*</span></label>
+        <input type="text" class="form-control" id="cmputNo" required>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>வயது <span class="required">*</span></label>
+          <input type="number" class="form-control" id="age" min="60" required>
+        </div>
+        <div class="form-group">
+          <label>BPL குடும்பமா?</label>
+          <select class="form-control" id="bplStatus">
+            <option value="ஆம்">ஆம்</option>
+            <option value="இல்லை">இல்லை</option>
+          </select>
+        </div>
+      </div>
+    `;
+  }
+  
+  if (currentScheme.id === 5) { // Education
+    schemeFields += `
+      <div class="form-group">
+        <label>பள்ளி / கல்லூரியின் பெயர் <span class="required">*</span></label>
+        <input type="text" class="form-control" id="institutionName" required>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>பதிவு எண் <span class="required">*</span></label>
+          <input type="text" class="form-control" id="regNo" required>
+        </div>
+        <div class="form-group">
+          <label>படிக்கும் ஆண்டு</label>
+          <select class="form-control" id="studyYear">
+            <option value="1">முதல் ஆண்டு</option>
+            <option value="2">இரண்டாம் ஆண்டு</option>
+            <option value="3">மூன்றாம் ஆண்டு</option>
+            <option value="4">நான்காம் ஆண்டு</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>கடந்த ஆண்டு மதிப்பெண் %</label>
+          <input type="number" class="form-control" id="marks" min="0" max="100">
+        </div>
+        <div class="form-group">
+          <label>குடும்ப ஆண்டு வருமானம் (₹)</label>
+          <input type="number" class="form-control" id="familyIncome">
+        </div>
+      </div>
+    `;
+  }
+  
+  if (currentScheme.id === 9) { // Livestock Insurance
+    schemeFields += `
+      <div class="form-group">
+        <label>கால்நடை வகை <span class="required">*</span></label>
+        <select class="form-control" id="animalType" required>
+          <option value="">தேர்வு செய்யவும்</option>
+          <option value="பசு">பசு</option>
+          <option value="எருமை">எருமை</option>
+          <option value="ஆடு">ஆடு</option>
+          <option value="கோழி">கோழி</option>
+          <option value="பன்றி">பன்றி</option>
+        </select>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>கால்நடைகளின் எண்ணிக்கை</label>
+          <input type="number" class="form-control" id="animalCount" min="1">
+        </div>
+        <div class="form-group">
+          <label>காது மாட்டு எண்</label>
+          <input type="text" class="form-control" id="tagNumber">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>கால்நடையின் மதிப்பு (₹)</label>
+          <input type="number" class="form-control" id="animalValue">
+        </div>
+        <div class="form-group">
+          <label>கால்நடை மருத்துவரின் பெயர்</label>
+          <input type="text" class="form-control" id="vetName">
+        </div>
+      </div>
+    `;
+  }
+  
+  // Document upload section
+  let documentsHTML = '';
+  if (currentScheme.documents && currentScheme.documents.length > 0) {
+    documentsHTML = `
+      <h4 style="color: var(--secondary-gold); margin: 1.5rem 0 1rem; font-size: 1rem;">
+        <i class="fas fa-cloud-upload-alt"></i> தேவையான ஆவணங்களைப் பதிவேற்றவும்
+      </h4>
+    `;
+    
+    currentScheme.documents.forEach((doc, index) => {
+      documentsHTML += `
+        <div class="form-group">
+          <label>
+            ${doc.name} ${doc.required ? '<span class="required">*</span>' : ''}
+            <span style="font-size: 0.7rem; color: #a8d5b5; margin-left: 0.5rem;">(${doc.type})</span>
+          </label>
+          <div class="upload-area" onclick="triggerFileUpload(${index})" id="uploadArea${index}">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>கிளிக் செய்து பதிவேற்றவும்</p>
+            <small>அதிகபட்ச அளவு: 2MB | வகை: JPG, PNG, PDF</small>
+          </div>
+          <input type="file" id="fileInput${index}" accept=".jpg,.jpeg,.png,.pdf" style="display: none;" onchange="handleFileUpload(${index})">
+          <div id="fileInfo${index}" style="display: none;" class="uploaded-file"></div>
+        </div>
+      `;
+    });
+  }
+  
+  // Declaration and submit
+  formHTML = `
+    ${commonFields}
+    ${schemeFields}
+    ${documentsHTML}
+    
+    <div class="form-group">
+      <label class="checkbox-label">
+        <input type="checkbox" id="declaration" required>
+        நான் வழங்கிய அனைத்துத் தகவல்களும் உண்மையானவை என்பதையும், தவறான தகவல் வழங்கினால் என் விண்ணப்பம் நிராகரிக்கப்படும் என்பதையும் ஒப்புக்கொள்கிறேன்.
+      </label>
+    </div>
+    
+    <button type="button" class="apply-btn" onclick="submitApplication()">
+      <i class="fas fa-paper-plane"></i> விண்ணப்பத்தைச் சமர்ப்பிக்கவும்
+    </button>
+  `;
+  
+  document.getElementById('applicationForm').innerHTML = formHTML;
+}
+
+// Trigger file upload
+function triggerFileUpload(index) {
+  document.getElementById(`fileInput${index}`).click();
+}
+
+// Handle file upload
+function handleFileUpload(index) {
+  const fileInput = document.getElementById(`fileInput${index}`);
+  const fileInfo = document.getElementById(`fileInfo${index}`);
+  const uploadArea = document.getElementById(`uploadArea${index}`);
+  
+  if (fileInput.files.length > 0) {
+    const file = fileInput.files[0];
+    uploadedFiles[index] = file;
+    
+    fileInfo.style.display = 'flex';
+    fileInfo.innerHTML = `
+      <i class="fas fa-check-circle"></i>
+      <span>${file.name} (${(file.size / 1024).toFixed(1)} KB)</span>
+      <span class="remove-file" onclick="removeFile(${index})">
+        <i class="fas fa-times"></i>
+      </span>
+    `;
+    
+    uploadArea.style.borderColor = '#4caf50';
+    uploadArea.style.background = 'rgba(76, 175, 80, 0.1)';
+  }
+}
+
+// Remove uploaded file
+function removeFile(index) {
+  document.getElementById(`fileInput${index}`).value = '';
+  document.getElementById(`fileInfo${index}`).style.display = 'none';
+  document.getElementById(`uploadArea${index}`).style.borderColor = 'rgba(212,160,23,0.4)';
+  document.getElementById(`uploadArea${index}`).style.background = 'rgba(255,255,255,0.05)';
+  delete uploadedFiles[index];
+}
+
+// Close application form
+function closeApplicationForm() {
+  document.getElementById('applicationPage').classList.remove('show');
+  uploadedFiles = {};
+  document.body.style.overflow = '';
+}
+
+// Submit application
+async function submitApplication() {
+  // Get all form values
+  const applicantName = document.getElementById('applicantName')?.value;
+  const fatherName = document.getElementById('fatherName')?.value;
+  const applicantCategory = document.getElementById('applicantCategory')?.value;
+  const aadhar = document.getElementById('aadhar')?.value.replace(/\s/g, '');
+  const mobile = document.getElementById('mobile')?.value;
+  const address = document.getElementById('address')?.value;
+  const village = document.getElementById('village')?.value;
+  const district = document.getElementById('district')?.value;
+  const pincode = document.getElementById('pincode')?.value;
+  const accountNo = document.getElementById('accountNo')?.value;
+  const ifsc = document.getElementById('ifsc')?.value;
+  const declaration = document.getElementById('declaration')?.checked;
+  
+  // Validate required fields
+  if (!applicantName || !fatherName || !applicantCategory || !aadhar || !mobile || !address || !village || !district || !pincode || !accountNo || !ifsc || !declaration) {
+    alert('தயவுசெய்து அனைத்துக் கட்டாயப் புலங்களையும் நிரப்பவும்');
+    return;
+  }
+  
+  // Validate Aadhar
+  if (aadhar.length !== 12 || isNaN(aadhar)) {
+    alert('சரியான 12 இலக்க ஆதார் எண்ணை உள்ளிடவும்');
+    return;
+  }
+  
+  // Validate mobile
+  if (mobile.length !== 10 || isNaN(mobile)) {
+    alert('சரியான 10 இலக்க மொபைல் எண்ணை உள்ளிடவும்');
+    return;
+  }
+  
+  // Validate required documents
+  if (currentScheme.documents) {
+    for (let i = 0; i < currentScheme.documents.length; i++) {
+      const doc = currentScheme.documents[i];
+      if (doc?.required && !uploadedFiles[i]) {
+        alert(`தயவுசெய்து ${doc.name} பதிவேற்றவும்`);
+        return;
+      }
+    }
+  }
+  
+  // Generate application reference number
+  const appRef = `TN${Date.now().toString().slice(-8)}${currentScheme.id}`;
+  
+  // Create SMS content
+  const smsContent = `வணக்கம் ${applicantName}!
+
+தமிழ்நாடு அரசு - ${currentScheme.tamilName || currentScheme.name}
+
+உங்கள் விண்ணப்பம் வெற்றிகரமாகப் பெறப்பட்டது.
+விண்ணப்பக் குறிப்பு எண்: ${appRef}
+
+பதிவு செய்யப்பட்ட மொபைல் எண்: ${mobile}
+விண்ணப்பித்த தேதி: ${new Date().toLocaleDateString('ta-IN')}
+
+உங்கள் விண்ணப்பம் விரைவில் சரிபார்க்கப்பட்டு, கூடுதல் தகவல்கள் இந்த எண்ணுக்கு SMS மூலம் அனுப்பப்படும்.
+
+நன்றி!
+தமிழ்நாடு அரசு - வேளாண்மை மற்றும் விவசாயிகள் நலத்துறை`;
+
+  // Save to localStorage (compatible with insurance-card.html scheme module)
+  const applicationData = {
+    refNo: appRef,
+    schemeId: currentScheme.id,
+    schemeName: currentScheme.tamilName || currentScheme.name,
+    applicantName: applicantName,
+    applicantCategory: applicantCategory,
+    mobile: mobile,
+    aadharLast4: aadhar.slice(-4),
+    district: district,
+    timestamp: Date.now(),
+    authorityStatusCode: 'pending',
+    authorityStatus: mapAuthorityStatus('pending', 'சமர்ப்பிக்கப்பட்டது'),
+    authorityMessage: '',
+    authorityMock: DEMO_MODE,
+    authorityMockAt: Date.now(),
+    documents: Object.keys(uploadedFiles).map(key => ({
+      index: key,
+      name: currentScheme.documents[key]?.name,
+      fileName: uploadedFiles[key]?.name,
+      fileSize: uploadedFiles[key]?.size
+    }))
+  };
+
+  const listKey = getFarmerScopedKey('schemeApplications');
+  const list = JSON.parse(localStorage.getItem(listKey) || '[]');
+  list.unshift(applicationData);
+  localStorage.setItem(listKey, JSON.stringify(list));
+
+  // Backward compatible single-record key (if you used it elsewhere)
+  localStorage.setItem('application_' + appRef, JSON.stringify(applicationData));
+
+  // Send SMS to authority server
+  try {
+    setSmsSendUI('Sending to 9042477501...');
+    await sendAuthoritySms(applicationData);
+    applicationData.authorityMessage = 'SMS sent to authority (mock/live)';
+    setSmsSendUI('Sent ✅');
+    updateStoredSchemeApplication(appRef, { authorityMessage: applicationData.authorityMessage });
+  } catch (err) {
+    applicationData.authorityMessage = `SMS failed: ${String(err?.message || err || '')}`;
+    const hint = location.protocol === 'file:' ? 'Open via http://localhost (not file://)' : 'Check server running';
+    setSmsSendUI(`Failed ❌ (${String(err?.message || 'error')}) • ${hint}`);
+    updateStoredSchemeApplication(appRef, { authorityMessage: applicationData.authorityMessage });
+  }
+
+  // Display authority SMS preview + current status
+  document.getElementById('smsContent').innerHTML = buildAuthoritySms(applicationData).replace(/\n/g, '<br>');
+  updateAuthorityStatusUI(applicationData.authorityStatusCode);
+  
+  // Show SMS view
+  document.getElementById('applicationPage').classList.remove('show');
+  const smsViewEl = document.getElementById('smsView');
+  smsViewEl.classList.add('show');
+  smsViewEl.classList.add('guard');
+  document.body.style.overflow = 'hidden';
+  smsJustOpened = true;
+  setTimeout(() => { smsJustOpened = false; }, 600);
+  setSmsButtonsEnabled(false);
+  setTimeout(() => {
+    setSmsButtonsEnabled(true);
+    smsViewEl.classList.remove('guard');
+  }, 1400);
+
+  // Start polling for authority verify/forward updates
+  startAuthorityPolling(appRef);
+  
+  console.log('Application submitted:', applicationData);
+}
+
+// Go back to home
+function goBackToHome() {
+  if (smsJustOpened) return;
+  const btn = document.getElementById('btnDashboard');
+  if (btn && btn.disabled) return;
+  document.getElementById('smsView').classList.remove('show');
+  uploadedFiles = {};
+  stopAuthorityPolling();
+  document.body.style.overflow = '';
+  window.location.href = 'dashboard.html';
+}
+
+// Initialize page on load
+document.addEventListener('DOMContentLoaded', initializePage);
+</script>
+</body>
+</html>

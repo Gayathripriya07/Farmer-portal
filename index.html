@@ -1,0 +1,459 @@
+﻿<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>விவசாயி இணையம்</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Tamil:ital@0;1&family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{
+    --green:#1a6b2f;--gold:#2e7d32;--cream:#ffffff;--dark:#f3fbf4;
+  }
+  body{font-family:'Poppins',sans-serif;background:#f3fbf4;overflow-x:hidden;overflow-y:auto;min-height:100vh;-webkit-overflow-scrolling:touch;}
+
+  /* SPLASH SCREEN */
+  #splash{
+    position:fixed;inset:0;z-index:100;
+    background:linear-gradient(135deg,#f3fbf4 0%,#1a6b2f 50%,#f3fbf4 100%);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    animation:splashFade 0.5s ease 2.5s forwards;
+  }
+  @keyframes splashFade{to{opacity:0;pointer-events:none;}}
+
+  .splash-img-wrap{
+    width:220px;height:220px;border-radius:50%;
+    border:6px solid var(--gold);
+    overflow:hidden;
+    box-shadow:0 0 60px rgba(46,125,50,0.5);
+    animation:splashPop 0.8s cubic-bezier(.34,1.56,.64,1) forwards;
+    opacity:0;transform:scale(0.5);
+  }
+  @keyframes splashPop{to{opacity:1;transform:scale(1);}}
+  .splash-img-wrap img{width:100%;height:100%;object-fit:cover;}
+
+  .splash-title{
+    color:var(--gold);font-size:2.2rem;font-weight:900;margin-top:1.5rem;
+    font-family:'Tiro Tamil',serif;letter-spacing:2px;
+    animation:fadeUp 0.8s ease 0.5s forwards;opacity:0;transform:translateY(20px);
+  }
+  .splash-sub{
+    color:#2f6d3a;font-size:1rem;margin-top:0.5rem;
+    animation:fadeUp 0.8s ease 0.8s forwards;opacity:0;transform:translateY(20px);
+  }
+  .splash-bar{
+    width:200px;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;
+    margin-top:2rem;overflow:hidden;
+    animation:fadeUp 0.8s ease 1s forwards;opacity:0;
+  }
+  .splash-bar-fill{
+    height:100%;width:0;background:var(--gold);border-radius:2px;
+    animation:barFill 2s ease 1s forwards;
+  }
+  @keyframes barFill{to{width:100%;}}
+  @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+
+  /* REGISTER SCREEN */
+  #register{
+    position:fixed;inset:0;z-index:90;
+    background:linear-gradient(160deg,#f3fbf4,#1a6b2f 60%,#0d4a1a);
+
+    display:block;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    opacity:0;animation:showReg 0.6s ease 3s forwards;
+    padding:1rem;
+  }
+  @keyframes showReg{to{opacity:1;}}
+
+  .reg-card{
+    background:rgba(253,246,227,0.06);backdrop-filter:blur(20px);
+    border:1px solid rgba(46,125,50,0.3);border-radius:24px;
+    padding:1.9rem;width:100%;max-width:380px;margin:1.5rem auto;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  }
+  .reg-logo{text-align:center;margin-bottom:1.4rem;}
+  .reg-top-logo{
+    width:92px;height:92px;border-radius:50%;
+    border:3px solid var(--gold);
+    object-fit:cover;
+    display:block;
+    margin:0 auto 0.8rem;
+    box-shadow:0 8px 20px rgba(46,125,50,0.22);
+  }
+  .reg-logo h1{color:var(--gold);font-size:1.8rem;font-family:'Tiro Tamil',serif;font-weight:700;}
+  .reg-logo p{color:#2f6d3a;font-size:0.85rem;margin-top:0.3rem;}
+
+  /* Photo capture area */
+  .photo-area{
+    width:130px;height:130px;border-radius:50%;
+    border:3px dashed var(--gold);margin:0 auto 1.5rem;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    cursor:pointer;position:relative;overflow:hidden;
+    background:rgba(46,125,50,0.08);transition:all 0.3s;
+  }
+  .photo-area:hover{background:rgba(46,125,50,0.15);border-style:solid;}
+  .photo-area img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;}
+  .photo-area .ph-icon{font-size:2.5rem;color:var(--gold);}
+  .photo-area .ph-text{color:#2f6d3a;font-size:0.7rem;margin-top:0.3rem;text-align:center;}
+  #photoInput{display:none;}
+
+  .lang-toggle{
+    display:flex;gap:0.5rem;margin-bottom:1.5rem;
+    background:rgba(255,255,255,0.05);border-radius:50px;padding:4px;
+  }
+  .lang-btn{
+    flex:1;padding:0.5rem;border:none;border-radius:50px;cursor:pointer;
+    font-size:0.85rem;font-weight:600;transition:all 0.3s;
+    background:transparent;color:#2f6d3a;
+  }
+  .lang-btn.active{background:var(--gold);color:#f3fbf4;}
+
+  .form-group{margin-bottom:1rem;}
+  .form-group label{display:block;color:#2f6d3a;font-size:0.8rem;margin-bottom:0.4rem;}
+  .form-group input,.form-group select{
+    width:100%;padding:0.75rem 1rem;
+    background:rgba(255,255,255,0.07);border:1px solid rgba(46,125,50,0.25);
+    border-radius:10px;color:#fff;font-size:0.95rem;outline:none;
+    transition:border-color 0.3s;
+  }
+  .form-group input:focus,.form-group select:focus{border-color:var(--gold);}
+  .form-group select option{background:#ffffff;color:#123d26;}
+
+  .btn-primary{
+    width:100%;padding:1rem;background:linear-gradient(135deg,#2e7d32,#66bb6a);
+    border:none;border-radius:12px;color:#f3fbf4;font-weight:700;font-size:1rem;
+    cursor:pointer;transition:all 0.3s;margin-top:0.5rem;
+    font-family:'Tiro Tamil',serif;letter-spacing:1px;
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(46,125,50,0.4);}
+
+  /* Store display */
+  #stored-profile{
+    display:none;
+    position:fixed;inset:0;z-index:95;
+    background:rgba(0,0,0,0.8);backdrop-filter:blur(10px);
+    align-items:center;justify-content:center;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.5rem;
+  }
+  .profile-popup{
+    background:linear-gradient(135deg,#1a6b2f,#f3fbf4);
+    border:2px solid var(--gold);border-radius:20px;
+    padding:2rem;text-align:center;max-width:320px;width:90%;
+  }
+  .profile-popup img{width:100px;height:100px;border-radius:50%;border:3px solid var(--gold);object-fit:cover;margin-bottom:1rem;}
+  .profile-popup h2{color:var(--gold);font-size:1.3rem;font-family:'Tiro Tamil',serif;}
+  .profile-popup p{color:#2f6d3a;margin-top:0.5rem;font-size:0.9rem;}
+  .profile-popup .btn-go{
+    margin-top:1.5rem;display:inline-block;padding:0.8rem 2rem;
+    background:var(--gold);color:#f3fbf4;border-radius:10px;font-weight:700;
+    text-decoration:none;cursor:pointer;border:none;font-size:1rem;
+  }
+
+/* Green-White Theme Override */
+:root {
+  --theme-bg: #f4fbf5;
+  --theme-surface: #ffffff;
+  --theme-primary: #2e7d32;
+  --theme-primary-soft: #66bb6a;
+  --theme-text: #1f3b2d;
+  --theme-muted: #4d6f55;
+  --theme-border: #b7d8bd;
+}
+
+body {
+  background: var(--theme-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+.header, .topbar, .govt-header, .nav-tabs, .form-card, .video-card, .scheme-card, .stat-card, .icon-card,
+.reg-card, .profile-popup, .sms-card, .modal-inner, .modal-sheet, .report-item, .result-card, .trader-card,
+.soil-card, .price-card, .filter-card, .card-wrap, .card {
+  background: var(--theme-surface) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, label, .label, .dept, .icon-label, .vinfo p, .vinfo h3, .video-info p, .video-info h3 {
+  color: var(--theme-text) !important;
+}
+
+input, select, textarea, .form-control {
+  background: #ffffff !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border) !important;
+}
+
+.btn-primary, .apply-btn, .btn-next, .submit-btn, .pay-btn, .done-btn, .calc-btn, .add-crop-btn, .dl-btn, .btn-green {
+  background: linear-gradient(135deg, var(--theme-primary), var(--theme-primary-soft)) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.bnav-item span:last-child, .step-lbl, .form-group label, .back-btn {
+  color: var(--theme-muted) !important;
+}
+
+/* Contrast Fix + Polished Theme */
+:root {
+  --ui-bg: #f4fbf5;
+  --ui-surface: #ffffff;
+  --ui-green: #2e7d32;
+  --ui-green-dark: #1f5f2a;
+  --ui-green-soft: #66bb6a;
+  --ui-text: #1f3b2d;
+  --ui-border: #b7d8bd;
+}
+
+body {
+  background: linear-gradient(180deg, #f4fbf5 0%, #ecf8ee 100%) !important;
+  color: var(--ui-text) !important;
+}
+
+/* Green backgrounds -> White text */
+#splash, #register, .hero, .page-header, .topbar, .govt-header, .header,
+.profile-popup, .insurance-card, .chat-header {
+  background: linear-gradient(135deg, var(--ui-green-dark), var(--ui-green)) !important;
+  color: #ffffff !important;
+}
+#splash *, #register *, .hero *, .page-header *, .topbar *, .govt-header *, .header *,
+.profile-popup *, .insurance-card *, .chat-header * {
+  color: #ffffff !important;
+}
+
+/* White backgrounds -> Green text */
+.reg-card, .form-card, .video-card, .scheme-card, .stat-card, .icon-card, .report-item,
+.result-card, .trader-card, .soil-card, .price-card, .filter-card, .modal-inner, .modal-sheet,
+.sms-card, .card-wrap, .card, .content, .summary-box, .govt-box, .premium-box,
+.nav-tabs, .steps, .bottom-nav, .photo-box {
+  background: var(--ui-surface) !important;
+  color: var(--ui-text) !important;
+  border-color: var(--ui-border) !important;
+  box-shadow: 0 8px 24px rgba(46,125,50,0.08) !important;
+}
+.reg-card *, .form-card *, .video-card *, .scheme-card *, .stat-card *, .icon-card *, .report-item *,
+.result-card *, .trader-card *, .soil-card *, .price-card *, .filter-card *, .modal-inner *, .modal-sheet *,
+.sms-card *, .card-wrap *, .card *, .content *, .summary-box *, .govt-box *, .premium-box *,
+.nav-tabs *, .steps *, .bottom-nav *, .photo-box * {
+  color: var(--ui-text) !important;
+}
+
+/* Inputs */
+input, select, textarea, .form-control, .search-box {
+  background: #ffffff !important;
+  color: var(--ui-text) !important;
+  border: 1px solid var(--ui-border) !important;
+}
+input::placeholder, textarea::placeholder, .search-box::placeholder {
+  color: #5f7f66 !important;
+}
+
+/* Buttons */
+.btn-primary, .apply-btn, .btn-next, .submit-btn, .pay-btn, .done-btn, .calc-btn, .add-crop-btn,
+.dl-btn, .btn-green, .icon-badge, .lang-btn.active {
+  background: linear-gradient(135deg, var(--ui-green), var(--ui-green-soft)) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+.back-btn, .btn-back, .btn-outline, .btn-edit, .nav-tab {
+  background: #ffffff !important;
+  color: var(--ui-green) !important;
+  border: 1px solid var(--ui-border) !important;
+}
+
+/* Readability Scale Boost */
+html { font-size: 17px !important; }
+body { line-height: 1.7 !important; }
+
+h1 { font-size: 1.35rem !important; }
+h2 { font-size: 1.2rem !important; }
+h3 { font-size: 1.08rem !important; }
+p, label, input, select, textarea, button, a, span {
+  font-size: 1.02rem;
+}
+
+button, .btn, .btn-primary, .btn-next, .btn-back, .submit-btn, .apply-btn, .pay-btn, .done-btn,
+.back-btn, .nav-tab, .bnav-item, .icon-card {
+  min-height: 48px;
+}
+
+input, select, textarea, .form-control, .search-box {
+  min-height: 46px;
+  padding-top: 0.7rem !important;
+  padding-bottom: 0.7rem !important;
+}
+
+.scheme-card, .form-card, .video-card, .report-item, .price-card, .soil-card, .trader-card {
+  padding: 1rem !important;
+}
+
+/* Login page visibility fix */
+#register .reg-card,
+#register .reg-card h1,
+#register .reg-card p,
+#register .reg-card label,
+#register .reg-card span,
+#register .reg-card input,
+#register .reg-card input::placeholder {
+  color: #000000 !important;
+}
+
+#register .reg-card input {
+  border-color: #222222 !important;
+}
+
+#register .reg-card .btn-primary {
+  color: #000000 !important;
+}
+
+/* Header Footer Dark Green Theme */
+:root {
+  --hf-green: #0f4d2b;
+  --body-text-green: #123d26;
+}
+
+body {
+  background: #ffffff !important;
+  color: var(--body-text-green) !important;
+}
+
+.header, .topbar, .govt-header, .page-header, .bottom-nav, footer {
+  background: var(--hf-green) !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,0.2) !important;
+}
+
+.header *, .topbar *, .govt-header *, .page-header *, .bottom-nav *, footer * {
+  color: #ffffff !important;
+}
+
+.bnav-item.active span:last-child,
+.nav-item.active,
+.nav-item.active * {
+  color: #ffffff !important;
+}
+
+.reg-card, .form-card, .video-card, .scheme-card, .stat-card, .icon-card, .report-item,
+.result-card, .trader-card, .soil-card, .price-card, .filter-card, .modal-inner, .modal-sheet,
+.sms-card, .card-wrap, .card, .content {
+  background: #ffffff !important;
+  color: var(--body-text-green) !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, label, span, a, li, td, th {
+  color: var(--body-text-green);
+}
+
+input, select, textarea, .form-control, .search-box {
+  background: #ffffff !important;
+  color: var(--body-text-green) !important;
+  border-color: #b7d8bd !important;
+}
+
+/* Text Visibility Fix */
+body,
+.content,
+.section,
+.form-content,
+.schemes-container,
+.stats-grid,
+.reg-card,
+.form-card,
+.video-card,
+.scheme-card,
+.stat-card,
+.icon-card,
+.report-item,
+.result-card,
+.trader-card,
+.soil-card,
+.price-card,
+.filter-card,
+.modal-inner,
+.modal-sheet,
+.sms-card,
+.sms-box,
+.application-page,
+.application-page * {
+  color: #123d26 !important;
+}
+
+.header *,
+.topbar *,
+.govt-header *,
+.page-header *,
+.bottom-nav *,
+footer * {
+  color: #ffffff !important;
+}
+
+/* Back button visibility fix */
+.topbar .back-btn {
+  background: rgba(255,255,255,0.16) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,0.75) !important;
+}
+.topbar .back-btn * {
+  color: #ffffff !important;
+}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-img-wrap">
+    <img src="https://i.pinimg.com/474x/86/ac/cb/86accbea31b719dea35425f4e260b2c3.jpg" alt="விவசாயி">
+  </div>
+  <div class="splash-title">விவசாயி இணையம்</div>
+  <div class="splash-sub">விவசாயிகள் டிஜிட்டல் போர்டல்</div>
+  <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+</div>
+
+<!-- REGISTER FORM -->
+<div id="register">
+  <div class="reg-card">
+    <div class="reg-logo">
+      <img class="reg-top-logo" src="https://i.pinimg.com/474x/86/ac/cb/86accbea31b719dea35425f4e260b2c3.jpg" alt="Farmer">
+      <h1>🌾 விவசாயி இணையம்</h1>
+      <p>விவசாயிகள் டிஜிட்டல் போர்டல் - உள்நுழைவு</p>
+    </div>
+
+    <div class="form-group">
+      <label id="lbl-name">விவசாயி பெயர்</label>
+      <input type="text" id="inp-name" placeholder="உங்கள் பெயரை உள்ளிடவும்">
+    </div>
+    <div class="form-group">
+      <label id="lbl-phone">மொபைல் எண்</label>
+      <input type="tel" id="inp-phone" placeholder="மொபைல் எண்ணை உள்ளிடவும்" maxlength="10">
+    </div>
+    <button class="btn-primary" onclick="saveProfile()" id="btn-save">தொடரவும் →</button>
+  </div>
+</div>
+
+<script>
+let currentLang = 'ta';
+
+function saveProfile(){
+  const name=document.getElementById('inp-name').value.trim();
+  const phone=String(document.getElementById('inp-phone').value || '').replace(/\D/g, '');
+  if(!name||!phone){
+    alert('பெயர் மற்றும் மொபைல் எண் அவசியம்!');return;
+  }
+  if(phone.length!==10){
+    alert('சரியான மொபைல் எண்ணை உள்ளிடவும்!');return;
+  }
+  const profile={name,phone,lang:currentLang};
+  const farmers = JSON.parse(localStorage.getItem('farmersByPhone') || '{}');
+  farmers[phone] = { ...(farmers[phone] || {}), ...profile };
+  localStorage.setItem('farmersByPhone', JSON.stringify(farmers));
+  localStorage.setItem('currentFarmerPhone', phone);
+  localStorage.setItem('farmerProfile',JSON.stringify(profile));
+
+  const regDone = document.getElementById('regDone');
+  if (regDone) regDone.style.display='block';
+  document.getElementById('inp-name').disabled=true;
+  document.getElementById('inp-phone').disabled=true;
+
+  window.location.href='dashboard.html';
+}
+</script>
+</body>
+</html>

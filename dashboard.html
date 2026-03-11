@@ -1,0 +1,853 @@
+﻿<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>டாஷ்போர்டு - விவசாயி இணையம்</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Tamil:ital@0;1&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--g:#1f5f2a;--g2:#2e7d32;--bg:#f4fbf5;--txt:#123d26;--bd:#b7d8bd}
+body{font-family:'Poppins','Tiro Tamil',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:64px}
+.header{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,var(--g),var(--g2));color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;gap:10px;align-items:center}
+.brand h1{font-size:1rem;color:#fff}
+.brand p{font-size:.72rem;color:#e8f5e9}
+.user{display:flex;align-items:center;gap:8px}
+.user img{width:36px;height:36px;border-radius:50%;border:2px solid #fff;object-fit:cover}
+.user span{font-size:.82rem;color:#fff}
+.hero{padding:16px 14px;background:#fff;border-bottom:1px solid var(--bd)}
+.hero h2{font-size:1.1rem;margin-bottom:6px}
+.hero p{font-size:.86rem;color:#3f7d4a}
+.weather-badge{margin-top:8px;display:inline-flex;gap:6px;align-items:center;background:#eaf6ec;border:1px solid #cbe5ce;color:#1f5f2a;padding:6px 10px;border-radius:999px;font-size:.8rem}
+.video-wrap{padding:14px;background:var(--bg)}
+.video-card{background:#fff;border:1px solid var(--bd);border-radius:16px;overflow:hidden;box-shadow:0 10px 22px rgba(31,95,42,.08)}
+.video-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-bottom:1px solid #e3f2e5}
+.video-title{font-size:.9rem;font-weight:600}
+.video-meta{font-size:.72rem;color:#3f7d4a}
+.dash-video{display:block;width:100%;height:auto;max-height:320px;background:#0f4d2b}
+.icons{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px}
+.card{background:#fff;border:1px solid var(--bd);border-radius:14px;min-height:92px;text-decoration:none;color:var(--txt);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:10px}
+.card .i{font-size:1.5rem}
+.card .t{font-size:.76rem;line-height:1.25}
+.chatbot-fab{position:fixed;right:14px;bottom:92px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#2e7d32,#66bb6a);color:#fff;text-decoration:none;display:flex;align-items:center;justify-content:center;font-size:1.45rem;box-shadow:0 8px 18px rgba(46,125,50,.35);z-index:40}
+.footer{position:fixed;left:0;right:0;bottom:0;background:#0f4d2b;color:#fff;text-align:center;padding:8px 10px;line-height:1.35;font-size:.74rem}
+.chatbot-panel{position:fixed;right:14px;bottom:158px;width:min(92vw,380px);height:min(68vh,560px);background:#fff;border:1px solid var(--bd);border-radius:16px;box-shadow:0 18px 36px rgba(15,77,43,.22);display:none;flex-direction:column;z-index:50}
+.chatbot-panel.show{display:flex}
+.chat-head{padding:10px 12px;background:linear-gradient(135deg,var(--g),var(--g2));color:#fff;border-radius:16px 16px 0 0;display:flex;align-items:center;gap:8px}
+.chat-head h4{font-size:.86rem;color:#fff}
+.chat-head p{font-size:.7rem;color:#e8f5e9}
+.chat-close{margin-left:auto;border:none;background:rgba(255,255,255,.2);color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer}
+.chat-msgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;background:#f8fcf8}
+.msg{max-width:86%;padding:8px 10px;border-radius:12px;font-size:.82rem;line-height:1.5;white-space:pre-wrap}
+.msg.user{align-self:flex-end;background:#2e7d32;color:#fff}
+.msg.bot{align-self:flex-start;background:#eaf6ec;color:#123d26}
+.chat-typing{display:none;padding:0 12px 6px;font-size:.78rem;color:#2e7d32}
+.chat-typing.show{display:block}
+.chat-input{border-top:1px solid #dceede;padding:8px}
+.chat-quick{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.qtoggle{display:flex;align-items:center;justify-content:flex-end;margin-bottom:6px}
+.qt-btn{border:1px solid var(--bd);background:#fff;border-radius:999px;padding:6px 10px;font-size:.75rem;cursor:pointer;color:var(--txt)}
+.qt-btn:hover{background:#f3fbf4;border-color:#bfe3c6}
+.qt-btn:active{transform:translateY(1px)}
+.qchip{border:1px solid var(--bd);background:#fff;border-radius:999px;padding:6px 10px;font-size:.75rem;cursor:pointer;color:var(--txt)}
+.qchip:hover{background:#f3fbf4;border-color:#bfe3c6}
+.qchip:active{transform:translateY(1px)}
+.preview{display:none;align-items:center;gap:8px;margin-bottom:6px}
+.preview img{width:46px;height:46px;border-radius:8px;object-fit:cover;border:1px solid #cbe5ce}
+.preview button{border:1px solid var(--bd);background:#fff;border-radius:8px;padding:3px 8px;cursor:pointer}
+.row{display:grid;grid-template-columns:34px 34px 1fr 34px;gap:6px;align-items:center}
+.ctl{border:1px solid var(--bd);background:#fff;border-radius:50%;width:34px;height:34px;cursor:pointer}
+.ctl.recording{border-color:#d32f2f;background:#ffebee}
+.text{height:36px;border:1px solid var(--bd);border-radius:18px;padding:0 10px;font-size:.82rem;outline:none}
+@media (max-width:420px){.icons{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">
+    <span>🌾</span>
+    <div><h1>விவசாயி இணையம்</h1><p>Farmer Digital Portal</p></div>
+  </div>
+  <div class="user"><img id="hdr-photo" src="https://i.pinimg.com/474x/86/ac/cb/86accbea31b719dea35425f4e260b2c3.jpg" alt=""><span id="hdr-name">விவசாயி</span></div>
+</div>
+
+<div class="hero">
+  <h2>🙏 வணக்கம், <span id="hero-name">விவசாயி!</span></h2>
+  <p id="hero-district">தமிழ்நாடு விவசாய போர்டல் — உங்களுக்கு வரவேற்பு</p>
+  <div class="weather-badge" id="weather-badge">☀️ 33°C | <span id="hero-dist-tag">உங்கள் இடம்</span> | 💧 62% ஈரப்பதம்</div>
+</div>
+
+<section class="video-wrap" aria-label="Dashboard overview video">
+  <div class="video-card">
+    <div class="video-head">
+      <div class="video-title">டாஷ்போர்டு அறிமுகம்</div>
+      <div class="video-meta">விவசாயி இணையம் - விரைவு பார்வை</div>
+    </div>
+    <video class="dash-video" controls preload="metadata" poster="">
+      <source src="media/dashboard-overview.mp4" type="video/mp4">
+      உங்கள் உலாவி இந்த வீடியோவை இயக்க முடியவில்லை.
+    </video>
+  </div>
+</section>
+
+<div class="icons">
+  <a href="market.html" class="card"><span class="i">📊</span><span class="t">சந்தை விலை</span></a>
+  <a href="schemes.html" class="card"><span class="i">🏛️</span><span class="t">அரசு திட்டங்கள்</span></a>
+  <a href="soil-crop.html" class="card"><span class="i">🌱</span><span class="t">மண் & பயிர்</span></a>
+  <a href="report.html" class="card"><span class="i">📋</span><span class="t">புகார் பெட்டி</span></a>
+  <a href="insurance.html" class="card"><span class="i">🛡️</span><span class="t">பயிர் காப்பீடு</span></a>
+  <a href="insurance-card.html" class="card"><span class="i">💳</span><span class="t">PDF & விண்ணப்ப நிலை</span></a>
+  <a href="#" class="card" onclick="openChatbot();return false;"><span class="i">🤖</span><span class="t">விவசாய் உதவி</span></a>
+</div>
+
+<a href="#" class="chatbot-fab" onclick="openChatbot();return false;">🤖</a>
+
+<div class="chatbot-panel" id="chatbotPanel">
+  <div class="chat-head">
+    <div>🤖</div>
+    <div><h4>AI விவசாய உதவியாளர்</h4><p>ஆங்கிலம் புரியும் • பதில் முழுவதும் தமிழில்</p></div>
+    <button class="chat-close" onclick="closeChatbot()">✕</button>
+  </div>
+  <div class="chat-msgs" id="chatbotMsgs">
+    <div class="msg bot">வணக்கம்! தமிழிலும் ஆங்கிலத்திலும் கேள்வி கேளுங்கள். நான் எப்போதும் தமிழில்தான் பதில் தருவேன். படம் பதிவேற்றியும் கேட்கலாம்.</div>
+  </div>
+  <div class="chat-typing" id="chatbotTyping">பதில் தயாராகிறது...</div>
+  <div class="chat-input">
+    <div class="qtoggle">
+      <button type="button" class="qt-btn" id="chatQuickToggle" onclick="toggleQuickQuestions()">Show sample questions</button>
+    </div>
+    <div class="chat-quick" id="chatQuick"></div>
+    <div class="preview" id="chatbotPreview"><img id="chatbotPreviewImg" alt="uploaded"><span id="chatbotPreviewName"></span><button onclick="clearChatImage()">நீக்கு</button></div>
+    <div class="row">
+      <button class="ctl" onclick="triggerChatImagePicker()" title="படம்">🖼️</button>
+      <button class="ctl" id="chatMicBtn" onclick="toggleChatSpeech()" title="குரல்">🎤</button>
+      <input class="text" id="chatInput" placeholder="தமிழ் / ஆங்கிலம் கேள்வி எழுதுங்கள்..." onkeypress="if(event.key==='Enter')sendChatMessage()">
+      <button class="ctl" onclick="sendChatMessage()" title="அனுப்பு">➤</button>
+    </div>
+    <input type="file" id="chatImageInput" accept="image/*" style="display:none" onchange="handleChatImage(event)">
+  </div>
+</div>
+
+<div class="footer">
+  <div><strong>விவசாயி இணையம் - அவசர தொடர்பு</strong></div>
+  <div>தமிழ்நாடு வேளாண்மை உதவி எண்: 1800-425-1401 | பேரிடர்: 1070 | ஆம்புலன்ஸ்: 108</div>
+</div>
+
+<script>
+const WEATHER_API_KEY='1633e1e8c1cb449b91a151723260903';
+
+let chatImagePart=null; let chatImagePreviewData=''; let chatRecognition=null; let isChatRecording=false;
+
+function getCurrentFarmerProfile(){const phone=(localStorage.getItem('currentFarmerPhone')||'').replace(/\D/g,'');const farmers=JSON.parse(localStorage.getItem('farmersByPhone')||'{}');if(phone&&farmers[phone]) return farmers[phone];return{}}
+function openChatbot(){document.getElementById('chatbotPanel').classList.add('show');initQuickQuestions();document.getElementById('chatInput').focus()}
+function closeChatbot(){document.getElementById('chatbotPanel').classList.remove('show')}
+function setChatTyping(s){document.getElementById('chatbotTyping').classList.toggle('show',!!s)}
+function addChatMessage(role,text,imageData){const msgs=document.getElementById('chatbotMsgs');const d=document.createElement('div');d.className=`msg ${role}`;d.textContent=text||'';if(imageData){const i=document.createElement('img');i.src=imageData;i.style.width='120px';i.style.borderRadius='10px';i.style.marginTop='6px';d.appendChild(document.createElement('br'));d.appendChild(i)}msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight}
+
+const QUICK_QUESTIONS = [
+  'விவசாயம் என்ன?',
+  'விவசாயம் தொடங்க எப்படி?',
+  'கரிசல் மண்ணில் என்ன பயிர் வளரும்?',
+  'மண் pH என்றால் என்ன?',
+  'யூரியா உரம் என்ன?',
+  'இலை சுருக்கு நோய் ஏன் வருகிறது?',
+  'துளி பாசனம் என்ன?',
+  'மதுரை தக்காளி விலை'
+];
+
+function renderQuickQuestions(){
+  const wrap = document.getElementById('chatQuick');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  QUICK_QUESTIONS.forEach(q => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'qchip';
+    b.textContent = q;
+    b.onclick = () => {
+      const input = document.getElementById('chatInput');
+      input.value = q;
+      sendChatMessage();
+    };
+    wrap.appendChild(b);
+  });
+}
+
+function setQuickQuestionsVisible(visible){
+  const wrap = document.getElementById('chatQuick');
+  const btn = document.getElementById('chatQuickToggle');
+  if (!wrap || !btn) return;
+  wrap.style.display = visible ? 'flex' : 'none';
+  btn.textContent = visible ? 'Hide sample questions' : 'Show sample questions';
+  localStorage.setItem('chatQuickVisible', visible ? '1' : '0');
+}
+
+function toggleQuickQuestions(){
+  const current = localStorage.getItem('chatQuickVisible') === '1';
+  setQuickQuestionsVisible(!current);
+}
+
+function initQuickQuestions(){
+  renderQuickQuestions();
+  const visible = localStorage.getItem('chatQuickVisible') === '1';
+  setQuickQuestionsVisible(visible);
+}
+
+function triggerChatImagePicker(){document.getElementById('chatImageInput').click()}
+function clearChatImage(){chatImagePart=null;chatImagePreviewData='';document.getElementById('chatbotPreview').style.display='none';document.getElementById('chatImageInput').value=''}
+function handleChatImage(e){const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{const d=String(r.result||'');const b=d.split(',')[1];if(!b)return;chatImagePart={inline_data:{mime_type:f.type||'image/jpeg',data:b}};chatImagePreviewData=d;document.getElementById('chatbotPreviewImg').src=d;document.getElementById('chatbotPreviewName').textContent=f.name;document.getElementById('chatbotPreview').style.display='flex'};r.readAsDataURL(f)}
+function speakTamil(t){if(!('speechSynthesis'in window))return;const u=new SpeechSynthesisUtterance(t);u.lang='ta-IN';window.speechSynthesis.cancel();window.speechSynthesis.speak(u)}
+function hasTamil(t){return/[\u0B80-\u0BFF]/.test(String(t||''))}
+
+function normalizeTanglish(text){
+  const base = String(text || '')
+    .toLowerCase()
+    .replace(/[\.,!?;:()\-\_\/\\]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return base
+    .replace(/\bkasisal\b/g, 'karisal')
+    .replace(/\bkarisal\b/g, 'கரிசல்')
+    .replace(/\bmanil\b/g, 'mannil')
+    .replace(/\bmannil\b/g, 'மண்ணில்')
+    .replace(/\bmanu\b/g, 'மண்')
+    .replace(/\bsagupadi\b/g, 'சாகுபடி')
+    .replace(/\bgrowing\b/g, 'வளரும்')
+    .replace(/\bcrops\b/g, 'பயிர்கள்')
+    .replace(/\bcrop\b/g, 'பயிர்')
+    .replace(/\bvivasayam\b/g, 'விவசாயம்')
+    .replace(/\bvivasaayam\b/g, 'விவசாயம்')
+    .replace(/\buram\b/g, 'உரம்')
+    .replace(/\bpoochi\b/g, 'பூச்சி')
+    .replace(/\bpuchi\b/g, 'பூச்சி')
+    .replace(/\bnoi\b/g, 'நோய்')
+    .replace(/\bneer\b/g, 'நீர்')
+    .replace(/\bpasanam\b/g, 'பாசனம்')
+    .replace(/\bmann\b/g, 'மண்')
+    .replace(/\bmnn\b/g, 'மண்');
+}
+
+const AGRI_KB = [
+  { k:['வணக்கம்','hello','hi','vanakkam'], f:false, r:'வணக்கம்! விவசாயம் தொடர்பான கேள்விகளை கேளுங்கள். பயிர், உரம், நோய், சந்தை விலை, திட்டங்கள் போன்ற அனைத்துக்கும் உதவுவேன்.' },
+  { k:['விலை','market','price','apmc','mandi','மார்க்கெட்','vilai','sandhai','rate','retu'], f:true, r:'சந்தை விலை தினமும் மாறும். விற்பனைக்கு முன் 2-3 சந்தை விலை ஒப்பிடுங்கள். தர அடிப்படையில் சுத்தம்/உலர்த்தல் செய்தால் நல்ல விலை கிடைக்கும்.' },
+  { k:['திட்ட','scheme','pm kisan','pm-kisan','kcc','pmksy','subsidy','மானியம்','thittam','maaniyam','yojana','yojna'], f:false, r:'முக்கிய திட்டங்கள்: பிரதமர் கிசான், பயிர் காப்பீட்டு திட்டம், கிசான் கடன் அட்டை, பாசன மேம்பாட்டு திட்டம், மண் ஆரோக்கிய அட்டை. பொதுவாக தேவை: ஆதார், வங்கி, பட்டா/நில ஆவணம், மொபைல் எண்.' },
+  { k:['காப்பீடு','insurance','pmfby','claim','சேதம்','kaapeedu','kapitu','insurans','setham'], f:false, r:'பயிர் காப்பீடு: சேதம் ஏற்பட்ட உடனே புகைப்படம்/வீடியோ பதிவு செய்யவும். காலதாமதம் இல்லாமல் புகார் எண் எடுக்கவும். வங்கி, பட்டா, பயிர் விவரம் தயாராக வைத்துக் கொள்ளவும்.' },
+  { k:['உரம்','fertilizer','dap','urea','mop','ssp','npk','நைட்ரஜன்','பாஸ்பரஸ்','பொட்டாசியம்','uram','phosphorus','potash'], f:true, r:'உரம்: மண் பரிசோதனைப்படி அளவு கொடுப்பது பாதுகாப்பானது. அடியுரம் மற்றும் மேலுரம் பிரித்து இடுங்கள். மழைக்கு முன் அதிக நைட்ரஜன் தவிர்க்கவும்.' },
+  { k:['நுண்ணூட்டம்','micronutrient','zinc','boron','magnesium','sulphur','sulfur','zn'], f:true, r:'நுண்ணூட்டச்சத்து குறைபாடு இருந்தால் இலை நிற மாற்றம்/வளர்ச்சி மந்தம் ஏற்படும். மண் மற்றும் இலை பகுப்பாய்வு அடிப்படையில் துத்தநாகம், போரான், மக்னீசியம் போன்றவை சரியான அளவில் கொடுக்கவும்.' },
+  { k:['நோய்','disease','blight','wilt','virus','fungus','பூஞ்சை','noi'], f:true, r:'நோய் மேலாண்மை: பாதித்த பகுதியை உடனே அகற்றவும், வயல் காற்றோட்டம் பேணவும், அதிக ஈரப்பதம் தவிர்க்கவும், உறுதி செய்யப்பட்ட மருந்தை லேபிள் அளவில் மட்டுமே பயன்படுத்தவும்.' },
+  { k:['பூச்சி','pest','insect','thrips','borer','aphid','whitefly','poochi','puchi'], f:true, r:'பூச்சி மேலாண்மை: மஞ்சள் ஒட்டும் தாள், ஒளி குண்டு, உயிர் கட்டுப்பாடு முறைகள் முதலில் பயன்படுத்தவும். மருந்து தேவையெனில் மாற்றி மாற்றி செயலில் வேறு மருந்து குழுவை பயன்படுத்தவும்.' },
+  { k:['களை','weed','herbicide','kalai','kalai marunthu'], f:true, r:'களை கட்டுப்பாடு: ஆரம்ப 20-40 நாட்கள் முக்கியம். கை/இயந்திர களை எடுப்பு செய்யவும். தேவையெனில் வழிகாட்டிய அளவில் களைநாசினி பயன்படுத்தவும்.' },
+  { k:['நீர்','irrigation','drip','sprinkler','பாசனம்','water','neer','pasanam'], f:true, r:'நீர்ப்பாசனம்: மண் ஈரப்பதம் பார்த்து பாசனம் செய்யவும். அதிக நீர்ப்பாசனம் வேர் நோய் ஏற்படுத்தும். துளி பாசன முறையில் நீர், உர செலவு குறையும்.' },
+  { k:['வானிலை','weather','rain','மழை','heat','வெப்பம்','mazhai','veyil','climate','kulir'], f:false, r:'வானிலை அடிப்படையில் பணி திட்டமிடுங்கள். கனமழைக்கு முன் உரம்/மருந்து தெளிப்பு தவிர்க்கவும். வெப்ப காலத்தில் காலை/மாலை பாசனம் செய்யவும்.' },
+  { k:['மண்','soil','ph','ec','saline','alkaline','mann','soil test','soil health'], f:true, r:'மண் ஆரோக்கியம்: அமிலத்தன்மை மற்றும் மின்கடத்துத்தன்மை பரிசோதனை செய்து உர திட்டம் அமைக்கவும். கரிமச்சத்து சேர்த்தால் மண் அமைப்பு, நீர் பிடிப்பு மேம்படும்.' },
+  { k:['விதை','seed','nursery','germination','முளை','vidhai','vithai','naatu','nattru'], f:true, r:'விதை மேலாண்மை: சான்றளிக்கப்பட்ட விதை தேர்வு செய்யவும். விதை மருந்து செய்தால் முளைப்பு, ஆரம்ப நோய் கட்டுப்பாடு மேம்படும்.' },
+  { k:['நெல்','rice','paddy','nel','samba','kuruvai'], f:true, r:'நெல் சாகுபடி: தரமான விதை, சரியான நாற்று வயது, இடைவெளி பேணல், கட்டுப்படுத்திய நீர்ப்பாசனம், நிலைபடி மேலுரம் ஆகியவை முக்கியம்.' },
+  { k:['கரும்பு','sugarcane','karumbu'], f:true, r:'கரும்பு: நல்ல வடிகால் மண், சீரான பாசனம், ஆரம்ப களை கட்டுப்பாடு, நிலைபடி நைட்ரஜன் பிரிப்பு மூலம் விளைச்சல் அதிகரிக்கும்.' },
+  { k:['வாழை','banana','vaazhai','vazhai'], f:true, r:'வாழை: நீர் தேங்கல் இல்லாத மண், உயிர்ச்சத்து சேர்த்தல், நுண்ணூட்டச்சத்து தெளிப்பு, குலை நிலை ஆதரவு போன்றவை கவனிக்க வேண்டும்.' },
+  { k:['பருத்தி','cotton','paruthi'], f:true, r:'பருத்தி: ஆரம்ப கட்ட பூச்சி கண்காணிப்பு அவசியம். மஞ்சள் ஒட்டும் தாள், சமநிலை உரம், பாசனம் கட்டுப்பாடு மூலம் நல்ல மகசூல் பெறலாம்.' },
+  { k:['காய்கறி','vegetable','thakkali','tomato','onion','vengayam','milagai','chilli','brinjal'], f:true, r:'காய்கறி பயிர்களில் நோய் மேலாண்மை முக்கியம். அதிக ஈரப்பதம் தவிர்க்கவும், பாதித்த தாவரப் பகுதிகளை உடனே அகற்றவும், காலமுறை கண்காணிப்பு செய்யவும்.' },
+  { k:['பயறு','pulse','blackgram','greengram','urd','moong','ulundhu','payaru'], f:true, r:'பயறு வகைகள்: விதை மருந்து மற்றும் வேர் முடிச்சு நுண்ணுயிரி பயன்பாடு செய்யவும். மலர்க்கட்டத்தில் நீர் அழுத்தம் வராமல் பார்த்துக் கொள்ளவும்.' },
+  { k:['எண்ணெய் விதை','oilseed','groundnut','sesame','sunflower','kadala','ellu'], f:true, r:'எண்ணெய் விதை பயிர்களில்: நுண்ணூட்டச்சத்து மற்றும் பூச்சி கண்காணிப்பு அவசியம். அறுவடை நேரத்தை தாமதிக்காமல் செய்தால் தர இழப்பு குறையும்.' },
+  { k:['கால்நடை','livestock','cow','goat','poultry','மாடு','ஆடு','கோழி','kaalnadai','maadu','aadu','kozhi'], f:false, r:'கால்நடை: தடுப்பூசி அட்டவணை, சுத்தமான குடிநீர், சமச்சீர் தீவனம் அவசியம். காய்ச்சல் அல்லது உணவு மறுப்பு இருந்தால் உடனே மருத்துவரை அணுகவும்.' },
+  { k:['அறுவடை','harvest','storage','களஞ்சியம்','பாதுகாப்பு','aruvidai','storage loss'], f:false, r:'அறுவடை பிறகு: சரியான ஈரப்பதம் வரை உலர்த்தி சேமிக்கவும். சுத்தமான மூட்டை/களஞ்சியம் பயன்படுத்தினால் இழப்பு குறையும்.' },
+  { k:['organic','இயற்கை','ஜீவாமிர்தம்','panchagavya','பஞ்சகவ்யா','iyarkai','jeevamrutham'], f:true, r:'இயற்கை முறையில்: மண் கரிமச்சத்து உயர்த்தல், பூச்சி விரட்டி கரைசல், இடைநடவு, மண் மூடுபயிர், கரிம உரம் பயன்பாடு ஆகியவற்றை சேர்த்து செய்யவும்.' },
+  { k:['செலவு','cost','profit','labour','வருமானம்','income','ulavar selavu'], f:true, r:'செலவு குறைக்க: மண் பரிசோதனை அடிப்படையிலான உரம், துளி பாசனம், ஒருங்கிணைந்த பூச்சி மேலாண்மை, குழு வாங்குதல் போன்ற முறைகள் உதவும்.' },
+  { k:['கடன்','loan','vatti','interest','bank','வட்டி'], f:false, r:'விவசாய கடன்: கிசான் கடன் அட்டை மூலம் குறைந்த வட்டி கடன் கிடைக்கலாம். வங்கி, ஆதார், நில ஆவணம், பயிர் திட்டம் தயாராக வைத்துக் கொள்ளவும்.' },
+  { k:['fpo','farmer producer','உற்பத்தியாளர் நிறுவனம்','கூட்டுறவு'], f:false, r:'விவசாயிகள் குழு/உற்பத்தியாளர் நிறுவனம் மூலம் உள்ளீடு செலவு குறைப்பு, கூட்டாக விற்பனை, சேமிப்பு மற்றும் மதிப்பூட்டல் வாய்ப்பு கிடைக்கும்.' },
+  { k:['இயந்திரம்','machine','tractor','power weeder','drone','ட்ரோன்'], f:false, r:'இயந்திர பயன்பாடு மூலம் உழைப்பு செலவு குறைக்கலாம். பவர் வீடர், தெளிப்பு கருவி, ட்ரோன் சேவை போன்றவற்றை பகிர்ந்து பயன்படுத்தினால் செலவு மேலும் குறையும்.' },
+  { k:['drought','வறட்சி','வரட்சி'], f:false, r:'வறட்சி மேலாண்மை: மண் மூடுபயிர், துளி பாசனம், இடைநடவு, ஈரப்பதம் பாதுகாப்பு, குறைந்த நீர் தேவையுள்ள பயிர் தேர்வு ஆகியவற்றை பயன்படுத்தவும்.' },
+  { k:['flood','வெள்ளம்','vellam'], f:false, r:'வெள்ள சேதத்திற்கு: நீர் வடிகால் உடனே ஏற்பாடு செய்யவும், பாதித்த பகுதிகளை அகற்றவும், பூஞ்சை நோய் கட்டுப்பாடு நடவடிக்கைகளை வேகமாக செய்யவும்.' },
+  { k:['helpline','help','அரசு அலுவலகம்','aeo','agri office','assistant director'], f:false, r:'உடனடி உதவி தேவைப்பட்டால் அருகிலுள்ள வேளாண் விரிவாக்க அலுவலகத்தை அணுகவும். உங்கள் மாவட்டம் சொன்னால் தொடர்பு வழிகாட்டல் தருகிறேன்.' },
+
+  // 🌾 General Farming Questions
+  { k:['agriculture','agri','விவசாயம்','vivasayam','vivasaayam'], f:false, r:'விவசாயம் (Agriculture) என்பது மனிதர்கள் உணவுக்காகவும் வருமானத்திற்காகவும் பயிர்கள் வளர்த்தல் மற்றும் கால்நடை வளர்ப்பு போன்ற செயல்களின் தொகுப்பு. மண், நீர், விதை, உரம், காலநிலை ஆகியவற்றை சரியாக நிர்வகிப்பது முக்கியம்.' },
+  { k:['types of farming','farming types','farming method','விவசாய வகைகள்'], f:false, r:'விவசாய வகைகள் (சுருக்கமாக):\n1) பாரம்பரிய/பரம்பரை விவசாயம்\n2) நவீன விவசாயம் (இயந்திரம், துல்லிய மேலாண்மை)\n3) இயற்கை/கரிம விவசாயம்\n4) கலப்பு விவசாயம் (பயிர் + கால்நடை)\n5) பாசனம் சார்ந்த / மழை சார்ந்த விவசாயம்\nஉங்கள் நிலம் + நீர் வசதி + சந்தை தேவைப்படி தேர்வு செய்யலாம்.' },
+  { k:['start farming','how to start farming','farming start','விவசாயம் தொடங்க','farm start'], f:true, r:'விவசாயம் தொடங்க:\n1) உங்கள் நிலத்தின் மண் வகை + நீர் வசதி அறியவும்\n2) மண் பரிசோதனை செய்து உர திட்டம் அமைக்கவும்\n3) மாவட்டத்திற்கு ஏற்ற பருவ + பயிர் தேர்வு செய்யவும்\n4) நல்ல விதை/நாற்று, சரியான இடைவெளி, நேரத்தில் பாசனம்\n5) பூச்சி/நோய் முன்னெச்சரிக்கை (IPM)\n6) சந்தை திட்டம் (எங்கே விற்கப் போகிறீர்கள்?)\nமாவட்டம் + நில அளவு + நீர் வசதி சொன்னால் திட்டமிட்டு சொல்கிறேன்.' },
+  { k:['profitable crop','most profitable crop','which crop is profitable','லாபமான பயிர்','profit crop'], f:true, r:'லாபமான பயிர் என்பது ஒரே பதில் இல்லை. இது மண்/நீர், பருவம், உற்பத்திச்செலவு, நோய் அபாயம், சந்தை விலை ஆகியவற்றைப் பொறுத்தது.\nபொதுவாக: குறைந்த நீர் + குறைந்த செலவு + உறுதி சந்தை உள்ள பயிர்கள் நல்ல லாபம் தரும்.\nஉங்கள் மாவட்டம் + நீர் வசதி + ஏக்கர் சொன்னால் 2–3 பயிர் தேர்வுகளை பரிந்துரைக்கிறேன்.' },
+  { k:['summer crops','crops in summer','கோடை பயிர்','summer season'], f:false, r:'கோடை (சுருக்கமாக) ஏற்றவை: மக்காச்சோளம், எள், சூரியகாந்தி, காய்கறிகள் (நீர் வசதி இருந்தால்), சில பாசனம் சார்ந்த பயிர்கள்.\nஉங்கள் மாவட்டம் + நீர் வசதி சொன்னால் மிக பொருத்தமான பட்டியலை சொல்கிறேன்.' },
+  { k:['winter crops','crops in winter','ரபி','குளிர்கால பயிர்','rabi'], f:false, r:'குளிர்கால/ரபி பருவத்தில் (சுருக்கமாக) ஏற்றவை: கோதுமை (சில பகுதிகள்), பயறு வகைகள், காய்கறிகள், சில எண்ணெய்விதைகள்.\nமாவட்டம் சொன்னால் பருவத்துக்கு ஏற்ற பயிர்களை துல்லியமாக சொல்கிறேன்.' },
+  { k:['rainy season crops','crops in rainy season','monsoon crops','மழைக்கால பயிர்','kharif'], f:false, r:'மழைக்கால/கரீப் பருவத்தில் (சுருக்கமாக) ஏற்றவை: நெல் (நீர்/மண் பொருத்தம்), பருத்தி (சில இடங்கள்), மக்காச்சோளம், கம்பு, பயறு வகைகள்.\nமாவட்டம் + மண் வகை சொன்னால் சிறந்த தேர்வு தருகிறேன்.' },
+  { k:['crop rotation','சுழற்சி சாகுபடி','rotation'], f:false, r:'சுழற்சி சாகுபடி (Crop Rotation): ஒரே நிலத்தில் பருவம்/ஆண்டத்திற்கு வேறு வேறு பயிர்களை மாற்றி மாற்றி வளர்ப்பது.\nபலன்: மண் வளம் பாதுகாப்பு, பூச்சி/நோய் குறைப்பு, உர செலவு குறைப்பு.\nஉதாரணம்: நெல் → பயறு → எண்ணெய்விதை.' },
+  { k:['mixed cropping','கலப்பு பயிரிடுதல்','mixed crop'], f:false, r:'கலப்பு பயிரிடுதல் (Mixed Cropping): ஒரே நேரத்தில் ஒரே நிலத்தில் 2+ பயிர்களை கலப்பாக விதைப்பது.\nபலன்: அபாயம் குறையும் (ஒரு பயிர் தோல்வியுற்றால் மற்றது உதவும்), மண் மூடல் மேம்படும்.' },
+  { k:['intercropping','இடை பயிரிடுதல்','inter crop'], f:false, r:'இடை பயிரிடுதல் (Intercropping): முக்கிய பயிருக்கு இடையில் வரிசையாக/திட்டமிட்டு மற்றொரு பயிரை வளர்ப்பது.\nஉதாரணம்: வாழை + துவரை/உளுந்து (சரியான இடைவெளி வைத்தால்).\nபலன்: கூடுதல் வருமானம், மண் வளம்.' },
+  { k:['sustainable farming','நிலைத்த விவசாயம்','sustainable'], f:false, r:'நிலைத்த விவசாயம்: மண், நீர், சுற்றுச்சூழல் கெடாமல் நீண்ட காலம் விளைச்சல் தரும் வகையில் செய்வது.\nமுக்கியம்: மண் பரிசோதனை, கரிமச்சத்து உயர்த்தல், நீர் சேமிப்பு, IPM, பயிர் சுழற்சி.' },
+  { k:['organic farming','கரிம விவசாயம்','organic'], f:false, r:'கரிம விவசாயம்: செயற்கை ரசாயன உரம்/மருந்து குறைத்து (அல்லது தவிர்த்து) கரிம உரம், உயிர் உரம், இயற்கை பூச்சி மேலாண்மை கொண்டு சாகுபடி செய்வது.\nகுறிப்பு: மாற்றுக்காலத்தில் விளைச்சல்/செலவு மாறலாம்; சந்தை வாய்ப்பு திட்டமிடுங்கள்.' },
+  { k:['increase yield','crop yield','yield increase','விளைச்சல் அதிகரிக்க','yield'], f:true, r:'விளைச்சல் உயர்த்த (முக்கிய 8):\n1) மண் பரிசோதனை + pH சரி\n2) தரமான விதை/நாற்று\n3) சரியான விதை அளவு & இடைவெளி\n4) நேரத்தில் பாசனம் (அதிக/குறைவு இரண்டும் தவறு)\n5) சமநிலை உரம் (NPK + நுண்ணூட்டம்)\n6) களை மேலாண்மை\n7) IPM (பூச்சி/நோய் முன்பே கட்டுப்பாடு)\n8) சரியான அறுவடை நேரம்' },
+  { k:['cash crops','cash crop','பணம் தரும் பயிர்'], f:false, r:'Cash crops (வருமான/வாணிப பயிர்கள்): சந்தையில் விற்பனைக்கு முக்கியமாக வளர்க்கப்படும் பயிர்கள்.\nஉதா: பருத்தி, கரும்பு, சூரியகாந்தி, மிளகாய், வாழை (மாவட்டம் பொறுத்து).' },
+  { k:['food crops','உணவு பயிர்','food crop'], f:false, r:'Food crops (உணவு பயிர்கள்): மனிதர்களின் உணவுக்காக வளர்க்கப்படும் பயிர்கள்.\nஉதா: நெல், கோதுமை, பயறு வகைகள், காய்கறிகள்.' },
+  { k:['commercial crops','வணிக பயிர்','commercial crop'], f:false, r:'Commercial crops (வணிக/வாணிப பயிர்கள்): விற்பனை/தொழில் பயன்பாட்டிற்கு வளர்க்கப்படும் பயிர்கள்.\nஉதா: பருத்தி, கரும்பு, எண்ணெய்விதைகள், மிளகாய் போன்றவை.' },
+  { k:['choose the right crop','crop selection','right crop','பயிர் தேர்வு','crop choose'], f:true, r:'சரியான பயிர் தேர்வு:\n- மண் வகை + நீர் வசதி\n- பருவம்/மழை நிலை\n- உற்பத்திச்செலவு & தொழிலாளர் கிடைப்பு\n- நோய்/பூச்சி அபாயம்\n- சந்தை (அருகிலுள்ள சந்தை/கொள்முதல்)\nமாவட்டம் + மண் + நீர் சொன்னால் 2–3 சிறந்த பயிர்களை தருகிறேன்.' },
+  { k:['modern farming','smart farming','precision agriculture','நவீன விவசாயம்','smart irrigation','drone farming'], f:false, r:'நவீன/ஸ்மார்ட் விவசாயம்: மண்-நீர்-உரம்-பூச்சி மேலாண்மையை தரவு/சென்சார்/டிரிப் பாசனம்/இயந்திரம்/ட்ரோன் சேவை போன்றவற்றால் துல்லியமாக செய்வது.\nபலன்: செலவு குறைப்பு, நீர் சேமிப்பு, விளைச்சல் மேம்பாடு.' },
+
+  // 🌱 Soil Related Questions
+  { k:['soil','மண்','mann','soil type','எந்த மண்','type of soil'], f:true, r:'மண் வகை தெரிந்துகொள்ள:\n1) மண் பரிசோதனை (pH, EC, NPK, கரிமச்சத்து)\n2) கைத் தேர்வு: மணல் (கட்டு பிடிக்காது), களிமண் (கட்டு பிடிக்கும்), லோமி (சமநிலை)\n3) நீர் உறிஞ்சுதல்/வடிகால் பார்த்து அறியலாம்.\nஉங்கள் நில மண் நிறம் + பிடிப்பு + நீர் வடிகால் சொன்னால் தோராயமாக கூறலாம்.' },
+  { k:['black soil','கரிசல்','black cotton'], f:false, r:'கரிசல் (Black soil): நீர் பிடிப்பு அதிகம், வெடிப்பு உருவாகும், சில இடங்களில் அல்கலைனிட்டி இருக்கும்.\nஏற்ற பயிர்கள்: பருத்தி, சோளம், கடலை, சூரியகாந்தி, துவரை (பொதுவாக).' },
+  { k:['red soil','செம்மண்'], f:false, r:'செம்மண் (Red soil): வடிகால் நல்லது, கரிமச்சத்து குறைவாக இருக்கலாம்.\nமேம்பாடு: கரிம உரம்/கம்போஸ்ட், பசுமை உரம், மண் பரிசோதனைப்படி உரம்.\nஏற்ற பயிர்கள்: வேர்க்கடலை, பயறு வகைகள், மக்காச்சோளம் (பொதுவாக).' },
+  { k:['sandy soil','மணல் மண்'], f:false, r:'மணல் மண்: நீர் பிடிப்பு குறைவு, உரம் சீக்கிரம் கழுவி போகலாம்.\nமேம்பாடு: கரிமச்சத்து (கம்போஸ்ட்), மண் மூடல், சிறு சிறு பாசனம்.\nஏற்றவை: தர்பூசணி, முலாம்பழம், எள், வேர்க்கடலை (பொதுவாக).' },
+  { k:['clay soil','களிமண்'], f:false, r:'களிமண்: நீர் பிடிப்பு அதிகம், வடிகால் சிரமம்.\nமேம்பாடு: வடிகால் ஏற்பாடு, கரிம உரம், சரியான உழவு.\nஏற்றவை: நெல் போன்ற நீர் பிடிப்பை விரும்பும் பயிர்கள்.' },
+  { k:['loamy soil','லோமி','loam'], f:false, r:'லோமி மண்: மணல்+சில்ட்+களிமண் சமநிலை இருப்பதால் பல பயிர்களுக்கும் சிறந்தது.\nசரியான உர மேலாண்மை + பாசனம் இருந்தால் உயர்ந்த விளைச்சல் கிடைக்கும்.' },
+  { k:['soil testing','test soil','மண் பரிசோதனை','soil fertility'], f:false, r:'மண் பரிசோதனை: ஆண்டுக்கு ஒரு முறை (அல்லது குறைந்தது 2 ஆண்டுக்கு ஒரு முறை) செய்வது நல்லது.\nபயன்: சரியான உர அளவு, செலவு குறைப்பு, விளைச்சல் மேம்பாடு.' },
+  { k:['soil ph','pH','மண் pH'], f:false, r:'மண் pH: மண் அமில/க்ஷார தன்மையை காட்டும் மதிப்பு.\nபொதுவாக 6.0–7.5 அருகில் பல பயிர்களுக்கு ஏற்றது.\npH அதிகம்/குறைவு இருந்தால் உர பயன்பாடு/சத்து உறிஞ்சுதல் பாதிக்கப்படும்.' },
+  { k:['increase soil fertility','soil fertility increase','மண் வளம் அதிகரிக்க','poor soil'], f:true, r:'மண் வளம் உயர்த்த:\n- கம்போஸ்ட்/வெர்மிகம்போஸ்ட்\n- பசுமை உரம் (சணப்பு/தக்கைப்பூண்டு போன்றவை)\n- பயறு வகை பயிர் சுழற்சி\n- மண் மூடல் (mulch)\n- மண் பரிசோதனைப்படி NPK+நுண்ணூட்டம்' },
+  { k:['soil erosion','erosion','மண் அரிப்பு'], f:false, r:'மண் அரிப்பு: மண் காற்று/மழையால் கழுவி போவது.\nதடுப்பு: கவர்கிராப்/மண் மூடல், மேடு-பாத்தி, தடுப்பு வேலி/மரம், சரியான வடிகால்.' },
+  { k:['soil conservation','மண் பாதுகாப்பு','conservation'], f:false, r:'மண் பாதுகாப்பு: மண் அரிப்பு குறைத்து கரிமச்சத்து, நீர் உறிஞ்சுதலை உயர்த்தும் நடவடிக்கைகள்.\nஉதா: மண் மூடல், பயிர் சுழற்சி, மேடு-பாத்தி, பசுமை உரம்.' },
+  { k:['soil health card','மண் ஆரோக்கிய அட்டை'], f:false, r:'மண் ஆரோக்கிய அட்டை: மண் பரிசோதனை அறிக்கையின் அடிப்படையில் உங்கள் நிலத்திற்கு வேண்டிய சத்து/உர பரிந்துரைகளை வழங்கும் திட்டம்.\nஅருகிலுள்ள வேளாண் அலுவலகத்தில் வழிகாட்டல் கிடைக்கும்.' },
+
+  // 🌿 Fertilizer Questions
+  { k:['urea','யூரியா'], f:false, r:'யூரியா: நைட்ரஜன் உரம் (N). வளர்ச்சி (இலை/தண்டு) மேம்படும்.\nகுறிப்பு: அதிகமாக দিলে இலை அதிகம், நோய்/பூச்சி அபாயம் கூடும்; மண் பரிசோதனைப்படி பயன்படுத்தவும்.' },
+  { k:['dap','DAP'], f:false, r:'DAP: முக்கியமாக பாஸ்பரஸ் (P) + சில நைட்ரஜன் கொண்ட உரம்.\nவேர் வளர்ச்சி/ஆரம்ப வளர்ச்சிக்கு உதவும். அடியுரமாக பயன்படுத்துவது பொதுவாக நல்லது.' },
+  { k:['potash','mop','பொட்டாஷ்','பொட்டாசியம்'], f:false, r:'பொட்டாஷ் (Potash/MOP): பொட்டாசியம் (K) சத்து.\nகாய்/கனி தரம், நோய் எதிர்ப்பு, நீர் சமநிலை உதவும்.' },
+  { k:['npk','NPK'], f:false, r:'NPK: நைட்ரஜன் (N) + பாஸ்பரஸ் (P) + பொட்டாசியம் (K) ஆகிய முக்கிய சத்துக்கள்.\nசரியான விகிதம் பயிர்/மண் நிலை பொறுத்தது; மண் பரிசோதனைப்படி திட்டமிடுங்கள்.' },
+  { k:['compost','கம்போஸ்ட்'], f:false, r:'கம்போஸ்ட்: குப்பை/இலை/மாட்டுத்தொழு கழிவு போன்றவை அழுகி உருவாகும் கரிம உரம்.\nமண் அமைப்பு, கரிமச்சத்து, நீர் பிடிப்பு மேம்படும்.' },
+  { k:['vermicompost','வெர்மிகம்போஸ்ட்'], f:false, r:'வெர்மிகம்போஸ்ட்: மண்புழு மூலம் தயாரிக்கும் மிகச் சத்து நிறைந்த கரிம உரம்.\nசிறு அளவிலேயே நல்ல விளைவு தரும்; சீராக கலந்து இடுவது நல்லது.' },
+  { k:['green manure','பசுமை உரம்'], f:false, r:'பசுமை உரம்: சணப்பு/தக்கைப்பூண்டு போன்ற பயிர்களை வளர்த்து மண்ணில் கலப்பது.\nபலன்: கரிமச்சத்து + நைட்ரஜன் சேர்ப்பு, மண் கட்டமைப்பு மேம்பாடு.' },
+  { k:['bio fertilizer','biofertilizer','உயிர் உரம்'], f:false, r:'உயிர் உரம் (Bio fertilizer): நுண்ணுயிர்கள் மூலம் சத்துகளை தாவரத்திற்கு கிடைக்கச் செய்வது.\nஉதா: ரைசோபியம், அசோஸ்பிரில்லம், PSB.\nநன்கு சேமித்து காலாவதிக்கு முன் பயன்படுத்தவும்.' },
+  { k:['when should fertilizer','fertilizer apply','உரம் எப்போது','மேலுரம்','அடியுரம்'], f:true, r:'உரம் இட நேரம்:\n- அடியுரம்: நடவு/விதைப்பு நேரத்தில்\n- மேலுரம்: பயிர் வளர்ச்சி கட்டங்களுக்கு ஏற்ப 2–3 தவணை\nமழைக்கு முன்/பின் மற்றும் பாசன நேரம் பார்த்து இடுங்கள்.' },
+  { k:['how much fertilizer','fertilizer per acre','ஏக்கருக்கு உரம்','dosage'], f:true, r:'ஏக்கருக்கு உர அளவு பயிர் + மண் பரிசோதனை + முந்தைய பயிர் பொறுத்தது.\nசரியான அளவு தெரிய மண் பரிசோதனை மதிப்புகள் (pH, N, P, K, OC) மற்றும் பயிர் பெயர் சொல்லுங்கள்.' },
+
+  // 🐛 Pest and Disease Questions (IPM)
+  { k:['integrated pest management','ipm','ஒருங்கிணைந்த பூச்சி மேலாண்மை'], f:false, r:'IPM (ஒருங்கிணைந்த பூச்சி மேலாண்மை):\n- பயிர் சுழற்சி\n- சுத்தம்/சிதைவு நீக்கம்\n- கவர்கிராப்/வலை/ஒட்டும் தாள்\n- உயிர் கட்டுப்பாடு\n- தேவையானால் மட்டுமே சரியான மருந்து (லேபிள் அளவில்)\nஇது செலவும் குறைக்கும், பாதுகாப்பும் அதிகம்.' },
+  { k:['neem oil','நீம் ஆயில்','வேப்பெண்ணெய்'], f:false, r:'வேப்பெண்ணெய்: மென்மையான பூச்சிகளுக்கு உதவும்.\nபொதுவான வழக்கம்: 3–5 ml/L + சிறிது சோப்பு கரைசல் (spreader) சேர்த்து மாலை நேரத்தில் தெளிக்கவும்.\nஇலை எரிவு வராதபடி வெயிலில் தெளிக்காதீர்கள்.' },
+  { k:['leaf curl','இலை சுருக்கு'], f:true, r:'இலை சுருக்கு (Leaf curl) காரணங்கள்: வைரஸ் + வெள்ளை ஈ (whitefly) போன்ற பூச்சிகள், ஊட்டச்சத்து சமநிலை குறைவு.\nநடவடிக்கை: பாதித்த தாவரம் அகற்று, வெள்ளை ஈ கட்டுப்பாடு (ஒட்டும் தாள்/நெட்வொர்க்/தேவைப்பட்டால் மருந்து), நுண்ணூட்டம் சரி.' },
+  { k:['yellow leaves','மஞ்சள் இலை'], f:true, r:'இலை மஞ்சளாகும் காரணங்கள்: நைட்ரஜன்/இரும்பு குறைபாடு, நீர் தேக்கம், வேர் அழுகல், பூச்சி தாக்கம்.\nபயிர் பெயர் + வயல் நிலை (நீர் தேக்கம் உண்டா?) சொன்னால் காரணத்தை நெருக்கமாக கண்டறிவோம்.' },
+  { k:['wilting','வாடுதல்','plant wilting'], f:true, r:'செடி வாடுதல் காரணங்கள்: நீர் குறைவு/அதிகம், வேர் அழுகல், வில்ட் நோய்.\nஉடனடி: நீர் தேக்கம் இருந்தால் வெளியேற்றவும், பாதித்த செடி பகுதி அகற்றவும்.\nபயிர் + வயது + மண் நிலை சொன்னால் வழிகாட்டுகிறேன்.' },
+
+  // 💧 Irrigation Questions
+  { k:['irrigation','பாசனம்','neer','water'], f:false, r:'பாசனம் (Irrigation): பயிர் தேவைக்கேற்ப நீரை வழங்குதல்.\nநல்ல நடைமுறை: மண் ஈரப்பதம் பார்த்து பாசனம், அதிக நீர் தேக்கம் தவிர்த்தல், டிரிப்/மைக்ரோ பாசனம் மூலம் நீர் சேமிப்பு.' },
+  { k:['drip irrigation','துளி பாசனம்','drip'], f:false, r:'துளி பாசனம்: வேர்ப்பகுதிக்கு துளியாக நீர்.\nபலன்: நீர் சேமிப்பு, உரத்தை நீருடன் (fertigation) கொடுக்க முடியும், களை குறைவு.' },
+  { k:['sprinkler','sprinkler irrigation','தூவிப் பாசனம்'], f:false, r:'ஸ்பிரிங்க்ளர் பாசனம்: மழை போல நீர் தெளிப்பு.\nபலன்: சமநிலை நீர் விநியோகம், மணல் மண்ணில் உதவும்.\nகாற்று அதிகம் இருக்கும் நேரம் தவிர்க்கவும்.' },
+  { k:['rainwater harvesting','மழைநீர் சேகரிப்பு'], f:false, r:'மழைநீர் சேகரிப்பு: பண்ணை குளம், நீர் சேகரிப்பு கால்வாய், மண் தடுப்பு மேடு போன்றவை மூலம் மழைநீரை சேமித்து நிலத்தடி நீரை உயர்த்தலாம்.' },
+
+  // 🐄 Livestock Questions (general guidance)
+  { k:['dairy farming','பால் பண்ணை','milk production','பால் அதிகரிக்க'], f:true, r:'பால் உற்பத்தி உயர்த்த:\n- தரமான தீவனம் (பச்சை+உலர்+கன்சன்ட்ரேட்) சமநிலை\n- சுத்தமான குடிநீர் எப்போதும்\n- குடற்புழு நீக்கம், தடுப்பூசி திட்டம்\n- மனஅழுத்தம் குறைப்பு (காற்றோட்டம்/நிழல்)\nகுறிப்பு: நோய் சந்தேகம் இருந்தால் கால்நடை மருத்துவரை அணுகவும்.' },
+  { k:['poultry','கோழி வளர்ப்பு','egg production'], f:true, r:'கோழி வளர்ப்பு:\n- நல்ல காற்றோட்டம், சுத்தம், உஷ்ணநிலை கட்டுப்பாடு\n- வயது கட்டத்திற்கு ஏற்ற தீவனம் + நீர்\n- தடுப்பூசி/நோய் தடுப்பு\nமுட்டை உற்பத்தி குறைந்தால்: தீவனம், ஒளி நேரம், நோய் அறிகுறி பார்க்கவும்.' },
+
+  // 🌍 Climate & Weather Questions
+  { k:['heat','கடுமையான வெப்பம்','protect from heat'], f:true, r:'வெப்பத்திலிருந்து பயிர் பாதுகாப்பு:\n- காலை/மாலை பாசனம்\n- மண் மூடல் (mulch)\n- துளி பாசனம்\n- காற்றுத் தடுப்பு மரங்கள்/நிழல் வலை (தேவைப்பட்டால்)\nபயிர் பெயர் சொன்னால் குறிப்பிட்ட ஆலோசனை தருகிறேன்.' },
+  { k:['frost','பனி','protect from frost'], f:true, r:'பனியிலிருந்து பாதுகாப்பு:\n- மாலை நேரத்தில் லேசான பாசனம் (சில பயிர்களில்)\n- புகை/மூடுபனி போன்ற பாரம்பரிய முறைகள் (பாதுகாப்புடன்)\n- நிழல் வலை/கவர்\nமாவட்டம் + பயிர் சொன்னால் பொருத்தமான வழி கூறுகிறேன்.' },
+
+  // 🌾 Advanced / Tech
+  { k:['hydroponics','ஹைட்ரோபோனிக்ஸ்'], f:false, r:'ஹைட்ரோபோனிக்ஸ்: மண் இல்லாமல் நீர்/சத்து கரைசலில் தாவரங்களை வளர்ப்பது.\nபலன்: நீர் சேமிப்பு, கட்டுப்படுத்தப்பட்ட சூழல்.\nசவால்: ஆரம்ப செலவு, சத்து கரைசல் மேலாண்மை.' },
+  { k:['aeroponics','ஏரோபோனிக்ஸ்'], f:false, r:'ஏரோபோனிக்ஸ்: வேர்களுக்கு காற்றில் சத்து கரைசல் மிதவை தெளித்து வளர்ப்பது.\nபலன்: வேகமான வளர்ச்சி (சில பயிர்களில்).\nசவால்: தொழில்நுட்ப மேலாண்மை அவசியம்.' },
+  { k:['greenhouse','polyhouse','கிரீன் ஹவுஸ்','பாலிஹவுஸ்'], f:false, r:'கிரீன் ஹவுஸ்/பாலிஹவுஸ்: கட்டுப்படுத்தப்பட்ட சூழலில் காய்கறி/மலர் சாகுபடி.\nபலன்: தரம்/வருமானம் உயரும்.\nசவால்: முதலீடு + நோய் மேலாண்மை + சந்தை திட்டம்.' },
+  { k:['vertical farming','செங்குத்து விவசாயம்'], f:false, r:'Vertical farming: அடுக்குகளாக (indoor) பயிர் வளர்ப்பு.\nபலன்: இடம் சேமிப்பு.\nசவால்: மின்சாரம்/இயக்க செலவு.' },
+  { k:['climate smart','climate smart agriculture','காலநிலை புத்திசாலி விவசாயம்'], f:false, r:'Climate-smart agriculture: காலநிலை மாற்றத்துக்கு ஏற்ப பயிர் தேர்வு, நீர் சேமிப்பு, மண் கரிமச்சத்து உயர்த்தல், அபாய மேலாண்மை (காப்பீடு) போன்றவற்றை ஒருங்கிணைத்து செய்வது.' },
+  { k:['farm automation','automation','பண்ணை தானியக்கம்'], f:false, r:'Farm automation: சென்சார், டிரிப் கட்டுப்பாடு, டைமர், தானியங்கி தெளிப்பு போன்றவற்றால் வேலை/செலவு குறைத்து துல்லியம் உயர்த்துவது.' },
+
+  // 💰 Market / Price Concepts
+  { k:['msp','minimum support price','எம்எஸ்பி','குறைந்தபட்ச ஆதரவு விலை'], f:false, r:'MSP (குறைந்தபட்ச ஆதரவு விலை): அரசு சில பயிர்களுக்கு அறிவிக்கும் குறைந்தபட்ச வாங்கு விலை. மாவட்டம்/கொள்முதல் மையம் பொறுத்து நடைமுறை மாறலாம்.' },
+  { k:['enam','e-nam','இ-நாம்'], f:false, r:'e-NAM: மின்னணு தேசிய வேளாண்மை சந்தை. சில சந்தைகள்/பொருட்கள் இதில் பட்டியலிடப்படுகின்றன.\nநீங்கள் எந்த சந்தை/பயிர் என சொன்னால் வழிகாட்டலாம்.' },
+  { k:['sell crops','where can i sell','விற்க','market yard','mandi','சந்தை எங்கே'], f:true, r:'பயிர் விற்பனைக்கு:\n- அருகிலுள்ள APMC/உழவர் சந்தை/தனியார் கொள்முதல்\n- FPO/குழு விற்பனை\n- முன் ஒப்பந்தம் (தேவைப்பட்டால்)\nபயிர் + மாவட்டம் சொன்னால் சிறந்த வழி கூறுகிறேன்.' },
+  { k:['storage','warehouse','cold storage','குளிர்சாதன கிடங்கு','சேமிப்பு','post harvest'], f:false, r:'சேமிப்பு/போஸ்ட்-ஹார்வெஸ்ட் இழப்பு குறைக்க:\n- சரியான உலர்த்தல், தரப்படுத்தல்\n- சுத்தமான பைகள்/கிடங்கு\n- தேவையானால் குளிர்சாதன சேமிப்பு (காய்கறி/மலர்)\n- பூச்சி தடுப்பு\nபொருள் பெயர் சொன்னால் சேமிப்பு முறை கூறுகிறேன்.' },
+  { k:['grading','crop grading','தரப்படுத்தல்'], f:false, r:'Crop grading (தரப்படுத்தல்): அளவு/நிறம்/எடை/தரம் அடிப்படையில் வகைப்படுத்துதல்.\nபலன்: நல்ல விலை, வாங்குபவர் நம்பிக்கை.' },
+
+  // 💧 More irrigation
+  { k:['micro irrigation','மைக்ரோ பாசனம்'], f:false, r:'Micro irrigation: துளி பாசனம்/மைக்ரோ ஸ்பிரிங்க்ளர் போன்ற குறைந்த அளவு நீரை துல்லியமாக வழங்கும் முறைகள்.' },
+  { k:['canal irrigation','கால்வாய் பாசனம்'], f:false, r:'கால்வாய் பாசனம்: அணை/நதியிலிருந்து கால்வாய் மூலம் பாசனம். நீர் வரத்து கால அளவு பொறுத்து திட்டமிட வேண்டும்.' },
+  { k:['well irrigation','கிணறு பாசனம்','borewell'], f:false, r:'கிணறு/போர்வெல் பாசனம்: நிலத்தடி நீர் அடிப்படையிலான பாசனம்.\nநீர் சேமிப்புக்கு டிரிப்/மைக்ரோ பாசனம் உதவும்.' },
+  { k:['tank irrigation','ஏரி பாசனம்','குளம் பாசனம்'], f:false, r:'ஏரி/குளம் பாசனம்: நீர் சேமிப்பு அமைப்புகளை பராமரித்து திண்டல்/கழிவு நீக்கம் செய்தால் பயன் அதிகம்.' },
+
+  // 🐄 More livestock (safety-first)
+  { k:['animal husbandry','கால்நடை பராமரிப்பு','animal care'], f:false, r:'Animal husbandry: கால்நடைகளை பராமரித்து உற்பத்தி (பால்/இறைச்சி/முட்டை) உயர்த்தும் அறிவியல் நடைமுறைகள்.\nசுத்தம், தீவனம், தடுப்பூசி, காலந்தோறும் பரிசோதனை முக்கியம்.' },
+  { k:['vaccines for cows','cow vaccine','தடுப்பூசி','மாடு தடுப்பூசி'], f:true, r:'மாடுகளுக்கான தடுப்பூசி திட்டம் பகுதிப் பொறுத்து மாறலாம் (FMD, HS, BQ போன்றவை).\nஅருகிலுள்ள கால்நடை மருத்துவரிடம் உங்கள் பகுதி திட்டப்படி தடுப்பூசி பட்டியல்/நேரம் உறுதி செய்யவும்.' },
+  { k:['goat farming','goat care','ஆடு வளர்ப்பு'], f:true, r:'ஆடு வளர்ப்பு:\n- உலர்/சுத்தமான குடில் + காற்றோட்டம்\n- வயது/எடைக்கு ஏற்ற தீவனம் + கனிம கலவை\n- தடுப்பூசி/புழு நீக்கம் திட்டம்\n- குடிநீர் எப்போதும்\nநோய் அறிகுறி இருந்தால் மருத்துவரை அணுகவும்.' },
+  { k:['sheep care','sheep farming','செம்மறி','ஆடு செம்மறி'], f:true, r:'செம்மறி/ஆடு பராமரிப்பு: மேய்ச்சி மேலாண்மை, புழு நீக்கம், தடுப்பூசி, குளியல்/சுத்தம், கனிம கலவை முக்கியம்.\nகாய்ச்சல்/மூச்சுத்திணறல் இருந்தால் உடனே மருத்துவரை அணுகவும்.' },
+  { k:['cattle fever','மாடு காய்ச்சல்','medicine for cattle fever'], f:true, r:'மாடுக்கு காய்ச்சல் இருந்தால் இது அவசரம்.\nசுயமாக மருந்து கொடுக்காமல் அருகிலுள்ள கால்நடை மருத்துவரை உடனே அணுகவும். உடனடி உதவி: சுத்தமான தண்ணீர், நிழல், அதிக குளிர்ச்சி/சூடு தவிர்க்கவும்.' },
+
+  // 📋 Help / List
+  { k:['questions','question list','faq','பட்டியல்','help topics','what can you do'], f:false, r:'நான் இந்த தலைப்புகளில் உதவுகிறேன்:\n🌾 பொது விவசாயம் • 🌱 மண் • 🌿 உரம் • 🌾 சாகுபடி • 🐛 பூச்சி/நோய் • 💧 பாசனம் • 🐄 கால்நடை • 💰 சந்தை விலை • 📜 திட்டங்கள் • 🌍 காலநிலை\n\nஉதா: "விவசாயம் என்ன?", "கரிசல் மண்ணில் என்ன பயிர்?", "யூரியா என்ன?", "மதுரை தக்காளி விலை" போன்ற கேள்விகள் கேளுங்கள்.' }
+];
+
+const CROP_ALIASES = {
+  'நெல்':['நெல்','rice','paddy','nel','samba','kuruvai'],
+  'கோதுமை':['கோதுமை','wheat','godhumai'],
+  'மக்காச்சோளம்':['மக்காச்சோளம்','maize','corn','makkacholam'],
+  'கரும்பு':['கரும்பு','sugarcane','karumbu'],
+  'வாழை':['வாழை','banana','vazhai','vaazhai'],
+  'பருத்தி':['பருத்தி','cotton','paruthi'],
+  'தக்காளி':['தக்காளி','tomato','tomoto','thakkali'],
+  'மிளகாய்':['மிளகாய்','chilli','milagai','chili'],
+  'வெங்காயம்':['வெங்காயம்','onion','vengayam'],
+  'உருளைக்கிழங்கு':['உருளைக்கிழங்கு','potato','urulaikilangu'],
+  'கத்திரிக்காய்':['கத்திரிக்காய்','brinjal','eggplant','kathirikai'],
+  'வெண்டைக்காய்':['வெண்டைக்காய்','okra','ladies finger','vendakkai'],
+  'முட்டைக்கோஸ்':['முட்டைக்கோஸ்','cabbage','muttakose'],
+  'காலிஃபிளவர்':['காலிஃபிளவர்','cauliflower'],
+  'கேரட்':['கேரட்','carrot'],
+  'பீன்ஸ்':['பீன்ஸ்','beans'],
+  'பூண்டு':['பூண்டு','garlic','poondu'],
+  'இஞ்சி':['இஞ்சி','ginger','inji'],
+  'வேர்க்கடலை':['வேர்க்கடலை','groundnut','kadala','peanut'],
+  'எள்':['எள்','sesame','ellu','gingelly'],
+  'சூரியகாந்தி':['சூரியகாந்தி','sunflower','sooriyakanthi'],
+  'சோயாபீன்':['சோயாபீன்','soybean','soya'],
+  'துவரை':['துவரை','redgram','pigeonpea','thuvarai','toor dal'],
+  'உளுந்து':['உளுந்து','blackgram','urad','ulundhu'],
+  'பயத்தம்':['பயத்தம்','greengram','moong','paitham'],
+  'கொள்ளு':['கொள்ளு','horsegram','kollu'],
+  'கொண்டைக்கடலை':['கொண்டைக்கடலை','chickpea','channa','kondaikadalai'],
+  'சோளம்':['சோளம்','jowar','cholam','sorghum'],
+  'கம்பு':['கம்பு','bajra','kambu','pearl millet'],
+  'ராகி':['ராகி','ragi','finger millet','kezhvaragu'],
+  'மரவள்ளிக்கிழங்கு':['மரவள்ளிக்கிழங்கு','tapioca','cassava','maravalli'],
+  'மஞ்சள்':['மஞ்சள்','turmeric','manjal'],
+  'தேங்காய்':['தேங்காய்','coconut','thengai'],
+  'மாம்பழம்':['மாம்பழம்','mango','maambazham'],
+  'திராட்சை':['திராட்சை','grapes','thiratchai'],
+  'கொய்யா':['கொய்யா','guava','koyya'],
+  'எலுமிச்சை':['எலுமிச்சை','lemon','elumichai'],
+  'பப்பாளி':['பப்பாளி','papaya'],
+  'முருங்கை':['முருங்கை','drumstick','murungai'],
+  'மல்லிகை':['மல்லிகை','malligai','jasmine','malli'],
+  'ரோஜா':['ரோஜா','roja','rose'],
+  'சாமந்தி':['சாமந்தி','samandhi','marigold'],
+  'செவ்வந்தி':['செவ்வந்தி','sevvanthi','chrysanthemum'],
+  'கனகாம்பரம்':['கனகாம்பரம்','kanakambaram','crossandra'],
+  'துளசி':['துளசி','thulasi','tulsi']
+};
+
+const CROP_GUIDES = {
+  'நெல்':{
+    soil:'வண்டல் மண், களிமண், நீர் பிடிப்புள்ள மண்',
+    fertilizer:'மண் பரிசோதனைப்படி NPK. பொதுவாக அடியுரம் + 2 அல்லது 3 மேலுரம் பிரிப்பு',
+    pesticide:'தண்டு துளைப்பான், இலை சுருட்டி கண்காணிப்பு; ஒட்டும் தாள் + உறுதி செய்யப்பட்ட மருந்து லேபிள் அளவில்',
+    irrigation:'ஆரம்ப வளர்ச்சியில் மிதமான நீர், தண்ணீர் தேக்கம் கட்டுப்பாடு, அவ்வப்போது உலர்-ஈர் முறை',
+    season:'குறுவை, சம்பா, தாளடி'
+  },
+  'கரும்பு':{
+    soil:'ஆழமான வடிகால் மண், வண்டல்/கரிசல் மண்',
+    fertilizer:'அடியுரம் பாஸ்பரஸ், பின்னர் நைட்ரஜன் மற்றும் பொட்டாசியம் பிரித்து இடுதல்',
+    pesticide:'வெள்ளை ஈ, தண்டு துளைப்பான் கண்காணிப்பு; சுத்தமான செடி வட்டம் பராமரிப்பு',
+    irrigation:'கால அளவிட்ட பாசனம்; துளி பாசனம் சிறந்தது',
+    season:'மாவட்டத்தை பொறுத்து ஆண்டு முழுவதும் திட்டமிடலாம்'
+  },
+  'வாழை':{
+    soil:'நீர் தேங்காத வண்டல்/செம்மண்',
+    fertilizer:'குழி நிரப்பு கரிமச்சத்து + நிலைபடி NPK + நுண்ணூட்டச்சத்து தெளிப்பு',
+    pesticide:'இலைப்புள்ளி, தண்டு அழுகல், பூச்சி கண்காணிப்பு; நோய்ப் பகுதிகளை உடனே அகற்றவும்',
+    irrigation:'துளி பாசனம் + மண் மூடுபயிர் மூலம் ஈரப்பதம் பாதுகாக்கவும்',
+    season:'உள்ளூர் பருவத்தைப் பொறுத்து நட்டு திட்டமிடவும்'
+  },
+  'பருத்தி':{
+    soil:'கரிசல் மண், நல்ல வடிகால் மண்',
+    fertilizer:'சமநிலை NPK + நுண்ணூட்டச்சத்து',
+    pesticide:'சிவப்பு சிலந்தி, வெள்ளை ஈ, பல்லி பூச்சி கண்காணிப்பு; ஒருங்கிணைந்த பூச்சி மேலாண்மை',
+    irrigation:'அளவான பாசனம்; திடீர் அதிக நீர் தவிர்க்கவும்',
+    season:'மாவட்ட மற்றும் மழைப்பருவ அடிப்படையில்'
+  },
+  'தக்காளி':{
+    soil:'சிறந்த வடிகால் மண், pH சீரான மண்',
+    fertilizer:'அடியுரம் கரிமச்சத்து + நிலைபடி NPK + கால்சியம்/போரான் ஆதரவு',
+    pesticide:'இலை சுருள், பூஞ்சை நோய், துளை பூச்சி கண்காணிப்பு',
+    irrigation:'நிலையான ஈரப்பதம்; நீர் தேக்கம் தவிர்க்கவும்',
+    season:'உள்ளூர் காலநிலை அடிப்படையில்'
+  }
+};
+
+const SCHEME_DETAILS = [
+  {id:'pm-kisan', names:['pm kisan','pm-kisan','பிரதமர் கிசான்','கிசான்'], purpose:'சிறு/குறு விவசாய குடும்பங்களுக்கு நேரடி வருமான ஆதரவு', benefit:'ஆண்டு ₹6000 (3 தவணைகளில்)', docs:'ஆதார், வங்கி கணக்கு, நில விவரம்'},
+  {id:'pmfby', names:['pmfby','பயிர் காப்பீடு','crop insurance'], purpose:'இயற்கை சீற்றம்/பயிர் சேதத்திற்கு நிவாரணம்', benefit:'குறைந்த காப்பீட்டு கட்டணத்தில் பாதுகாப்பு', docs:'பயிர் விவரம், பட்டா, வங்கி, ஆதார்'},
+  {id:'kcc', names:['kcc','கிசான் கடன் அட்டை','loan card'], purpose:'விவசாய செலவுகளுக்கு குறைந்த வட்டி கடன்', benefit:'வேகமான செயல் மூலதனம்', docs:'ஆதார், வங்கி, நில ஆவணம்'},
+  {id:'soil-card', names:['soil health card','மண் ஆரோக்கிய அட்டை'], purpose:'மண் பரிசோதனை அடிப்படையிலான உர பரிந்துரை', benefit:'சரியான உரம், குறைந்த செலவு, அதிக விளைச்சல்', docs:'விண்ணப்பம், நில தகவல்'},
+  {id:'pmksy', names:['pmksy','பாசன திட்டம்','irrigation scheme'], purpose:'நீர் பயன்பாட்டை அதிக திறனுடன் மேம்படுத்துதல்', benefit:'துளி/தூவிப் பாசன ஊக்கத்தொகை', docs:'நில விவரம், வங்கி, அடையாளம்'}
+];
+
+const TN_DISTRICTS = [
+  'அரியலூர்','செங்கல்பட்டு','சென்னை','கோயம்புத்தூர்','கடலூர்','தர்மபுரி','திண்டுக்கல்','ஈரோடு',
+  'கள்ளக்குறிச்சி','காஞ்சிபுரம்','கன்னியாகுமரி','கரூர்','கிருஷ்ணகிரி','மதுரை','மயிலாடுதுறை','நாகப்பட்டினம்',
+  'நாமக்கல்','நீலகிரி','பெரம்பலூர்','புதுக்கோட்டை','ராமநாதபுரம்','ராணிப்பேட்டை','சேலம்','சிவகங்கை',
+  'தென்காசி','தஞ்சாவூர்','தேனி','திருச்சி','திருநெல்வேலி','திருப்பத்தூர்','திருப்பூர்','திருவள்ளூர்',
+  'திருவண்ணாமலை','தூத்துக்குடி','திருவாரூர்','வேலூர்','விழுப்புரம்','விருதுநகர்'
+];
+
+const BASE_CROP_PRICE = {
+  'நெல்':{min:2100,max:2400,unit:'க்விண்டல்'},
+  'கோதுமை':{min:2500,max:3000,unit:'க்விண்டல்'},
+  'மக்காச்சோளம்':{min:1800,max:2300,unit:'க்விண்டல்'},
+  'சோளம்':{min:2200,max:2900,unit:'க்விண்டல்'},
+  'கம்பு':{min:2000,max:2700,unit:'க்விண்டல்'},
+  'ராகி':{min:2600,max:3300,unit:'க்விண்டல்'},
+  'பருத்தி':{min:6500,max:7900,unit:'க்விண்டல்'},
+  'கரும்பு':{min:290,max:390,unit:'க்விண்டல்'},
+  'வாழை':{min:1600,max:2800,unit:'டன்'},
+  'தக்காளி':{min:800,max:1900,unit:'க்விண்டல்'},
+  'வெங்காயம்':{min:1200,max:2600,unit:'க்விண்டல்'},
+  'உருளைக்கிழங்கு':{min:1100,max:2300,unit:'க்விண்டல்'},
+  'கத்திரிக்காய்':{min:900,max:2000,unit:'க்விண்டல்'},
+  'வெண்டைக்காய்':{min:1400,max:3000,unit:'க்விண்டல்'},
+  'முட்டைக்கோஸ்':{min:800,max:1900,unit:'க்விண்டல்'},
+  'காலிஃபிளவர்':{min:1200,max:2600,unit:'க்விண்டல்'},
+  'கேரட்':{min:1400,max:3200,unit:'க்விண்டல்'},
+  'பீன்ஸ்':{min:2000,max:4200,unit:'க்விண்டல்'},
+  'பூண்டு':{min:4500,max:8500,unit:'க்விண்டல்'},
+  'இஞ்சி':{min:3000,max:7000,unit:'க்விண்டல்'},
+  'வேர்க்கடலை':{min:5000,max:6400,unit:'க்விண்டல்'},
+  'எள்':{min:7000,max:9800,unit:'க்விண்டல்'},
+  'சூரியகாந்தி':{min:4800,max:6700,unit:'க்விண்டல்'},
+  'சோயாபீன்':{min:3900,max:6200,unit:'க்விண்டல்'},
+  'துவரை':{min:6200,max:9100,unit:'க்விண்டல்'},
+  'உளுந்து':{min:7000,max:9800,unit:'க்விண்டல்'},
+  'பயத்தம்':{min:6500,max:9300,unit:'க்விண்டல்'},
+  'கொள்ளு':{min:5200,max:7700,unit:'க்விண்டல்'},
+  'கொண்டைக்கடலை':{min:5200,max:7600,unit:'க்விண்டல்'},
+  'மஞ்சள்':{min:11000,max:16000,unit:'க்விண்டல்'},
+  'மிளகாய்':{min:7000,max:11000,unit:'க்விண்டல்'},
+  'மரவள்ளிக்கிழங்கு':{min:900,max:2200,unit:'க்விண்டல்'},
+  'தேங்காய்':{min:24,max:45,unit:'ஒரு நட்டு'},
+  'மாம்பழம்':{min:1800,max:4200,unit:'க்விண்டல்'},
+  'திராட்சை':{min:3200,max:6800,unit:'க்விண்டல்'},
+  'கொய்யா':{min:1700,max:3600,unit:'க்விண்டல்'},
+  'எலுமிச்சை':{min:1800,max:5200,unit:'க்விண்டல்'},
+  'பப்பாளி':{min:1200,max:3200,unit:'க்விண்டல்'},
+  'முருங்கை':{min:2500,max:6200,unit:'க்விண்டல்'},
+  'மல்லிகை':{min:120,max:320,unit:'கிலோ'},
+  'ரோஜா':{min:50,max:180,unit:'கிலோ'},
+  'சாமந்தி':{min:40,max:140,unit:'கிலோ'},
+  'செவ்வந்தி':{min:55,max:165,unit:'கிலோ'},
+  'கனகாம்பரம்':{min:90,max:260,unit:'கிலோ'},
+  'துளசி':{min:30,max:85,unit:'கிலோ'}
+};
+
+function districtPriceFactor(name){
+  let s = 0;
+  for (const ch of name) s += ch.charCodeAt(0);
+  return 0.93 + (s % 17) * 0.01; // 0.93 to 1.09
+}
+
+function makePriceRange(minV, maxV, factor, unit){
+  const lo = Math.round(minV * factor);
+  const hi = Math.round(maxV * factor);
+  return `₹${lo}-₹${hi} / ${unit}`;
+}
+
+const MARKET_BY_DISTRICT = TN_DISTRICTS.reduce((acc, d) => {
+  const f = districtPriceFactor(d);
+  const cropMap = {};
+  for (const [crop, cfg] of Object.entries(BASE_CROP_PRICE)) {
+    cropMap[crop] = makePriceRange(cfg.min, cfg.max, f, cfg.unit);
+  }
+  acc[d] = cropMap;
+  return acc;
+}, {});
+
+const TRADERS_BY_DISTRICT = {
+  'தஞ்சாவூர்':['முருகன் வர்த்தகர் - 9841234567','அண்ணன் அரிசி மண்டி - 9787012345'],
+  'கோயம்புத்தூர்':['செல்வம் ஏஜென்சி - 9876543210','கோவை கிரெயின் மார்ட் - 9790099001'],
+  'மதுரை':['கண்ணன் மார்க்கெட் - 9751234567','மதுரை காய்கறி மையம் - 9443311220'],
+  'ஈரோடு':['ராமன் கம்பெனி - 9944332211','ஈரோடு மஞ்சள் சந்தை - 9600044000'],
+  'திருச்சி':['காவிரி வர்த்தக குழு - 9360011223'],
+  'தூத்துக்குடி':['தூத்துக்குடி மிளகாய் மண்டி - 9380044550','தென் வர்த்தக சங்கம் - 9442288770']
+};
+
+const DISTRICT_ALIASES = TN_DISTRICTS.reduce((acc, d) => {
+  acc[d] = [d];
+  return acc;
+}, {
+  'அரியலூர்':['அரியலூர்','ariyalur'],
+  'செங்கல்பட்டு':['செங்கல்பட்டு','chengalpattu','chengalpet'],
+  'சென்னை':['சென்னை','chennai','madras'],
+  'கோயம்புத்தூர்':['கோயம்புத்தூர்','coimbatore','kovai'],
+  'கடலூர்':['கடலூர்','cuddalore'],
+  'தர்மபுரி':['தர்மபுரி','dharmapuri'],
+  'திண்டுக்கல்':['திண்டுக்கல்','dindigul'],
+  'ஈரோடு':['ஈரோடு','erode'],
+  'கள்ளக்குறிச்சி':['கள்ளக்குறிச்சி','kallakurichi'],
+  'காஞ்சிபுரம்':['காஞ்சிபுரம்','kanchipuram','kancheepuram'],
+  'கன்னியாகுமரி':['கன்னியாகுமரி','kanyakumari','kanniyakumari','nagercoil'],
+  'கரூர்':['கரூர்','karur'],
+  'கிருஷ்ணகிரி':['கிருஷ்ணகிரி','krishnagiri'],
+  'மதுரை':['மதுரை','madurai'],
+  'மயிலாடுதுறை':['மயிலாடுதுறை','mayiladuthurai'],
+  'நாகப்பட்டினம்':['நாகப்பட்டினம்','nagapattinam'],
+  'நாமக்கல்':['நாமக்கல்','namakkal'],
+  'நீலகிரி':['நீலகிரி','nilgiris','the nilgiris','ooty','udhagamandalam'],
+  'பெரம்பலூர்':['பெரம்பலூர்','perambalur'],
+  'புதுக்கோட்டை':['புதுக்கோட்டை','pudukkottai','pudukottai'],
+  'ராமநாதபுரம்':['ராமநாதபுரம்','ramanathapuram','ramnad'],
+  'ராணிப்பேட்டை':['ராணிப்பேட்டை','ranipet'],
+  'சேலம்':['சேலம்','salem'],
+  'சிவகங்கை':['சிவகங்கை','sivaganga','sivagangai'],
+  'தென்காசி':['தென்காசி','tenkasi'],
+  'தஞ்சாவூர்':['தஞ்சாவூர்','thanjavur','tanjore'],
+  'தேனி':['தேனி','theni'],
+  'திருச்சி':['திருச்சி','trichy','tiruchy','tiruchirapalli','tiruchirappalli'],
+  'திருநெல்வேலி':['திருநெல்வேலி','tirunelveli','nellai'],
+  'திருப்பத்தூர்':['திருப்பத்தூர்','tirupathur'],
+  'திருப்பூர்':['திருப்பூர்','tiruppur'],
+  'திருவள்ளூர்':['திருவள்ளூர்','tiruvallur','thiruvallur'],
+  'திருவண்ணாமலை':['திருவண்ணாமலை','tiruvannamalai','thiruvannamalai'],
+  'தூத்துக்குடி':['தூத்துக்குடி','thoothukudi','thuthukudi','tuticorin'],
+  'திருவாரூர்':['திருவாரூர்','thiruvarur','tiruvarur'],
+  'வேலூர்':['வேலூர்','vellore'],
+  'விழுப்புரம்':['விழுப்புரம்','viluppuram','villupuram'],
+  'விருதுநகர்':['விருதுநகர்','virudhunagar','virudnagar']
+});
+
+function kbReply(normalizedText){
+  let best = null;
+  let bestScore = 0;
+  for (const item of AGRI_KB) {
+    let score = 0;
+    for (const kw of item.k) {
+      if (normalizedText.includes(kw)) score += 1;
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      best = item;
+    }
+  }
+  return bestScore > 0 ? best : null;
+}
+
+function escapeRegExp(str){
+  return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function containsAlias(text, alias){
+  const t = String(text || '');
+  const a = String(alias || '').trim();
+  if (!a) return false;
+  if (/[a-z]/.test(a)) {
+    const re = new RegExp(`(^|\\s)${escapeRegExp(a)}(\\s|$)`, 'i');
+    return re.test(t);
+  }
+  return t.includes(a);
+}
+
+function detectCrop(normalizedText){
+  for (const cropName of Object.keys(CROP_ALIASES)) {
+    if (CROP_ALIASES[cropName].some(a => containsAlias(normalizedText, a))) return cropName;
+  }
+  return '';
+}
+
+function detectDistrict(normalizedText){
+  for (const d of Object.keys(DISTRICT_ALIASES)) {
+    if (DISTRICT_ALIASES[d].some(a => containsAlias(normalizedText, a))) return d;
+  }
+  return '';
+}
+
+function detectScheme(normalizedText){
+  return SCHEME_DETAILS.find(s => s.names.some(n => normalizedText.includes(n))) || null;
+}
+
+function getSoilCropReply(normalizedText){
+  const asksCrops = ['பயிர்','பயிர்கள்','வளரும்','சாகுபடி','grow','growing'].some(k => normalizedText.includes(k));
+  if (!asksCrops) return '';
+
+  if (['கரிசல்','black soil','black cotton'].some(k => normalizedText.includes(k))) {
+    return 'கரிசல் மண்ணில் நன்றாக வளரும் பயிர்கள்: பருத்தி, சோளம், கம்பு, கடலை, சூரியகாந்தி, துவரை.';
+  }
+  if (['செம்மண்','red soil'].some(k => normalizedText.includes(k))) {
+    return 'செம்மண்ணில்: வேர்க்கடலை, உளுந்து, பயறு, கொள்ளு, ராகி, மக்காச்சோளம் போன்ற பயிர்கள் சிறப்பாக வளரும்.';
+  }
+  if (['வண்டல்','alluvial'].some(k => normalizedText.includes(k))) {
+    return 'வண்டல் மண்ணில்: நெல், கோதுமை, கரும்பு, வாழை, காய்கறி, தோட்டப் பயிர்கள் நல்ல விளைச்சல் தரும்.';
+  }
+  if (['மணல் மண்','sandy'].some(k => normalizedText.includes(k))) {
+    return 'மணல் மண்ணில்: தர்பூசணி, முலாம்பழம், வேர்க்கடலை, எள், கேரட், உருளைக்கிழங்கு போன்றவை ஏற்றவை.';
+  }
+  if (['களிமண்','clay'].some(k => normalizedText.includes(k))) {
+    return 'களிமண்ணில்: நெல், சணல், சில காய்கறிகள் மற்றும் நீர் பிடிப்பை விரும்பும் பயிர்கள் நன்றாக வளரும்.';
+  }
+  if (['லேட்டரைட்','laterite'].some(k => normalizedText.includes(k))) {
+    return 'லேட்டரைட் மண்ணில்: தேங்காய், மாம்பழம், கொய்யா, மரவள்ளி, முந்திரி போன்ற பயிர்கள் ஏற்றவை.';
+  }
+  return '';
+}
+
+function generateLocalReply(msg, hasImage){
+  const m = normalizeTanglish(msg);
+  const has = (words) => words.some(w => m.includes(w));
+  const askDetails = '\n\nமேலும் துல்லியமாக சொல்ல: பயிர், மாவட்டம், ஏக்கர், நிலை (விதைப்பு/வளர்ச்சி/அறுவடை), பிரச்சனை ஆரம்பித்த நாள்.';
+  const d = detectDistrict(m);
+  const c = detectCrop(m);
+
+  if (hasImage) {
+    return 'படம் கிடைத்தது. உடனடி பாதுகாப்பு நடவடிக்கை:\n1) பாதித்த இலை/காய் தனியே அகற்று\n2) வயலில் நீர் தேங்கல் தவிர்க்கவும்\n3) அதிகமாக மருந்து கலக்க வேண்டாம்\n4) அருகிலுள்ள வேளாண் அலுவலகத்தில் உறுதி செய்து மருந்து தேர்வு செய்யவும்.' + askDetails;
+  }
+
+  const soilCropReply = getSoilCropReply(m);
+  if (soilCropReply) return soilCropReply + askDetails;
+
+  // First priority: district + crop detection (without requiring any keyword)
+  if (d && c) {
+    if (MARKET_BY_DISTRICT[d] && MARKET_BY_DISTRICT[d][c]) {
+      return `${d} மாவட்டம் ${c} விலை (போர்டல் தரவு): ${MARKET_BY_DISTRICT[d][c]}\n\nகுறிப்பு: உண்மை விலை சந்தை நேரப்படி மாறும்.`;
+    }
+    return `${d} மாவட்டத்தில் ${c} விலை தரவு இப்போது இல்லை. அருகிலுள்ள மாவட்டம் கூறினால் மாற்று விலை தருகிறேன்.`;
+  }
+  if (d && !c && has(['விலை','market','price','மார்க்கெட்','நேரடி'])) {
+    return `${d} மாவட்டம் கண்டறியப்பட்டது. எந்த பயிர் விலை வேண்டும்? உதாரணம்: "நெல்", "மிளகாய்", "மல்லிகை".`;
+  }
+  if (!d && c && has(['விலை','market','price','மார்க்கெட்','நேரடி'])) {
+    return `${c} பயிர் கண்டறியப்பட்டது. எந்த மாவட்ட விலை வேண்டும்? உதாரணம்: "மதுரை", "தூத்துக்குடி", "கோயம்புத்தூர்".`;
+  }
+
+  const scheme = detectScheme(m);
+  if (scheme) {
+    return `திட்டம்: ${scheme.id.toUpperCase()}\nஇதன் நோக்கம்: ${scheme.purpose}\nபலன்: ${scheme.benefit}\nபொதுவாக தேவையான ஆவணங்கள்: ${scheme.docs}`;
+  }
+
+  if (c && CROP_GUIDES[c]) {
+    const g = CROP_GUIDES[c];
+    if (has(['மண்','soil','mann'])) return `${c}க்கு ஏற்ற மண்: ${g.soil}`;
+    if (has(['உரம்','fertilizer','npk','dap','urea','mop','ssp'])) return `${c}க்கு உர மேலாண்மை: ${g.fertilizer}`;
+    if (has(['பூச்சி','நோய்','pest','disease','pesticide','marunthu'])) return `${c}க்கு பூச்சி/நோய் மேலாண்மை: ${g.pesticide}`;
+    if (has(['நீர்','பாசனம்','irrigation','drip','water'])) return `${c}க்கு பாசன வழிகாட்டு: ${g.irrigation}`;
+    if (has(['season','பருவம்','நேரம்'])) return `${c}க்கு பருவ வழிகாட்டு: ${g.season}`;
+    return `${c} பயிர் சுருக்கம்:\nமண்: ${g.soil}\nஉரம்: ${g.fertilizer}\nபூச்சி/நோய்: ${g.pesticide}\nபாசனம்: ${g.irrigation}\nபருவம்: ${g.season}`;
+  }
+
+  if (c && !CROP_GUIDES[c] && has(['சாகுபடி','வளர்க்க','grow','cultivate','how to grow','how to cultivate','நடவு','விதைப்பு','spacing','seed'])) {
+    return `${c} சாகுபடி (பொது வழிகாட்டு):\n1) மண் பரிசோதனை செய்து pH/சத்து சரி\n2) தரமான விதை/நாற்று (சான்று பெற்றது)\n3) பருவத்துக்கு ஏற்ற விதைப்பு/நடவு நேரம்\n4) சரியான இடைவெளி + களை கட்டுப்பாடு\n5) சமநிலை NPK + கரிமச்சத்து\n6) நீர் தேக்கம் தவிர்த்து மிதமான பாசனம்\n7) IPM மூலம் பூச்சி/நோய் கண்காணிப்பு\n\nஇது பொதுவான வழிகாட்டு. உங்கள் மாவட்டம் + பருவம் + நீர் வசதி சொன்னால் ${c}க்கு குறிப்பிட்ட திட்டம் தருகிறேன்.`;
+  }
+
+  if (c && has(['best fertilizer','உரம் எது','எந்த உரம்','fertilizer best'])) {
+    return `${c}க்கு “சிறந்த உரம்” என்பது மண் பரிசோதனைப்படி மாறும்.\nபொதுவாக: அடியுரமாக P (DAP/SSP) + வளர்ச்சிக்கேற்ப N (யூரியா) பிரித்து + காய்/கனி தரத்துக்கு K (பொட்டாஷ்) + தேவைப்பட்டால் நுண்ணூட்டம்.\nமண் பரிசோதனை மதிப்புகள் இருந்தால் துல்லியமாக அளவு கூறலாம்.`;
+  }
+
+  if (has(['real time','நேரடி விலை','இன்றைய விலை','market price','விலை'])) {
+    const wantsFlower = has(['flower','flowers','பூ','மலர்','poo','malar']);
+    if (d && MARKET_BY_DISTRICT[d]) {
+      if (c && MARKET_BY_DISTRICT[d][c]) {
+        return `${d} மாவட்டம் ${c} விலை (போர்டல் தரவு): ${MARKET_BY_DISTRICT[d][c]}\n\nகுறிப்பு: உண்மை விலை சந்தை நேரப்படி மாறும்.`;
+      }
+      let entriesRaw = Object.entries(MARKET_BY_DISTRICT[d]);
+      if (wantsFlower) {
+        entriesRaw = entriesRaw.filter(([cropName]) => ['மல்லிகை','ரோஜா','சாமந்தி','செவ்வந்தி','கனகாம்பரம்'].includes(cropName));
+      }
+      const entries = entriesRaw.slice(0, 8).map(([cropName, price]) => `${cropName} ${price}`);
+      return `${d} மாவட்ட சந்தை விலை (போர்டல் தரவு):\n- ${entries.join('\n- ')}\n\nகுறிப்பிட்ட பயிர் விலை பார்க்க: "${d} நெல் விலை" போன்ற கேள்வி கேளுங்கள்.`;
+    }
+    if (d && !MARKET_BY_DISTRICT[d]) {
+      if (c) {
+        return `${d} மாவட்டத்தில் ${c} விலை தரவு இப்போது இல்லை. அருகிலுள்ள சந்தை விலை பார்க்க "${d} சந்தை விலை" என்று கேளுங்கள் அல்லது அருகிலுள்ள மாவட்டம் கூறுங்கள்.`;
+      }
+      return `${d} மாவட்ட சந்தை விலை தரவு இப்போது இல்லை. அருகிலுள்ள மாவட்டம் கூறினால் தகவல் தருகிறேன்.`;
+    }
+    if (!d && c) {
+      const sample = TN_DISTRICTS.slice(0, 5).map(dist => `${dist}: ${MARKET_BY_DISTRICT[dist][c]}`);
+      return `${c} விலை (சில மாவட்டங்கள் - போர்டல் தரவு):\n- ${sample.join('\n- ')}\n\nமாவட்டம் சொன்னால் துல்லிய விலை தருகிறேன்.`;
+    }
+    return 'மாவட்டம் குறிப்பிட்டு கேளுங்கள். உதாரணம்: "ஈரோடு மஞ்சள் விலை", "தஞ்சாவூர் நெல் விலை".';
+  }
+
+  if (has(['trader','seller','buyer','வியாபாரி','வர்த்தகர்','வாங்குபவர்'])) {
+    const d = detectDistrict(m);
+    if (d && TRADERS_BY_DISTRICT[d]) {
+      return `${d} மாவட்ட வர்த்தகர்கள்:\n- ${TRADERS_BY_DISTRICT[d].join('\n- ')}`;
+    }
+    return 'மாவட்டம் கூறுங்கள். உதாரணம்: "மதுரை வியாபாரிகள்", "கோவை வர்த்தகர் பட்டியல்".';
+  }
+
+  if (has(['insurance available','காப்பீடு கிடைக்குமா','எந்த காப்பீடு','pmfby'])) {
+    return 'கிடைக்கும் காப்பீடு திட்டங்கள்:\n1) PMFBY பயிர் காப்பீடு\n2) கால்நடை காப்பீடு (சில மாவட்டங்களில்)\n3) வானிலை சார்ந்த காப்பீட்டு திட்டங்கள் (மாநில/வங்கி இணைப்பு)\n\nகுறிப்பிட்ட பயிர் + மாவட்டம் சொன்னால் தகுதி வழிகாட்டுகிறேன்.';
+  }
+
+  if (has(['all schemes','எல்லா திட்டங்கள்','திட்ட பட்டியல்'])) {
+    return 'முக்கிய திட்ட பட்டியல்:\n- PM-KISAN\n- PMFBY\n- KCC\n- Soil Health Card\n- PMKSY\n\nஎந்த திட்டம் பற்றி விரிவாக வேண்டும் என்று கேளுங்கள்.';
+  }
+
+  const hit = kbReply(m);
+  if (hit) return hit.f ? (hit.r + askDetails) : hit.r;
+  return 'நான் விவசாய உதவியாளர். பயிர், உரம், நோய், பூச்சி, பாசனம், மண், திட்டங்கள், காப்பீடு, சந்தை விலை, கால்நடை, கடன், சேமிப்பு போன்ற கேள்விகளுக்கு உதவுவேன்.' + askDetails;
+}
+
+async function sendChatMessage(){const input=document.getElementById('chatInput');let msg=input.value.trim();if(!msg&&!chatImagePart)return;if(!msg&&chatImagePart)msg='இந்த படத்தை பார்த்து விவசாய ஆலோசனை சொல்லுங்கள்.';input.value='';addChatMessage('user',msg,chatImagePreviewData||'');setChatTyping(true);
+  try{
+    const reply = generateLocalReply(msg, !!chatImagePart);
+    addChatMessage('bot', reply);
+    if(hasTamil(msg)) speakTamil(reply);
+  }finally{setChatTyping(false);clearChatImage()}}
+
+function toggleChatSpeech(){const mic=document.getElementById('chatMicBtn');const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){addChatMessage('bot','இந்த உலாவியில் குரல் உள்ளீடு ஆதரவு இல்லை.');return;}if(isChatRecording&&chatRecognition){chatRecognition.stop();return;}chatRecognition=new SR();chatRecognition.lang='ta-IN';chatRecognition.continuous=false;chatRecognition.interimResults=false;chatRecognition.onstart=()=>{isChatRecording=true;mic.classList.add('recording')};chatRecognition.onresult=(e)=>{document.getElementById('chatInput').value=e.results?.[0]?.[0]?.transcript||'';sendChatMessage()};chatRecognition.onerror=()=>addChatMessage('bot','குரல் உள்ளீடு பெற முடியவில்லை. மீண்டும் முயற்சிக்கவும்.');chatRecognition.onend=()=>{isChatRecording=false;mic.classList.remove('recording')};chatRecognition.start()}
+
+function getWeatherEmoji(code,isDay){if([1000].includes(code))return isDay?'☀️':'🌙';if([1003,1006].includes(code))return '⛅';if([1009,1030,1135,1147].includes(code))return '☁️';if([1063,1150,1153,1180,1183,1186,1189,1192,1195,1240,1243,1246].includes(code))return '🌧️';if([1066,1114,1117,1210,1213,1216,1219,1222,1225,1255,1258].includes(code))return '❄️';if([1087,1273,1276,1279,1282].includes(code))return '⛈️';return '🌤️'}
+function setDashboardLocationLabel(label){
+  const safeLabel=label||'உங்கள் இடம்';
+  document.getElementById('hero-dist-tag').textContent=safeLabel;
+  document.getElementById('hero-district').textContent='தற்போதைய இடம்: '+safeLabel;
+}
+
+function formatReverseGeocodeLabel(address){
+  if(!address)return'';
+  return address.hamlet
+    || address.suburb
+    || address.neighbourhood
+    || address.village
+    || address.town
+    || address.city_district
+    || address.city
+    || address.county
+    || '';
+}
+
+async function fetchExactLocationLabel(lat,lon){
+  const res=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&zoom=18&addressdetails=1`,{
+    headers:{'Accept':'application/json'}
+  });
+  if(!res.ok)throw new Error('reverse-geocode '+res.status);
+  const data=await res.json();
+  return formatReverseGeocodeLabel(data.address)||'உங்கள் தற்போதைய இடம்';
+}
+
+async function fetchWeatherByQuery(q,f,displayLabel){
+  const b=document.getElementById('weather-badge');
+  const res=await fetch(`https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${encodeURIComponent(q)}&aqi=no`);
+  if(!res.ok)throw new Error('weather '+res.status);
+  const d=await res.json();
+  const t=Math.round(d.current?.temp_c??0);
+  const h=d.current?.humidity??'--';
+  const e=getWeatherEmoji(d.current?.condition?.code,Number(d.current?.is_day)===1);
+  const city=d.location?.name||'';
+  const region=d.location?.region||'';
+  const apiLabel=(city&&region&&city!==region)?`${city}, ${region}`:(city||region||f||'உங்கள் இடம்');
+  const a=displayLabel||apiLabel;
+  setDashboardLocationLabel(a);
+  b.innerHTML=`${e} ${t}°C | <span id="hero-dist-tag">${a}</span> | 💧 ${h}% ஈரப்பதம்`;
+}
+function setLocationError(message){
+  const label=message||'தற்போதைய இடம் கிடைக்கவில்லை';
+  setDashboardLocationLabel(label);
+  document.getElementById('weather-badge').innerHTML=`📍 <span id="hero-dist-tag">${label}</span>`;
+}
+async function loadLiveWeather(dist){
+  try{
+    if(!navigator.geolocation){
+      setLocationError('இந்த உலாவியில் location ஆதரவு இல்லை');
+      return;
+    }
+    const pos=await new Promise((ok,bad)=>navigator.geolocation.getCurrentPosition(ok,bad,{enableHighAccuracy:true,timeout:15000,maximumAge:0}));
+    if((pos.coords.accuracy||99999)>1500){
+      setLocationError('துல்லியமான location கிடைக்கவில்லை');
+      return;
+    }
+    let liveLabel='உங்கள் தற்போதைய இடம்';
+    try{
+      liveLabel=await fetchExactLocationLabel(pos.coords.latitude,pos.coords.longitude);
+    }catch(_){}
+    await fetchWeatherByQuery(`${pos.coords.latitude},${pos.coords.longitude}`,'',liveLabel);
+  }catch(err){
+    const code=err&&typeof err==='object'&&'code' in err?err.code:0;
+    if(code===1)setLocationError('Location permission வேண்டும்');
+    else if(code===2)setLocationError('Current location கண்டுபிடிக்க முடியவில்லை');
+    else if(code===3)setLocationError('Location timeout. மீண்டும் முயற்சிக்கவும்');
+    else setLocationError('தற்போதைய இடம் கிடைக்கவில்லை');
+  }
+}
+
+const p=getCurrentFarmerProfile();
+if(!p.phone)window.location.href='index.html';
+if(p.name){
+  document.getElementById('hdr-name').textContent=p.name;
+  document.getElementById('hero-name').textContent=p.name+'!';
+}
+if(p.photo)document.getElementById('hdr-photo').src=p.photo;
+loadLiveWeather(p.district);
+initQuickQuestions();
+</script>
+</body>
+</html>
